@@ -21,7 +21,6 @@ def check_len(K, puzzle):
 
 def count_k( count, K):
     if count == K:
-      #print("true in K")
       return True
     else:
        return False
