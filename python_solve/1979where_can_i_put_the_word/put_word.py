@@ -1,6 +1,5 @@
 def check_len(K, puzzle):
-  pattern_count = int(0)
-
+  pattern_count = 0
   for row in puzzle:
     count = 0
     for index, el in enumerate(row):
@@ -25,15 +24,12 @@ def count_k( count, K):
     else:
        return False
 
-
-
-
 def main():
   input_count = int(input())
   for i in range(input_count):
     N, K = map(int, input().split(" "))
     puzzle = []
-    print(i," 번째")
+    print(i+1," 번째","  패턴 1 갯수: ", K)
     for _ in range(N):
       row = list(map(int,input().split(" ")))
       puzzle.append(row)
@@ -41,7 +37,7 @@ def main():
     check_len(K, puzzle)
     print("~~~~~~~~~~~~~~~~~~")
 
-
+## 만약 정규식으로 한다면?
 
 if __name__ == "__main__":
   main()
