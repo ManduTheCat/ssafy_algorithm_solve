@@ -4,7 +4,6 @@ def check_square(sodoku: list):
     for start_col_index  in range(0,9,3):
       check_map = {n: 0 for n in range(1,10)}
       for row in sodoku[start_row_index: start_row_index +3]:
-        #print(row[start_col_index: start_col_index +3])
         for el in row[start_col_index: start_col_index +3]:
           check_map[el] +=1
       if not evaluation_map(check_map):
@@ -41,10 +40,8 @@ def main():
   input_count = int(input())
   for i in range(input_count):
     sodoku = []
-    #print(i)
     for _ in range(9):
       sodoku.append(list(map(int, input().split())))
-    #print(*sodoku, sep='\n')
     if(check_row_direction(sodoku) and check_col_direction(sodoku) and check_square(sodoku)):
       print(f'#{i+1} {1}')
     else:
