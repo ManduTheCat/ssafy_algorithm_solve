@@ -11,7 +11,8 @@ import java.util.StringTokenizer;
 public class Solution {
 
     public static void main(String [] argv)throws IOException {
-        System.setIn(new FileInputStream("E:\\JavaProjects\\ssafy_algorithm_solve\\javaSolve\\src\\swexp\\fly_2011\\test1.txt"));
+        String path = Solution.class.getResource("").getPath();
+        System.setIn(new FileInputStream(path+"test1.txt"));
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         int count_input = Integer.parseInt(br.readLine());
         for(int i = 0; i< count_input; i++){
