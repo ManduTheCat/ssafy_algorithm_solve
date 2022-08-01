@@ -58,8 +58,8 @@ public class Main {
                         sixPick[d] = map[i+ dy[di]*d][j+ dx[di]*d];
                     }
                 }
-                //System.out.println(Arrays.toString(sixPick));
-                if(checkFiveSix(sixPick,i, j, map)){
+                if(checkFiveSix(sixPick, map , di)){
+                    System.out.println(Arrays.toString(sixPick));
                     System.out.printf("true : %d %d, %d\n",i,j, startValue);
                 }
             }
@@ -68,14 +68,15 @@ public class Main {
         return null;
     }
     public static boolean checkOut(int i, int j, int dy, int dx){
-        if(i + dy >= 0 && i + dy < 19 && j + dx >=0 && j + dx < 19){
-            return true;
-        }
-
-        return false;
+        return i + dy >= 0 && i + dy < 19 && j + dx >= 0 && j + dx < 19;
     }
 
-    public static boolean checkFiveSix(int [] nums, int i, int j, int[][]map){
+    public static boolean checkFiveSix(int [] nums,int [][]map, int di){
+        //int [] dy = new int[]{-1, 0, 1, 1 };
+        //int [] dx = new int[]{ 1, 1, 1, 0 };
+        //방향확인
+        int [] dy = new int[]{1, 0, -1, -1 };
+        int [] dx = new int[]{ -1, -1, -1, 0 };
         int startNum = nums[0];
         for (int idx = 0; idx < nums.length-1; idx++){
             if(nums[idx] != startNum){
@@ -84,6 +85,9 @@ public class Main {
             }
         }
         if(nums[nums.length-1] == startNum) return false;
+
+        //거꾸로 갔을때 같은 게 있으면 false
+        //다른게 있거나 벽에 막히면 시각점일라는뜻으로 true
         return true;
     }
 }
