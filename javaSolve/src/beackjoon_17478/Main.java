@@ -14,6 +14,15 @@ public class Main {
         System.out.println("라고 답변하였지.");
     }
 
+    /**
+     * 1. 재귀를 통해 같은 내용의 질문 과 대답 출력
+     * 2. 재귀가 해재 되면서 "라고 답변 했지" 출력
+     * 3. 재귀 깊이에 따라 출력앞에 밑줄이 출력된다
+     * 
+     * @param count 재귀의 탈출을 위한 카운트 입력 횟수만큼 재귀를 반복하게 하는역활 재귀반복할수록 감소
+     *              count 가 0 이되면 재귀를 탈출한다
+     * @param time 재귀의 회수에 따라 밑줄 갯수를 늘려주는 파라미터 재귀 반복할수록 증가
+     */
     public static void recursive(int count, int time){
         uderline(time);
         System.out.println("\"재귀함수가 뭔가요?\"");
@@ -33,6 +42,10 @@ public class Main {
         System.out.println("라고 답변하였지.");
     }
 
+    /**
+     * 재귀의 깊이만큼 출력앞에 밑줄을 출력하기 위한 함수
+     * @param time 입력인자는 재귀 횟수만큼 증가한수이다.
+     */
     private static void uderline(int time) {
         for(int i = 0; i< time; i++){
             System.out.print("____");
