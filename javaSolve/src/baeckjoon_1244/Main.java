@@ -9,7 +9,7 @@ import java.util.Arrays;
 
 public class Main {
     public static void main(String[] args) throws IOException {
-        System.setIn(new FileInputStream("resources/1244input/input.txt"));
+        //System.setIn(new FileInputStream("resources/1244input/input.txt"));
         BufferedReader bf = new BufferedReader(new InputStreamReader(System.in));
         int switchLen = Integer.parseInt(bf.readLine());
         int[] switchs = Arrays.stream(bf.readLine().split(" ")).mapToInt(Integer::parseInt).toArray();
@@ -64,7 +64,7 @@ public class Main {
         index--;
         /**
          * 1. 출발 자리 반대 숫자로 처리
-         * 2. for 문을 돌며 양쪽으로 이동하면서 갑변화 만약 범위를 넘거나  같이 않으면 종료한다.
+         * 2. for 문을 돌며 양쪽으로 이동하면서 값변화 만약 범위를 넘거나  같지 않으면 종료한다.
          */
         input[index] = input[index] == 0 ? 1 : 0;
         for (int j = 1; j < len; j++) {
