@@ -14,12 +14,12 @@ public class Solution {
         BufferedReader bf = new BufferedReader(new InputStreamReader(System.in));
         for(int tc = 0; tc < TC; tc++){
             int len = Integer.parseInt(bf.readLine());
-            StringBuffer sb = new StringBuffer(bf.readLine());
+            StringBuffer buffer = new StringBuffer(bf.readLine());
             Stack<String> stack = new Stack<>();
             //정답을 구하는데는 상관없지만 스텍에 넣을때 순서를 유지하게 넣기위해 revers 처리하고 넣었습니다.
             //이러면 스택을 왜쓴거지?
 
-            Arrays.stream(sb.reverse().toString().split("")).forEach(stack::push);
+            Arrays.stream(buffer.reverse().toString().split("")).forEach(stack::push);
             
             // 결과에따라 1(유효), 0(실패)
             if (!isRight(stack)) {
@@ -57,16 +57,16 @@ public class Solution {
                 break;
                 case("}") :
                     count[0]--;
-                    break;
+                break;
                 case("]") :
                     count[1]--;
-                    break;
+                break;
                 case(")") :
                     count[2]--;
-                    break;
+                break;
                 case(">") :
                     count[3]--;
-                    break;
+                break;
             }
 
         }
