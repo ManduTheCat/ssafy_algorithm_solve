@@ -39,7 +39,6 @@ public class Main {
         Ccount = Integer.parseInt(count.nextToken());
         Gcount = Integer.parseInt(count.nextToken());
         Tcount = Integer.parseInt(count.nextToken());
-        pickList = new String[P];
 
         int countVaild = 0;
         HashMap<String, Integer> currWindowMap = new HashMap<>();
