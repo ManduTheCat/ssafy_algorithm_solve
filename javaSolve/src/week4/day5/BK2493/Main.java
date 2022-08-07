@@ -8,6 +8,7 @@ import java.util.Arrays;
 import java.util.Stack;
 
 /**
+ * 풀이 조건 1.5 초 128 MB => 풀이 결과 121.88Mb	976ms
  * 가장 최근의 값과 비교를 해야하는 문제라 생각이 들어
  * stack 을 활용해 풀었습니다.
  * 입력을 꺼구로 진행하면서
