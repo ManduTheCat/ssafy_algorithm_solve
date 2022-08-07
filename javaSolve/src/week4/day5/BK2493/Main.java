@@ -22,6 +22,7 @@ public class Main {
         //System.setIn(new FileInputStream("resources/week4/day5/BK2493/input.txt"));
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         int inputLen = Integer.parseInt(br.readLine());
+        // 이걸 루프진행하면서 할수 있다
         int[] buildingHeight = Arrays.stream(br.readLine().split(" ")).mapToInt(Integer::parseInt).toArray();
         int[] result = new int[inputLen]; //결과 array 인덱스별로 바라보는 탑의 index 를 기록
         Stack<Integer> ready = new Stack<>(); // 다음 탑을 비교하기위해 담아놓는 스택 만약 다음탑이 작거나 같으면 add() 그다음 탑을 본다.
