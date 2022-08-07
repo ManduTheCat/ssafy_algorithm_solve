@@ -33,34 +33,38 @@ public class Main {
     public static void processKeyLogger(String[] input) {
         Stack<String> firstStack = new Stack<>();
         Stack<String> secondStack = new Stack<>();
-        for(String command : input){
-            switch (command){
+        for (String command : input) {
+            switch (command) {
                 case "<":
-                    if(!firstStack.empty()){
+                    if (!firstStack.empty()) {
                         secondStack.add(firstStack.pop());
                     }
                     break;
                 case ">":
-                    if(!secondStack.empty()){
+                    if (!secondStack.empty()) {
                         firstStack.add(secondStack.pop());
                     }
                     break;
                 case "-":
-                    if(!firstStack.empty()){
+                    if (!firstStack.empty()) {
                         firstStack.pop();
                     }
                     break;
                 default:
                     firstStack.add(command);
-                break;
+                    break;
             }
         }
+
         StringBuilder sb = new StringBuilder();
-        //firstStack.parallelStream().forEach(sb::append);
-        for(String e: firstStack){
-            sb.append(e);
+
+        int size = firstStack.size();
+        int counter = 0;
+        while (counter < size) {
+            sb.append(firstStack.get(counter));
+            counter++;
         }
-        for(int i = secondStack.size()-1; i>= 0; i--){
+        for (int i = secondStack.size() - 1; i >= 0; i--) {
             sb.append(secondStack.get(i));
         }
         System.out.println(sb);
