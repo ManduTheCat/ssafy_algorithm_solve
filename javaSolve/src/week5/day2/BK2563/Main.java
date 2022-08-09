@@ -10,7 +10,7 @@ import java.util.StringTokenizer;
 
 public class Main {
     public static void main(String[] args) throws IOException {
-        //System.setIn(new FileInputStream("resources/week5/day2/BK2563/input.txt"));
+        System.setIn(new FileInputStream("resources/week5/day2/BK2563/input.txt"));
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         int SquareCount = Integer.parseInt(br.readLine());
         int [][] map = new int[100][100];
