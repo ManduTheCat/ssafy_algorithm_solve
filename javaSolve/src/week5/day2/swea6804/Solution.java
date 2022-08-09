@@ -77,7 +77,7 @@ public class Solution {
         }
         int len = enmermy.size();
         for (int i = 0; i < len; i++) {
-            if (isPick[i] == false) {
+            if (!isPick[i]) {
                 isPick[i] = true;
                 res[round] = enmermy.get(i);
                 game(round + 1, i);

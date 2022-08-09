@@ -1,11 +1,10 @@
-package week5.day2.swea1816;
+package week5.day2.swea1861;
 
 import java.io.BufferedReader;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.Arrays;
-import java.util.StringTokenizer;
+import java.util.*;
 
 public class Solution {
     static int max = 0;
@@ -17,12 +16,11 @@ public class Solution {
     static final int [] dy = new int[]{0,1,0,-1 };
     static boolean [][] visited;
     public static void main(String[] args) throws IOException {
-        System.setIn(new FileInputStream("resources/week5/day2/swea1816/input1.txt"));
+        //System.setIn(new FileInputStream("resources/week5/day2/swea1816/input1.txt"));
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         int Tc = Integer.parseInt(br.readLine());
         for(int tc = 1; tc <= Tc; tc++){
             N = Integer.parseInt(br.readLine());
-            //System.out.println("------------------N : "+N);
             map = new int[N][N];
             for(int i = 0; i < N; i++){
                 StringTokenizer st = new StringTokenizer(br.readLine());
@@ -30,14 +28,12 @@ public class Solution {
                     map[i][j] = Integer.parseInt(st.nextToken());
                 }
             }
-            for(int[] m : map){
-                //System.out.println(Arrays.toString(m));
-            }
-
-
             max = 0;
-            minMapValue = N*N;
-            loop:
+            minMapValue = N*N*1000;
+            ArrayList<Integer>[]  maxRoomStartList = new ArrayList[N*N];
+            for(int m = 0; m< N*N; m++){
+                maxRoomStartList[m] = new ArrayList<>();
+            }
             for(int i = 0; i < N; i++){
                 for(int j = 0; j <N; j++){
                     flag = false;
@@ -45,32 +41,24 @@ public class Solution {
                     visited = new boolean[N][N];
                     dfs(i,j, 0);
                     if(flag){
-
-                        System.out.printf( "#%d %d ", tc , map[i][j]);
-                        break loop;
+                        maxRoomStartList[max].add(map[i][j]);
                     }
                 }
             }
-            System.out.printf("%d\n", max+1);
-            //System.out.println("min: "+ minMapValue);
+            System.out.printf("#%d %d %d\n",tc, Collections.min(maxRoomStartList[max]), max+1);
         }
 
     }
     public static void dfs( int i, int j, int count){
-        // 사방 돌면서
-        // 검사 : 방문 했던곳, 내 다음수 , 배열 넘어가는지
-        //System.out.println("count : " + count);
-        if (count > max ){
-
+        if (count >0 & count >= max ){
             max = count;
             flag = true;
-
-        }
-        //System.out.printf("i: %d, j: %d,  %d\n", i,j ,map[i][j]);
+        };
         for(int dIndex = 0; dIndex < 4; dIndex++){
             int x = dx[dIndex];
             int y = dy[dIndex];
-            if(check(i, j, x, y) && visited[i][j] == false&& map[i][j]+1==map[i + x][j + y]){
+            // 검사 항목 : 방문 했던곳아니여야한다, 내 다음수 인지 + 1인지 , 배열 범위안넘어가는지
+            if(check(i, j, x, y) && !visited[i][j] && map[i][j]+1 == map[i + x][j + y]){
                 visited[i][j] = true;
                 dfs(i+x,j+y, ++count);
             }
@@ -79,9 +67,6 @@ public class Solution {
     }
 
     public static boolean check(int i , int j, int x, int y){
-            if((i + x < 0 || i + x >= N || j + y < 0 || j + y >= N)){
-                return  false;
-            }
-        return true;
+        return i + x >= 0 && i + x < N && j + y >= 0 && j + y < N;
     }
 }
