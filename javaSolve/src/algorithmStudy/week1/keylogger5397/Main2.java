@@ -3,46 +3,38 @@ package algorithmStudy.week1.keylogger5397;
 
 import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;;
+import java.io.InputStreamReader;
+import java.nio.file.Files;
+import java.nio.file.Paths;;
 
-interface MyStack {
-    String pop();
-
-    void push(String input);
-
-    int size();
-
-    String toRevers();
-}
-
-class MiniArrayStack implements MyStack {
-    public String[] stack;
+class MiniArrayStack {
+    public char[] stack;
     private int currIndex;
 
     public MiniArrayStack(int N) {
-        this.stack = new String[N];
+        this.stack = new char[N];
         this.currIndex = 0;
     }
 
-    @Override
-    public String pop() {
+
+    public char pop() {
         if (currIndex != 0) {
             return stack[--currIndex];
         }
-        return "fail";
+        return 'f';
     }
 
-    @Override
-    public void push(String input) {
+
+    public void push(char input) {
         stack[currIndex++] = input;
     }
 
-    @Override
+
     public int size() {
         return currIndex;
     }
 
-    @Override
+
     public String toString() {
         int len = this.stack.length;
         StringBuilder sb = new StringBuilder();
@@ -51,7 +43,7 @@ class MiniArrayStack implements MyStack {
         }
         return sb.reverse().toString();
     }
-    @Override
+
     public String toRevers(){
         int len = this.stack.length;
         StringBuilder sb = new StringBuilder();
@@ -81,30 +73,32 @@ public class Main2 {
         //System.setIn(Files.newInputStream(Paths.get("resources/study/week1/5397/input.txt")));
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         int TC = Integer.parseInt(br.readLine());
-        for (int tc = 0; tc < TC; tc++) {
-            String[] inputArray = br.readLine().split("");
+        for(int tc = 0; tc <TC; tc++){
+            String inputArray = br.readLine();
             processKeyLogger(inputArray);
         }
+        //int len = inputArray.length();
 
     }
 
-    public static void processKeyLogger(String[] input) {
-        int N = input.length * 3;
-        MyStack leftStack = new MiniArrayStack(N);
-        MyStack rightStack = new MiniArrayStack(N);
-        for (String command : input) {
+    public static void processKeyLogger(String input) {
+        int N = input.length() * 3;
+        MiniArrayStack leftStack = new MiniArrayStack(N);
+        MiniArrayStack rightStack = new MiniArrayStack(N);
+        for (int i = 0; i < input.length(); i++) {
+            char command = input.charAt(i);
             switch (command) {
-                case "<":
+                case '<':
                     if (!(leftStack.size() == 0)) {
                         rightStack.push(leftStack.pop());
                     }
                     break;
-                case ">":
+                case '>':
                     if (!(rightStack.size() == 0)) {
                         leftStack.push(rightStack.pop());
                     }
                     break;
-                case "-":
+                case '-':
                     if (!(leftStack.size() == 0)) {
                         leftStack.pop();
                     }
