@@ -42,7 +42,9 @@ public class Main {
         }
 
         //순열 돌면서 커맨드 실행
+        //commandList 의 순열 구현
         runCommand(commandList.get(0));
+        runCommand(commandList.get(1));
 
     }
 
