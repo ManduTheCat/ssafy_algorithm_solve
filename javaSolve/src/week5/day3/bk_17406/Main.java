@@ -57,7 +57,7 @@ public class Main {
 
 
     }
-    //최소값을 찾고 보관하는 메서드
+    //최소값을 찾고 보관하는 결과용 배열리스트에 보관하는 메서드
     private static void calMin() {
         ArrayList<Integer> sumList = new ArrayList<>();
         for (int[] m : map) {
