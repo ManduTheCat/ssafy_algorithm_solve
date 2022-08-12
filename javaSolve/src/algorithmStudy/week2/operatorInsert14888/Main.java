@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.StringTokenizer;
 
@@ -11,7 +12,10 @@ public class Main {
     public static int[] operatorInputList = new int[4];
     public static int[] propbsIndexList;
     public static int[] ableOperatorList;
-
+    public static int n ;
+    public static int[] numList;
+    public static char[] operator = new char[]{'+','-','x','%'};
+    public static ArrayList<Integer> resultList;
     /**
      * + - x % 순서로 인덱스 0 ,1,2,3
      *
@@ -19,10 +23,10 @@ public class Main {
      * @throws IOException
      */
     public static void main(String[] args) throws IOException {
-        System.setIn(new FileInputStream("resources/study/week2/bk14888/input1.txt"));
+        System.setIn(new FileInputStream("resources/study/week2/bk14888/input2.txt"));
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        int n = Integer.parseInt(br.readLine());
-        int[] numList = new int[n];
+        n = Integer.parseInt(br.readLine());
+        numList = new int[n];
         StringTokenizer numTk = new StringTokenizer(br.readLine());
         for (int numIdx = 0; numIdx < n; numIdx++) {
             numList[numIdx] = Integer.parseInt(numTk.nextToken());
@@ -43,8 +47,24 @@ public class Main {
         // 2 1 1 1 -> [0, 0, 1, 2, 3]
         candidateOperator();
 
+
         // 이걸 이제 순열 경우의수를 모두 구한다 
-        System.out.println(Arrays.toString(ableOperatorList));
+        //System.out.println(Arrays.toString(ableOperatorList));
+
+        propbsIndexList = new int[n-1];
+        //경우의 수 구함
+        resultList = new ArrayList<>();
+        perm(0,0);
+    }
+
+    public static void calculate(){
+        int num = numList[0];
+
+        for(int i = 1; i < numList.length; i++){
+            System.out.print(numList[i]);
+            System.out.print(propbsIndexList[i-1]);
+        }
+        System.out.println();
     }
 
     /**
@@ -66,5 +86,19 @@ public class Main {
     }
 
     // 인덱스 순열의 경우의수를 구한다
-    public static void perm(){}
+    public static void perm(int depth, int flag){
+        if(depth == n - 1){
+            //System.out.println(Arrays.toString(propbsIndexList));
+            calculate();
+            return;
+        }
+        for(int i = 0; i < n-1; i++){
+            // 비트 마스킹 0이 아니면 이건쓰고 있다
+            // 비트 마스킹 0이면 사용가능하다
+            if((flag & 1<<i) == 0){
+                propbsIndexList[depth] = i;
+                perm(depth+1, flag|1<<i);
+            }
+        }
+    }
 }
