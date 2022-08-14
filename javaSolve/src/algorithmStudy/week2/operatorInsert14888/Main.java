@@ -17,9 +17,13 @@ public class Main {
     public static int[] numList;
     // 연산 결과 담아놓는 arraylist
     public static ArrayList<Integer> resList = new ArrayList<>();
+
     /**
-     * + - x % 순서로 인덱스 0 ,1,2,3
-     *
+     * 풀이 순서
+     * 1. candidateOperator() 주어진 입력을 순열 을 적용 할수 있게 변형
+     *      입력 2 1 1 1=> [0 0 1 2 3]
+     * 2. perm() 순열 구하면서 하나 구해질때마다
+     * 3. calculate() 계산
      * @param args
      * @throws IOException
      */
@@ -37,16 +41,7 @@ public class Main {
         for (int oIdx = 0; oIdx < 4; oIdx++) {
             operatorInputList[oIdx] = Integer.parseInt(oTk.nextToken());
         }
-        // 모든 연산자 경우의수 를 찾아야한다
-        // 숫자 사이에 들어가기에 순서가 의미가 있다.
-        // 사용가능한 갯수와 종류를 나타내는 배열을 만들어서 순열 을 구해야한다
-        //+ - x % 순서로 인덱스 0 ,1,2,3 라면
-        // 가능한 리스트 만들기 ex
 
-        // 갯수를 반영한 입력에 따른 순열 후보 선정
-        // 0 1 0 1 => [1, 3] 2001=>[0,0,3]
-        // 2 1 1 1 -> [0, 0, 1, 2, 3]
-        // 인덱스를 구하고 내부에서 순열 구하는 함수로 보넨다.
         candidateOperator();
         propbsIndexList = new int[n - 1];
         //경우의 수 구함
