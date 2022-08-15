@@ -1,6 +1,7 @@
 package algorithmStudy.week2.meetingRoom1931;
 
 import java.io.BufferedReader;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.Arrays;
@@ -9,7 +10,7 @@ import java.util.StringTokenizer;
 
 public class Main {
     static int n;
-    static int max = 0;
+    static int result;
     static int[][] roomList;
     public static void main(String[] args) throws IOException {
         //System.setIn(new FileInputStream("resources/study/week2/bk1931/input.txt"));
@@ -31,7 +32,7 @@ public class Main {
             return Integer.compare(o1[1], o2[1]);
         });
         find(0, 0, 0);
-        System.out.println(max);
+        System.out.println(result);
     }
 
     /**
@@ -41,7 +42,7 @@ public class Main {
      * @param index 루프를 돌때 전부를 도는게 아니라 기준 회의의 다음 회의부터 돌게 함
      */
     static void find(int curTime, int count, int index) {
-        max = Math.max(count, max);
+        result = count;
         for (int i = index; i < n; i++) {
             if (curTime <= roomList[i][0]) {
                 find(roomList[i][1], ++count, i + 1);
