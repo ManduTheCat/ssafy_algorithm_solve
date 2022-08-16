@@ -43,7 +43,7 @@ public class Main {
         int count = 1;
         int size = stuffs.size();
         Collections.sort(stuffs);
-        System.out.println(stuffs);
+        //System.out.println(stuffs);
         int standardTemp = stuffs.get(0).maxTemp;
         for (int i = 1; i < size; i++) {
             if (standardTemp < stuffs.get(i).minTemp) {
