@@ -1,4 +1,4 @@
-package baeckjoon_1244;
+package week1.baeckjoon_1244;
 
 
 import java.io.BufferedReader;

@@ -1,8 +1,7 @@
-package baeckjoon_1244;
+package week1.baeckjoon_1244;
 
 
 import java.io.BufferedReader;
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.Arrays;

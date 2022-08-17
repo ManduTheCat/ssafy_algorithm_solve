@@ -1,4 +1,4 @@
-package maze.search;
+package week1.search;
 
 import java.io.BufferedReader;
 import java.io.IOException;

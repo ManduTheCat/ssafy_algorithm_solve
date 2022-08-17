@@ -1,4 +1,4 @@
-package beackjoon_17478;
+package week1.beackjoon_17478;
 
 import java.io.BufferedReader;
 import java.io.IOException;

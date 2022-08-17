@@ -1,4 +1,4 @@
-package baeckJoon_2615.omock;
+package week1.omock;
 
 import java.io.BufferedReader;
 import java.io.FileInputStream;

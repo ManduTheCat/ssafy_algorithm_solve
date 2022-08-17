@@ -1,4 +1,4 @@
-package baeckJoon_1018;
+package week1.baeckJoon_1018;
 
 import java.io.*;
 import java.util.Arrays;
