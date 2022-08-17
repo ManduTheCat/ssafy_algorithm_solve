@@ -5,89 +5,69 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.StringTokenizer;
 
-class ij {
-    int i;
-    int j;
-    int sum;
-
-    public ij(int i, int j, int sum) {
-        this.i = i;
-        this.j = j;
-        this.sum = sum;
-    }
-
-    @Override
-    public String toString() {
-        StringBuilder sb = new StringBuilder();
-        sb.append(i).append(" ").append(j). append(" ").append(sum);
-        return sb.toString();
-    }
-}
 
 public class Main {
     static int n;
     static int Tc;
-    static int [][] map;
-    static ArrayList <Integer> resList;
-    static ArrayList<ij> sumLists;
+    static int[][] map;
+    static ArrayList<Integer> resList;
+    static int[] permutationResList;
+    static int[] foodA;
+    static int[] foodB;
+
     public static void main(String[] args) throws IOException {
         System.setIn(new FileInputStream("resources/week6/day2/swea4012/input3.txt"));
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         int Tc = Integer.parseInt(br.readLine());
-        for(int tc  = 0; tc< Tc; tc++){
+        for (int tc = 0; tc < Tc; tc++) {
             n = Integer.parseInt(br.readLine());
             map = new int[n][n];
-            sumLists = new ArrayList<>();
             resList = new ArrayList<>();
-            for(int i = 0;  i< n; i++){
+            for (int i = 0; i < n; i++) {
                 StringTokenizer st = new StringTokenizer(br.readLine());
                 for (int j = 0; j < n; j++) {
                     map[i][j] = Integer.parseInt(st.nextToken());
                 }
             }
-            sumFood();
-            //System.out.println(sumLists);
-            absSubFood();
-            System.out.println(Collections.min(resList));
-        }
-    }
-
-
-    static boolean isDiff(ij stand, ij move){
-        if(stand.i != move.j && stand.i != move.i && stand.j != move.j && stand.j !=move.i){
-            System.out.println(stand +" vs " +  move);
-            return true;
-        }
-        return false;
-    }
-    private static void absSubFood() {
-        //System.out.println(sumLists);
-        int size = sumLists.size();
-        for(int stand  = 0; stand < size; stand++){
-            for(int move = 0; move < size; move++){
-                if(isDiff(sumLists.get(stand), sumLists.get(move))){
-                    resList.add(Math.abs(sumLists.get(stand).sum - sumLists.get(move).sum));
-                }
-
+            permutationResList = new int[n];
+            // 오름 차순 정렬
+            for (int i = 0; i < n; i++) {
+                permutationResList[i] = i;
             }
+            System.out.println(Arrays.toString(permutationResList));
         }
+        do {
+
+            foodA = Arrays.copyOf(permutationResList, (n/2));
+            foodB = Arrays.copyOfRange(permutationResList,(n/2),permutationResList.length);
+            System.out.print(Arrays.toString(foodA)+ " ");
+            System.out.println(Arrays.toString(foodB));
+            // 이거 가지고 차만구하면된다
+
+        } while (nextPermutation());
 
     }
 
-    // n 번 돌면서 합들 채우기
-    // 01 10 의 합 은 0 식재료  + 1 식제료의 합
-    static void sumFood (){
-        for(int i = 0; i< n; i++){
-            for(int j  = i + 1;  j < n; j ++){
-                int ij = map[i][j];
-                int ji = map[j][i];
-                //System.out.printf("%d + %d = %d\n", ij, ji, ij+ji);
-                sumLists.add(new ij(i, j, ij+ji));
-            }
-        }
+    public static boolean nextPermutation() {
+        int len = permutationResList.length;
+        int i = len - 1;
+        while (i > 0 && permutationResList[i - 1] >= permutationResList[i]) --i;
+        if (i == 0) return false;
+        int j = len - 1;
+        while (permutationResList[i - 1] >= permutationResList[j]) --j;
+        swap(permutationResList, i - 1, j);
+        int k = len - 1;
+        while (i < k) swap(permutationResList, i++, k--);
+        return true;
     }
 
+    public static void swap(int[] array, int i, int j) {
+        int temp = array[i];
+        array[i] = array[j];
+        array[j] = temp;
+    }
 }
