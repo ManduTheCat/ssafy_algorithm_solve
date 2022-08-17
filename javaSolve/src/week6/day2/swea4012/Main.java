@@ -4,10 +4,7 @@ import java.io.BufferedReader;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.StringTokenizer;
+import java.util.*;
 
 
 public class Main {
@@ -16,11 +13,9 @@ public class Main {
     static int[][] map;
     static ArrayList<Integer> resList;
     static int[] permutationResList;
-    static int[] foodA;
-    static int[] foodB;
 
     public static void main(String[] args) throws IOException {
-        System.setIn(new FileInputStream("resources/week6/day2/swea4012/input3.txt"));
+        System.setIn(new FileInputStream("resources/week6/day2/swea4012/input.txt"));
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         int Tc = Integer.parseInt(br.readLine());
         for (int tc = 0; tc < Tc; tc++) {
@@ -35,20 +30,37 @@ public class Main {
             }
             permutationResList = new int[n];
             // 오름 차순 정렬
-            for (int i = 0; i < n; i++) {
-                permutationResList[i] = i;
+            for (int i = n-1; i >= n/2; i--) {
+                permutationResList[i] = 1;
             }
-            System.out.println(Arrays.toString(permutationResList));
+            do {
+                calc();
+
+            } while (nextPermutation());
+            System.out.printf("#%d %d\n",tc+1,Collections.min(resList));
         }
-        do {
+    }
+    // 절반a 나머지는 b 인 성질 이용
 
-            foodA = Arrays.copyOf(permutationResList, (n/2));
-            foodB = Arrays.copyOfRange(permutationResList,(n/2),permutationResList.length);
-            System.out.print(Arrays.toString(foodA)+ " ");
-            System.out.println(Arrays.toString(foodB));
-            // 이거 가지고 차만구하면된다
+    public static void calc(){
+        int size = permutationResList.length;
+        int ia = 0;
+        int ib = 0;
+        int[] sumA = new int[n/2];
+        int[] sumB = new int[n/2];
+        for(int i = 0; i < n; i++){
+            if(permutationResList[i] == 1)sumA[ia++] = i;
+            else sumB[ib++] = i;
+        }
+        int sub = 0;
+        for(int i =0; i< n/2; i++){
+            for(int j = 0; j < n/2; j++){
+                if(i ==j )continue;
+                sub += map[sumA[i]][sumA[j]] - map[sumB[i]][sumB[j]];
+            }
+        }
+        resList.add(Math.abs(sub));
 
-        } while (nextPermutation());
 
     }
 
