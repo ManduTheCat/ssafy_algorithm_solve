@@ -139,7 +139,8 @@ public class Main {
     }
 
     /**
-     * 탐색을 하면 1 가까운 적, 가까운적이 많으면 가장왼쪽인 친구들을 queue에 담아리턴하는 함수
+     * 탐색을 하면 1 가까운 적, 가까운적이 많으면 가장왼쪽인 친구들을찾아 queue에 담아리턴하는 함수
+     * 가까운적이 많으면 가장왼쪽인 친구들을 찾을때 PriorityQueue 를 사용
      *
      * @param row        궁수 위치 row
      * @param archerList 궁수의 배치 nextPermutation 결과
