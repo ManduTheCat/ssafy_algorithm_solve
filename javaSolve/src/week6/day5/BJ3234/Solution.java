@@ -28,14 +28,14 @@ public class Solution {
             count = 0;
 
             permutation(0, 0);
-            System.out.printf("#%d %d\n", tc+1,count);
+            System.out.printf("#%d %d\n", tc + 1, count);
         }
 
     }
 
     public static void permutation(int depth, int flag) {
         if (depth == N) {
-            powerSet(0,0,0);
+            powerSet(0, 0, 0);
             return;
         }
         for (int i = 0; i < N; i++) {
@@ -46,10 +46,10 @@ public class Solution {
         }
     }
 
-    
+
     //    오른쪽 부분 집합
     public static void powerSet(int idx, int left, int right) {
-        if(right > left)return;
+        if (right > left) return;
         if (idx == N) {
             count++;
             return;
@@ -57,9 +57,4 @@ public class Solution {
         powerSet(idx + 1, left + heavyArray[permutationRes[idx]], right);
         powerSet(idx + 1, left, right + heavyArray[permutationRes[idx]]);
     }
-
-
-
-
-
 }
