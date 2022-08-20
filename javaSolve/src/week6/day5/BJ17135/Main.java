@@ -1,12 +1,11 @@
 package week6.day5.BJ17135;
 
+
 import java.awt.*;
 import java.io.BufferedReader;
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.Arrays;
-import java.util.StringTokenizer;
+import java.util.*;
 
 public class Main {
     // 1 적을 탐색 q 에넣는다 !궁수는 같은 적을 공격할수 있다.
@@ -25,79 +24,90 @@ public class Main {
     static int D;
     static StringTokenizer st;
     static int[][] map;
-
+    static int count = 0;
+    static int[][] tempMap;
     public static void main(String[] args) throws IOException {
-        System.setIn(new FileInputStream("resources/week6/day5/BJ17135/input3.txt"));
+        //System.setIn(new FileInputStream("resources/week6/day5/BJ17135/input5.txt"));
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         st = new StringTokenizer(br.readLine());
         N = Integer.parseInt(st.nextToken());
         M = Integer.parseInt(st.nextToken());
         D = Integer.parseInt(st.nextToken());
         map = new int[N][M];
+        tempMap = new int[N][M];
         for (int i = 0; i < N; i++) {
             st = new StringTokenizer(br.readLine());
             for (int j = 0; j < M; j++) {
-                map[i][j] = Integer.parseInt(st.nextToken());
+                int el = Integer.parseInt(st.nextToken());
+                map[i][j] = el;
+                tempMap[i][j] = el;
             }
         }
-        /*
-         * while(적탐색){
-         *  검색
-         *  적처리
-         *  궁수이동 !! 이동은 꼭 마지막에 해야한다 궁수는 맨 아래 있기에
-         * }
-         */
-
-        /*
-        test
-         */
         // 적을 찾는 테스트
 //        int [] archerList = new int[]{0,9,0,9,0};
 //        findEnemy(0, archerList);
 
         // 궁수 이동 테스트 row  아래에서위까지 테스트
         // row >= 0?? row >0 궁수가 화살을 쏘면 적을 죽인다 ->  0 까지 갈필요 없다.
-        testArcherMove();
-
-
+        int [] initArcher = new int[M];
+        for (int i = M - 3; i < M ; i++) {
+            initArcher[i] = 9;
+        }
+        int max = 0;
+        do{
+            //System.out.println(Arrays.toString(initArcher));
+            startGame(initArcher);
+            max = Math.max(max, count);
+        }
+        while (nextPermutation(initArcher));
+        System.out.println(max);
+    }
+    public static int [][] clearCopyMap(int [][] src){
+        int [][] tmp = new int[N][M];
+        for (int i = 0; i <N ; i++) {
+            for (int j = 0; j <M ; j++) {
+                tmp[i][j] = src[i][j];
+            }
+        }
+        return tmp;
+    }
+    // 궁수자리 섞는 combination
+    public static boolean nextPermutation(int []initArcher){
+        count= 0;
+        map = clearCopyMap(tempMap);
+        int len = initArcher.length;
+        int i = len -1;
+        while (i > 0 && initArcher[i -1] >= initArcher[i])--i;
+        if( i == 0) return false;
+        int j = len -1;
+        while (initArcher[i-1] >= initArcher[j])--j;
+        swap(initArcher, i-1, j);
+        int k = len -1;
+        while (i < k) swap(initArcher,  i++, k--);
+        return true;
+    }
+    public static void swap(int [] arr, int i, int j){
+        int temp = arr[i];
+        arr[i] = arr[j];
+        arr[j] = temp;
     }
 
-    private static void testArcherMove() {
-        for (int row = N-1; row >= 0; row--) {
-            // 궁수 배열
-            // TODO: 2022-08-20 궁수가 활을쏘면 적을 죽이기 떄문에 row 1 까지 범위로 바꾼다.
-            int[] archerArray = new int[]{0, 9, 0, 9, 0};
+    private static void startGame(int[] archerArray) {
+        for (int row = N - 1; row >= 0; row--) {
             if (!isFinish()) {
-                findEnemy(row+1, archerArray);
-                // 적을 큐에 넣는다.
-                // 적을 처리한다.
-                System.out.println("go Forward");
+                Queue<Point> targetQ = findEnemy(row + 1, archerArray);
+                shot(targetQ);
                 moveArcher(archerArray, row);
-                printMap();
             } else { // 중간에 끝나면 정지
-                System.out.println("finish");
                 break;
             }
-            System.out.println();
-        }
-    }
-
-    // 맵 조회하는 함수
-    public static void printMap() {
-        for (int i = 0; i < N; i++) {
-            for (int j = 0; j < M; j++) {
-                System.out.print(map[i][j] + " ");
-            }
-            System.out.println();
-
         }
     }
 
     /**
      * 궁수 이동하는 함수
-     * 함수안에 함수 넣지 말아보자 이동하고 -> 찾고
-     *
      * @param archerArray permutation 을 거친 아쳐 배열을 받는다
+     * @param row 현제 궁수가 위치한 map 에서 row;
      */
     public static void moveArcher(int[] archerArray, int row) {
 
@@ -115,7 +125,7 @@ public class Main {
     }
 
     /**
-     * 적이 있는지 탐색하는 함수 return boolean
+     * 남은 적이 있는지 탐색하는 함수 return boolean
      */
     public static boolean isFinish() {
         for (int[] row : map) {
@@ -128,16 +138,20 @@ public class Main {
         return true;
     }
 
-    // 적을 탐색해 큐에 넣는 함수
-    public static void findEnemy(int row, int[] archerList) {
-        //현재 위치에서 거리만큼 본다. 거리는 계속 줄어든다..
-        // 8방탐색을 하면서 거리안에 있다면 q에 넣는다.
-        // 궁수는 3명 배치
-        Point [] archerPoints  = new Point[3];
-        int [] colList = new int[3];
+
+    /**
+     *
+     * @param row 궁수 위치 row
+     * @param archerList 궁수의 배치 nextPermutation 결과
+     * @return 가장 가까운적 우선, 가까운 적이 여럿이면 맨 왼쪽 인적 을 담은 queue
+     */
+    public static Queue<Point> findEnemy(int row, int[] archerList) {
+        Queue<Point> targetQ = new ArrayDeque<>();
+        Point[] archerPoints = new Point[3];
+        int[] colList = new int[3];
         int colLIstIdx = 0;
-        for (int col = 0, size = archerList.length; col < size ; col++) {
-            if(archerList[col] == 9) {
+        for (int col = 0, size = archerList.length; col < size; col++) {
+            if (archerList[col] == 9) {
                 colList[colLIstIdx++] = col;
             }
         }
@@ -145,13 +159,48 @@ public class Main {
         for (int i = 0; i < 3; i++) {
             archerPoints[i] = new Point(row, colList[colLIstIdx++]);
         }
-        System.out.println(Arrays.toString(archerPoints));
-        // 거리만큼 for row-(dist--)
-        // 좌표 가 거리보다 작거나 같으면  좌표를 q 에 넣는다.
+        for (Point archer : archerPoints) {
+            // row 늘려가면서 거리 안에 있으면 pq 에 넣는다.
+            //priority Queue 사용해서 거리 올림차순 거리 가 같으면 col 오름차순
+            // 뽑으면 가장가까운거 + 거리 같을때 왼쪽 으로
+            PriorityQueue<Point> pq = new PriorityQueue<>((o1, o2) -> {
+                int distO1 = Math.abs(archer.x - o1.x) + Math.abs(archer.y - o1.y);
+                int distO2 = Math.abs(archer.x - o2.x) + Math.abs(archer.y - o2.y);
+                if (distO2 == distO1) { // 거리가 같은경우 y 가 작은거 우선
+                    return Integer.valueOf(o1.y).compareTo(Integer.valueOf(o2.y));
+                } else {// 거리 가 다르면 거리가 작은거 우선
+                    return Integer.valueOf(distO1).compareTo(distO2);
+                }
+            });
+            //
+            for (int d = 1; d <= D; d++) {
+                if (row - d >= 0) {
+                    for (int c = 0; c < M; c++) {
+                        int curRow = row-d;
+                        int dist = Math.abs(archer.x - curRow)+ Math.abs(archer.y - c);
+                        if(dist <= D && map[curRow][c] == 1){
+                            pq.add(new Point(curRow, c));
+                        }
+                    }
+                }
+            }
+            if(!pq.isEmpty())targetQ.add(pq.poll());
+        }
+        return targetQ;
     }
 
-    // 활을 발사하는 함수
+    // 활을 발사하고 count 하는 함수
+    public static void shot(Queue<Point> targetQ) {
+        while (!targetQ.isEmpty()) {
+            Point target = targetQ.poll();
+            int targetR = target.x;
+            int targetC = target.y;
+            if (map[targetR][targetC] == 1) {
+                count++;
+                map[targetR][targetC] = 0;
+            }
+        }
+    }
 
-    // 궁수 배치 하는 permutation
 
 }
