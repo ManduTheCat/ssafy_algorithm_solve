@@ -4,6 +4,7 @@ import java.awt.*;
 import java.io.*;
 import java.util.*;
 
+//	13156KB	96ms
 class Robot {
 
     public Point point;
@@ -58,17 +59,17 @@ public class Main {
         // 명령어 받고 처리하는 함수로 보넴
 
         for (int m = 0; m < M; m++) {
-            if(crashFlag || outFlag)System.exit(0);
             st = new StringTokenizer(br.readLine());
             // 인덱스 번호 0번부터 시작
             int targetRobot = Integer.parseInt(st.nextToken()) - 1;
             char command = st.nextToken().charAt(0);
             int repeat = Integer.parseInt(st.nextToken());
             runCommand(targetRobot, command, repeat);
+            if(crashFlag || outFlag)System.exit(0);
         }
-        if(!(crashFlag || outFlag)){
-            System.out.println("OK");
-        }
+
+        System.out.println("OK");
+
     }
 
     // 명령어 분류
@@ -96,10 +97,10 @@ public class Main {
         direction.put('S', new Integer[]{-1, 0});
         direction.put('E', new Integer[]{0, 1});
         Robot currRobot = robotList.get(targetRobot);
-        Integer[] curdirection = direction.get(currRobot.curDirection);
+        Integer[] currDirection = direction.get(currRobot.curDirection);
         for (int t = 0; t < repeat; t++) {
-            currRobot.point.x += curdirection[0];
-            currRobot.point.y += curdirection[1];
+            currRobot.point.x += currDirection[0];
+            currRobot.point.y += currDirection[1];
             if (isCrash(targetRobot)|| isOut(currRobot,targetRobot)) {
                 return;
             }
