@@ -4,11 +4,15 @@ import java.io.BufferedReader;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.StringTokenizer;
 
 public class Main {
     static int N;
     static int[][] map;
+    static int maxDepth;
+    static Map<Integer, Integer> counts = new HashMap<>();
 
     public static void main(String[] args) throws IOException {
         System.setIn(new FileInputStream("resources/study/week3/BJ1780/input.txt"));
@@ -21,13 +25,44 @@ public class Main {
                 map[row][col] = Integer.parseInt(st.nextToken());
             }
         }
-        printMap(6, 6, 3);
-        System.out.println(isFill(6, 6, 3));
+        counts.put(-1, 0);
+        counts.put(1, 0);
+        counts.put(0,0);
+        maxDepth = (int) (Math.log(N) / Math.log(3));
+        if(!isFill(0,0, N)){
+            findSquare(0,0, N, 0);
+        }
+        else {
+            counts.put(map[0][0],counts.get(map[0][0]) + 1);
+        }
+        System.out.println(counts.get(-1));
+        System.out.println(counts.get(0));
+        System.out.println(counts.get(1));
+
     }
 
-    public static void findSquare(int i, int j, int size){
+    public static void findSquare(int i, int j, int size, int depth) {
+
+            // 왼위 가운데위 왼쪽위
+
+        int[][] alpha = new int[][]{
+                {i, j, size/3}, {i, j+size/3, size/3}, {i, j+(size*2)/3, size/3},
+                {i+size/3, j, size/3}, {i + size/3, j+size/3, size/3}, {i + size/3, j+(2*size)/3, size/3},
+                {i+(2*size)/3, j, size/3}, {i+(2*size)/3, j+size/3, size/3}, {i+(2*size)/3, j+(2*size)/3, size/3}
+        };
+        for(int [] row : alpha){
+            if(!isFill(row[0], row[1], row[2])){
+                findSquare(row[0], row[1], row[2], depth+1);
+            }
+            else {
+                counts.put(map[row[0]][row[1]],counts.get(map[row[0]][row[1]])+1);
+            }
+        }
+
+
 
     }
+
     public static boolean isFill(int i, int j, int size) {
         int zCount = 0, oneCount = 0, minusCount = 0;
         for (int row = i; row < i + size; row++) {
@@ -47,14 +82,5 @@ public class Main {
         }
         int fullSize = size * size;
         return zCount == fullSize || oneCount == fullSize || minusCount == fullSize;
-    }
-
-    public static void printMap(int i, int j, int size) {
-        for (int row = i; row < i + size; row++) {
-            for (int col = j; col < j + size; col++) {
-                System.out.print(map[row][col] + " ");
-            }
-            System.out.println();
-        }
     }
 }
