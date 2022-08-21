@@ -8,6 +8,9 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.StringTokenizer;
 
+
+//n 이 9일떄 모두가 1로 차있는 경우 생각못함 이럴경우 따로 체크를 안함면 분할하고 들어가서 
+// 9개가 나옴
 public class Main {
     static int N;
     static int[][] map;
@@ -40,12 +43,12 @@ public class Main {
     }
 
     public static void findSquare(int i, int j, int size, int depth) {
-
-            // 왼위 가운데위 왼쪽위
-
         int[][] alpha = new int[][]{
+                // 0 1 2 사분면
                 {i, j, size/3}, {i, j+size/3, size/3}, {i, j+(size*2)/3, size/3},
+                // 3 4 5 사분면
                 {i+size/3, j, size/3}, {i + size/3, j+size/3, size/3}, {i + size/3, j+(2*size)/3, size/3},
+                // 6 7 8 사분면
                 {i+(2*size)/3, j, size/3}, {i+(2*size)/3, j+size/3, size/3}, {i+(2*size)/3, j+(2*size)/3, size/3}
         };
         for(int [] row : alpha){
