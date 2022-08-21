@@ -11,7 +11,6 @@ import java.util.StringTokenizer;
 public class Main {
     static int N;
     static int[][] map;
-    static int maxDepth;
     static Map<Integer, Integer> counts = new HashMap<>();
 
     public static void main(String[] args) throws IOException {
@@ -28,7 +27,6 @@ public class Main {
         counts.put(-1, 0);
         counts.put(1, 0);
         counts.put(0,0);
-        maxDepth = (int) (Math.log(N) / Math.log(3));
         if(!isFill(0,0, N)){
             findSquare(0,0, N, 0);
         }
