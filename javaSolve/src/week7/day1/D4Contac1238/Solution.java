@@ -10,9 +10,9 @@ import java.util.*;
  * @author 김명진
  * bfs 를 구현해 완전탐색을 이용했고
  * 특별하게
- * check를 할때 방문할떄마다 이전 으로부터 숫자가 증가하게했습니다
+ * check를 할때 방문할떄마다 이전 으로부터 숫자가 증가하게 했습니다
  * 즉 방문순서를 check를 에 기록했습니다
- * check의 최대값을 찾아 그에 맞는 인덱스중 가능큰값을 출려했습니다.
+ * check의 최대값을 찾아 그에 맞는 인덱스중 가장 큰값을 출력했습니다.
  */
 public class Solution {
     static int TC = 10;
