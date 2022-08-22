@@ -66,7 +66,6 @@ public class Solution {
                     check[nextNode] = check[curNode]+1;
                     q.add(nextNode);
                 }
-
             }
         }
     }
