@@ -37,7 +37,7 @@ public class Solution {
             }
             int count = 0;
             for(int i = 1; i <= N; i++){
-                if(!check[i]){
+                if(!check[i] && adjList[i] != null){
                     count++;
                     bfs(i);
                 }
