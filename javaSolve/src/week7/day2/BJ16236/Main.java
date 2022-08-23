@@ -71,7 +71,7 @@ public class Main {
 
     public static void main(String[] args) throws IOException {
 
-        System.setIn(new FileInputStream("resources/week7/day2/bj16236/input2.txt"));
+        System.setIn(new FileInputStream("resources/week7/day2/bj16236/input5.txt"));
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         N = Integer.parseInt(br.readLine());
         map = new int[N][N];
@@ -98,16 +98,17 @@ public class Main {
 
         // 자신보다작은 친구 찾기
         sharkSigt(babyShark, feedList);
-        while (findRestFeed() > 0 ){
+        //while (findRestFeed() > 0 ){
+        while (!feedList.isEmpty() ){
             //sharkSigt(babyShark, feedList);
 
             //System.out.println("distance!!");
 
             target = checkTargetDistance();
-            System.out.println();
-            System.out.print(""+ babyShark+" vs ");
-            System.out.print(target);
-            System.out.println();
+//            System.out.println();
+//            System.out.print(""+ babyShark+" vs ");
+//            System.out.print(target);
+//            System.out.println();
             beforBfsGenCheck(babyShark, feedList);
 //            for (boolean[] c : check) {
 //                System.out.println(Arrays.toString(c));
@@ -198,17 +199,10 @@ public class Main {
         // 현제 상어 객체보다 작은 친구들 pq 에 넣는다.
         //System.out.println("feedList : ");
         // feed
-        ArrayList<Feed>currTargetList = new ArrayList<>();
-        int size = map.length;
-        for(int row = 0 ; row< size; row++){
-            for(int col= 0; col < size; col++){
-                int el = map[row][col];
-                if (el != 7 && el != 0 && el != 9) currTargetList.add(new Feed(row,col,map[row][col]));
-            }
-        }
-        System.out.println(currTargetList);
+
+
         //System.out.print(feedList);
-        for (Feed f : currTargetList) {
+        for (Feed f : feedList) {
             if (babyShark.fat > f.fat) {
                 //System.out.println(f);
                 priorityQueue.offer(f);
@@ -265,12 +259,12 @@ public class Main {
         }
         // 빼야 맵에 9 가 없다
         map[babyShark.row][babyShark.col] = 9;
-        for (int[] m : map) {
-            for (int el : m) {
-                System.out.print(el + " ");
-            }
-            System.out.println();
-        }
+//        for (int[] m : map) {
+//            for (int el : m) {
+//                System.out.print(el + " ");
+//            }
+//            System.out.println();
+//        }
     }
 
     // check 전처리
