@@ -9,15 +9,15 @@ import java.util.Map;
 import java.util.StringTokenizer;
 
 
-//n 이 9일떄 모두가 1로 차있는 경우 생각못함 이럴경우 따로 체크를 안함면 분할하고 들어가서 
-// 9개가 나옴
+
 public class Main {
     static int N;
     static int[][] map;
+    //갯수를 세는 map
     static Map<Integer, Integer> counts = new HashMap<>();
 
     public static void main(String[] args) throws IOException {
-        System.setIn(new FileInputStream("resources/study/week3/BJ1780/input.txt"));
+        //System.setIn(new FileInputStream("resources/study/week3/BJ1780/input.txt"));
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         N = Integer.parseInt(br.readLine());
         map = new int[N][N];
@@ -27,15 +27,20 @@ public class Main {
                 map[row][col] = Integer.parseInt(st.nextToken());
             }
         }
+        // map 초기화
         counts.put(-1, 0);
         counts.put(1, 0);
         counts.put(0,0);
+        
+        // 모든 칸이 같은 종류로 차있는경우 처리
         if(!isFill(0,0, N)){
             findSquare(0,0, N, 0);
         }
         else {
             counts.put(map[0][0],counts.get(map[0][0]) + 1);
         }
+        
+        // 출력
         System.out.println(counts.get(-1));
         System.out.println(counts.get(0));
         System.out.println(counts.get(1));
@@ -59,11 +64,10 @@ public class Main {
                 counts.put(map[row[0]][row[1]],counts.get(map[row[0]][row[1]])+1);
             }
         }
-
-
-
     }
 
+    //같은 종류의 숫자로 차있는지 검사하는 메소드
+    //해당 범위내 원소의 갯수를 새어 범위칸 과 같은 수면 꽉찬거다.
     public static boolean isFill(int i, int j, int size) {
         int zCount = 0, oneCount = 0, minusCount = 0;
         for (int row = i; row < i + size; row++) {

@@ -5,6 +5,10 @@ import java.io.*;
 import java.util.*;
 
 //	13156KB	96ms
+
+/**
+ * 좌표, 현제 방향을 가지고 있는 로봇 클래스 
+ */
 class Robot {
 
     public Point point;
@@ -14,8 +18,6 @@ class Robot {
         this.point = point;
         this.curDirection = curDirection;
     }
-
-
     @Override
     public String toString() {
         final StringBuilder sb = new StringBuilder("Robot{");
@@ -26,6 +28,11 @@ class Robot {
     }
 }
 
+/**
+ * 1. 명령어 를 F R L로 분류한다
+ * 2. R L 일경우 순서 대로 돌려서 해당 로봇객체의 방향 WSEN 중하나로 바꿔준다
+ * 3. F 일경우 반복 횟수만큼 이동 맵밖으로 나갔는지 || 충돌이 났는지 확인한다.
+ */
 public class Main {
     static int N;
     static int M;
@@ -36,7 +43,7 @@ public class Main {
     static boolean outFlag;
 
     public static void main(String[] args) throws IOException {
-        System.setIn(new FileInputStream("resources/study/week3/BJ2174/input1.txt"));
+        //System.setIn(new FileInputStream("resources/study/week3/BJ2174/input1.txt"));
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         //A, B 지만 햇갈려서 R C 로 대채함
         StringTokenizer st = new StringTokenizer(br.readLine());
@@ -46,7 +53,8 @@ public class Main {
         N = Integer.parseInt(st.nextToken());
         M = Integer.parseInt(st.nextToken());
         robotList = new ArrayList<>();
-        // 로봇은 무조건 순서대로주어진다.
+        // 입력받은 로봇들을 robotList 에 순서대로 넣는다.
+        // 로봇은 무조건 순서대로주기 때문에 인덱스 번호 는 로봇의 번호이다.
         for (int n = 1; n < N + 1; n++) {
             st = new StringTokenizer(br.readLine());
             int pointCol = Integer.parseInt(st.nextToken()) - 1;
@@ -60,7 +68,7 @@ public class Main {
 
         for (int m = 0; m < M; m++) {
             st = new StringTokenizer(br.readLine());
-            // 인덱스 번호 0번부터 시작
+            // 인덱스 번호 0번부터 시작하게 변경
             int targetRobot = Integer.parseInt(st.nextToken()) - 1;
             char command = st.nextToken().charAt(0);
             int repeat = Integer.parseInt(st.nextToken());
@@ -72,7 +80,7 @@ public class Main {
 
     }
 
-    // 명령어 분류
+    // FLR 명령어 분류
     static void runCommand(int targetRobot, char command, int repeat) {
         switch (command) {
             case 'F':
@@ -86,7 +94,8 @@ public class Main {
                 break;
         }
     }
-
+    
+    // 앞으로 반복 횟수만큼 이동하는 함수
     // 1.벽부딪치는지 || 로봇 끼리 부딪치는지 확인.
     // 2.curDirection 방향으로 repeat 만큼 이동
     // 우리가 자주쓰던 방향에서 위아래 반대이다 = 기존쓰던 방향에서 N, S 만 바꿔주면된다.
@@ -122,6 +131,7 @@ public class Main {
         return false;
     }
 
+    // 지도 밖으로 나가는지 확인
     public static boolean isOut(Robot currRobot, int targetNumber) {
         if(currRobot.point.x < R && currRobot.point.x >= 0 && currRobot.point.y < C && currRobot.point.y >=0){
             return false;
