@@ -41,6 +41,7 @@ class Feed {
     int row;
     int col;
     int fat;
+    int distanceFromShark;
 
 
     public Feed(int row, int col, int fat) {
@@ -71,7 +72,7 @@ public class Main {
 
     public static void main(String[] args) throws IOException {
 
-        System.setIn(new FileInputStream("resources/week7/day2/bj16236/input5.txt"));
+        System.setIn(new FileInputStream("resources/week7/day2/bj16236/input7.txt"));
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         N = Integer.parseInt(br.readLine());
         map = new int[N][N];
@@ -98,27 +99,17 @@ public class Main {
 
         // 자신보다작은 친구 찾기
         sharkSigt(babyShark, feedList);
-        //while (findRestFeed() > 0 ){
-        while (!feedList.isEmpty() ){
-            //sharkSigt(babyShark, feedList);
 
-            //System.out.println("distance!!");
+        while (!feedList.isEmpty() ){
+
 
             target = checkTargetDistance();
-//            System.out.println();
-//            System.out.print(""+ babyShark+" vs ");
-//            System.out.print(target);
-//            System.out.println();
+
             beforBfsGenCheck(babyShark, feedList);
-//            for (boolean[] c : check) {
-//                System.out.println(Arrays.toString(c));
-//            }
+
             if(target == null)break;
             findTargetBfs(target);
-            // 먹고 체중늘리고
-            //System.out.println(babyShark.toString());
-            // 확인
-            //sharkSigt(babyShark, feedList);
+
 
         }
         // 타겟 거리 탐색 거리순, 왼쪽순으로 정렬해 하나 뱉는다 타겟지정
@@ -182,11 +173,14 @@ public class Main {
     }
 
     public static Feed checkTargetDistance() {
+        for(Feed f: feedList){
+            getDistance(babyShark, f);
+        }
         PriorityQueue<Feed> priorityQueue = new PriorityQueue<>(new Comparator<Feed>() {
             @Override
             public int compare(Feed o1, Feed o2) {
-                int o1Dist = getDistance(babyShark, o1);
-                int o2Dist = getDistance(babyShark, o2);
+                int o1Dist = o1.distanceFromShark;
+                int o2Dist = o2.distanceFromShark;
                 //거리가 가까운 물고기가 많다면, 가장 위에 있는 물고기, 그러한 물고기가 여러마리라면, 가장 왼쪽에 있는 물고기를 먹는다.
                 if (o1Dist == o2Dist) {
                     if(o1.row == o2.row) return Integer.valueOf(o1.col).compareTo(Integer.valueOf(o2.col));
@@ -204,21 +198,20 @@ public class Main {
         //System.out.print(feedList);
         for (Feed f : feedList) {
             if (babyShark.fat > f.fat) {
-                System.out.println(f);
+                //System.out.println(f);
                 priorityQueue.offer(f);
             }
         }
-        System.out.println();
+        //System.out.println();
         return priorityQueue.poll();
 
 
     }
 
-    public static int getDistance(BabyShark shark, Feed target) {
+    public static void getDistance(BabyShark shark, Feed target) {
         beforBfsGenCheck(babyShark, feedList);
         int[][] alpha = new int[][]{{0, -1}, {-1, 0}, {1, 0}, {0, 1}};
         int time = 0;
-        int res = 0;
         Queue<Point> q = new ArrayDeque<>();
         Queue<Integer> timeq = new ArrayDeque<>();
         timeq.add(time);
@@ -228,7 +221,7 @@ public class Main {
             Point curNode = q.poll();
             Integer curTime = timeq.poll();
             if(target!=null && curNode.x == target.row && curNode.y == target.col){
-                res = curTime;
+                target.distanceFromShark = curTime;
                 break;
             }
             for (int d = 0; d < 4; d++) {
@@ -241,7 +234,6 @@ public class Main {
                 }
             }
         }
-        return res;
     }
 
     // 여기서 체크 재정의 7이면  방문 처리를 미리 한다
