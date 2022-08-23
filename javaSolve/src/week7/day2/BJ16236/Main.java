@@ -204,10 +204,11 @@ public class Main {
         //System.out.print(feedList);
         for (Feed f : feedList) {
             if (babyShark.fat > f.fat) {
-                //System.out.println(f);
+                System.out.println(f);
                 priorityQueue.offer(f);
             }
         }
+        System.out.println();
         return priorityQueue.poll();
 
 
