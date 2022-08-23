@@ -16,7 +16,7 @@ public class Solution {
     static boolean[] check;
     static ArrayList<Integer>[] adjList;
     public static void main(String[] args) throws IOException {
-        System.setIn(new FileInputStream("resources/week7/day2/swea7465/input1.txt"));
+        System.setIn(new FileInputStream("resources/week7/day2/swea7465/input.txt"));
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         Tc = Integer.parseInt(br.readLine());
         for (int tc = 0; tc < Tc ; tc++) {
