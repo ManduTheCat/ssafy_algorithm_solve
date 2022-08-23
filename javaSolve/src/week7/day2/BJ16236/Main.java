@@ -22,8 +22,6 @@ class BabyShark {
 
     }
 
-
-
     @Override
     public String toString() {
         final StringBuilder sb = new StringBuilder("BabyShark{");
