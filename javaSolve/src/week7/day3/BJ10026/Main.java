@@ -13,7 +13,7 @@ public class Main {
     static int[][] alpha = new int[][]{{0, -1}, {-1, 0}, {0, 1}, {1, 0}};
 
     public static void main(String[] args) throws IOException {
-        System.setIn(new FileInputStream("resources/week7/day3/bj10026/input2.txt"));
+        System.setIn(new FileInputStream("resources/week7/day3/bj10026/input.txt"));
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         N = Integer.parseInt(br.readLine());
         map = new char[N][N];
