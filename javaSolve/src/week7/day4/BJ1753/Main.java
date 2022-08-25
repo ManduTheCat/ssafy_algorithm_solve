@@ -25,14 +25,6 @@ class Node {
                 '}';
     }
 }
-class Vertex {
-    int no, weight;
-
-    public Vertex(int no, int weight) {
-        this.no = no;
-        this.weight = weight;
-    }
-}
 public class Main {
     static int N;//1부터 시작 20,0000
     static int E;//30,000
@@ -40,6 +32,7 @@ public class Main {
     static Node [] adjList;
     static int[] D;
     static boolean [] visited;
+    static StringBuilder sb = new StringBuilder();
 
     public static void main(String[] args) throws IOException {
         System.setIn(new FileInputStream("resources/week7/day4/bj1753/input.txt"));
@@ -58,35 +51,40 @@ public class Main {
             int weight = Integer.parseInt(st.nextToken());
             adjList[from] = new Node(to, weight, adjList[from]);
         }
-        for (int i = 1; i <N + 1 ; i++) {
+        dijkstra();
+        // 다익스트라가 돌면서 1-2까지 최소 가중치 1-3까지 가중치 1-4 까지 가중치 1-end 까지 가중치를
+        //D 에 넣는다
+        for (int i = 1; i <= N; i++) {
+            if(D[i] == Integer.MAX_VALUE){
+                sb.append("INF").append("\n");
+            }
+            else sb.append(D[i]).append("\n");
 
         }
+        System.out.println(sb);
+
 
     }
-    public static void dijkstra(int end){
+    public static void dijkstra(){
         Arrays.fill(D, Integer.MAX_VALUE);
         D[start] = 0;
-        PriorityQueue <Vertex> pq = new PriorityQueue<>(new Comparator<Vertex>() {
-            @Override
-            public int compare(Vertex o1, Vertex o2) {
-                return o1.weight - o2.weight;
-            }
-        });
-
-        pq.offer(new Vertex(0, adjList[start].weight));
         int min, minVertex = 0;
-        for (int i = 1; i <N+1 ; i++) {
+        for (int i = 0; i < N; i++){
             //d에서 최소값찾기
             min = Integer.MAX_VALUE;
-            for (int j = 0; j < N; j++) {
+            for (int j = 1; j <= N; j++) {
                 if(!visited[j] && min > D[j]){
                     min = D[j];
                     minVertex = j;
                 }
             }
             visited[minVertex] = true;
-            if(minVertex == end) break;
+            //prim 알고리즘 참조 현재 minVertex 의 인접리스트를 돈다
+            for(Node temp = adjList[minVertex]; temp!=null; temp = temp.next){
+                if(D[temp.vertex] > D[minVertex] + temp.weight){
+                    D[temp.vertex] = D[minVertex] +  temp.weight;
+                }
+            }
         }
-
     }
 }
