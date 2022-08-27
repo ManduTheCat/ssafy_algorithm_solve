@@ -5,6 +5,8 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Map;
 import java.util.StringTokenizer;
 
 class Dust {
@@ -35,8 +37,9 @@ public class Main {
     static int R, C, T;
     static ArrayList<Dust> dusts = new ArrayList<>();
     static int machineRow; // 마지막에 나온 공기 청정기 row 를 기록한다.
+
     public static void main(String[] args) throws IOException {
-        System.setIn(new FileInputStream("resources/week7/day4/bj17144/input.txt"));
+        System.setIn(new FileInputStream("resources/week7/day5/bj17144/input1.txt"));
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         StringTokenizer st = new StringTokenizer(br.readLine());
         R = Integer.parseInt(st.nextToken());
@@ -49,10 +52,15 @@ public class Main {
             for (int c = 0; c < C; c++) {
                 map[r][c] = Integer.parseInt(st.nextToken());
                 if (map[r][c] != 0) dusts.add(new Dust(r, c, map[r][c]));
-                if(map[r][c] == -1) machineRow = r;
+                if (map[r][c] == -1) machineRow = r;
             }
         }
-        diffusion();diffusion();
+        diffusion();
+        printMap();
+        upsideTurn();
+        printMap();
+        downSideTurn();
+        printMap();
 
     }
 
@@ -62,10 +70,10 @@ public class Main {
     // 옆방향에 덯나다
 
     public static void diffusion() {
-        for(Dust curDust : dusts){
+        for (Dust curDust : dusts) {
             //맵에다가만 먼지중앙 바꾼다 나중에 한번에 갱신 이후 퍼질때 지장간다
             int dirCount = countDirction(curDust.i, curDust.j);
-            map[curDust.i][curDust.j] = map[curDust.i][curDust.j] - (dirCount*(map[curDust.i][curDust.j]/5));
+            map[curDust.i][curDust.j] = map[curDust.i][curDust.j] - (dirCount * (map[curDust.i][curDust.j] / 5));
         }
         for (Dust curDust : dusts) {
 
@@ -73,9 +81,9 @@ public class Main {
             int[][] alpha = new int[][]{{0, -1}, {-1, 0}, {0, 1}, {1, 0}};
             for (int i = 0; i < 4; i++) {
                 int nextI = curDust.i + alpha[i][0];
-                int nextJ= curDust.j + alpha[i][1];
-                if(isIn(nextI, nextJ) && !isAirMachine(nextI, nextJ)){
-                    map[nextI][nextJ] += curDust.amount/5;
+                int nextJ = curDust.j + alpha[i][1];
+                if (isIn(nextI, nextJ) && !isAirMachine(nextI, nextJ)) {
+                    map[nextI][nextJ] += curDust.amount / 5;
                 }
             }
 
@@ -84,19 +92,12 @@ public class Main {
         dusts = new ArrayList<>();
         for (int r = 0; r < R; r++) {
             for (int c = 0; c < C; c++) {
-                if(map[r][c] == -1) continue;
+                if (map[r][c] == -1) continue;
                 if (map[r][c] != 0) dusts.add(new Dust(r, c, map[r][c]));
 
             }
         }
         //printMap();
-        System.out.println();
-        upsideTurn(machineRow-1);
-        printMap();
-//        for(Dust dust: dusts){
-//            System.out.println(dust);
-//        }
-        System.out.println();
     }
 
     public static int countDirction(int i, int j) {
@@ -107,45 +108,120 @@ public class Main {
             int nextI = i + alpha[d][0];
             int nextJ = j + alpha[d][1];
             // 청정기에 닿으면안되고 벽을 넘어가면안된다.
-            if(isIn(nextI, nextJ) && !isAirMachine(nextI, nextJ)){
+            if (isIn(nextI, nextJ) && !isAirMachine(nextI, nextJ)) {
                 ableCount++;
             }
         }
 
         return ableCount;
     }
-    public static boolean isIn(int i, int j){
-        return i >= 0 && i <R && j >=0 &&  j < C;
+
+    public static boolean isIn(int i, int j) {
+        return i >= 0 && i < R && j >= 0 && j < C;
     }
-    public static boolean isAirMachine(int row, int col){
-        int firstMachineRow = machineRow -1;
-        if ((row == machineRow || row == firstMachineRow) && col == 0){
+
+    public static boolean isAirMachine(int row, int col) {
+        int firstMachineRow = machineRow - 1;
+        if ((row == machineRow || row == firstMachineRow) && col == 0) {
             return true;
         }
         return false;
     }
 
     //돌리기
-    public static void upsideTurn(int row){
-        int goNextLine = map[row][C-1];
-        for (int col = C-1; col >=2 ; col--) {
+    public static void upsideTurn() {
+        //int restOfLeft = map[0][0];
+        int restOfRight = map[machineRow - 1][C - 1];
+        int restOfUp = map[0][C - 1];
+        int restOfLeft = map[0][0];
+        goRight(machineRow - 1);
+        goUp(0);
+        goLeft(0);
+        goDown(machineRow - 2, 0);
+        // 뺴낸 부분 갱신
+        map[machineRow - 2][C - 1] = restOfRight;
+        map[0][C - 2] = restOfUp;
+        map[1][0] = restOfLeft;
+
+    }
+
+    public static void downSideTurn() {
+        int restRight = map[machineRow][C - 1];
+        goRight(machineRow);
+        downSideGoDown(R - 1, C - 1);
+        goLeft(R - 1);
+        downSideGoUp(R - 2, 0);
+        //map[machineRow+1][]
+    }
+
+
+    public static void goRight(int row) {
+
+        for (int col = C - 1; col >= 2; col--) {
             int temp = map[row][col];
-            map[row][col] = map[row][col -1];
-            map[row][col -1] = temp;
+            map[row][col] = map[row][col - 1];
+            map[row][col - 1] = temp;
         }
+        // 먼지제거
         map[row][1] = 0;
-        goUp(goNextLine, machineRow );
-    }
-    public static void goUp(int beforeRest, int row){
-
     }
 
+    // 윗행 아랫행 두칸이상 떨어져 있다. 3칸 떨어질지 4칸떨어질지 모른다.
+    public static void goUp(int pullRow) {
+        for (int row = pullRow; row < machineRow - 2; row++) {
+            int temp = map[row][C - 1];
+            map[row][C - 1] = map[row + 1][C - 1];
+            map[row + 1][C - 1] = temp;
+
+        }
+        //map[machineRow-1][C-1] = 0;
+
+    }
+
+    public static void goLeft(int pullRow) {
+        for (int col = 0; col < C - 2; col++) {
+            int temp = map[pullRow][col];
+            map[pullRow][col] = map[pullRow][col + 1];
+            map[pullRow][col + 1] = temp;
+        }
+        //map[pullRow][C-1] = 0;
+    }
+
+    public static void goDown(int pullRow, int col) {
+        //System.out.println("down list");
+        for (int row = pullRow; row > 1; row--) {
+            int temp = map[row][col];
+            map[row][col] = map[row - 1][col];
+            map[row - 1][col] = temp;
+        }
+        System.out.println();
+    }
+
+    public static void downSideGoDown(int pullRow, int col) {
+        //System.out.println("down list");
+        for (int row = pullRow; row > machineRow + 1; row--) {
+            int temp = map[row][col];
+            map[row][col] = map[row - 1][col];
+            map[row - 1][col] = temp;
+        }
+        System.out.println();
+    }
+
+    public static void downSideGoUp(int pullRow, int col) {
+        for (int row = pullRow; row >= machineRow+2; row--) {
+            System.out.println(row);
+            int temp = map[row][col];
+            map[row][col] = map[row - 1][col];
+            map[row - 1][col] = temp;
+
+        }
+    }
 
 
-    public static void printMap(){
+    public static void printMap() {
         for (int i = 0; i < R; i++) {
-            for (int j = 0; j < C ; j++) {
-                if(map[i][j] == -1) System.out.print("r ");
+            for (int j = 0; j < C; j++) {
+                if (map[i][j] == -1) System.out.print("r ");
                 else System.out.print(map[i][j] + " ");
             }
             System.out.println();
