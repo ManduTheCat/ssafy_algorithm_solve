@@ -35,7 +35,7 @@ public class Main {
     static StringBuilder sb = new StringBuilder();
 
     public static void main(String[] args) throws IOException {
-        System.setIn(new FileInputStream("resources/week7/day4/bj1753/input.txt"));
+        System.setIn(new FileInputStream("resources/week7/day4/bj1753/input3.txt"));
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         StringTokenizer st = new StringTokenizer(br.readLine());
         N = Integer.parseInt(st.nextToken());
