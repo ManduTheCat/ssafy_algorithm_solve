@@ -1,0 +1,153 @@
+package algorithmStudy.week5.snaek3190;
+
+import java.awt.*;
+import java.io.BufferedReader;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.*;
+
+class Command {
+    int time;
+    char direction;
+
+    public Command(int time, char direction) {
+        this.time = time;
+        this.direction = direction;
+    }
+
+    @Override
+    public String toString() {
+        final StringBuilder sb = new StringBuilder("Command{");
+        sb.append("time=").append(time);
+        sb.append(", direction=").append(direction);
+        sb.append('}');
+        return sb.toString();
+    }
+}
+
+public class Main {
+    static int N;
+    static int K;
+    static int L;
+    static int count;
+    static Set<Point> apples = new HashSet();
+    static ArrayList<Command> commands;
+    static Point curDirection;
+    static Deque<Point> snake = new ArrayDeque<>();
+
+    public static void main(String[] args) throws IOException {
+        //시작지점으로 부터 명령어를 수행
+        // 명령어 변환필요
+        // 사과담아놓을 set 필요
+        // 머리가 이동하고 꼬리가 지워진다
+        // 또는  사과를 먹으면 머리가 이동하고 꼬리가 남는다
+        // 시간은 흐른다
+        System.setIn(new FileInputStream("resources/study/week5/BJ3190/smaltest.txt"));
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        N = Integer.parseInt(br.readLine());
+        K = Integer.parseInt(br.readLine());
+        for (int a = 0; a < K; a++) {
+            StringTokenizer st = new StringTokenizer(br.readLine());
+            int row = Integer.parseInt(st.nextToken()) - 1;
+            int col = Integer.parseInt(st.nextToken()) - 1;
+            apples.add(new Point(row, col));
+        }
+        // 1개이상 명령 무조건 있다.
+        L = Integer.parseInt(br.readLine());
+        commands = new ArrayList<>();
+        for (int l = 0; l < L; l++) {
+            StringTokenizer st = new StringTokenizer(br.readLine());
+            int time = Integer.parseInt(st.nextToken());
+            char direction = st.nextToken().charAt(0);
+            commands.add(new Command(time, direction));
+        }
+        // 명령어 처리
+        if (commands.size() > 1) {
+            for (int i = commands.size() - 1; i >= 1; i--) {
+                commands.get(i).time -= commands.get(i - 1).time;
+            }
+        }
+
+        snake.add(new Point(0, 0));
+        curDirection = new Point(0, 1);
+        //System.out.println(apples.contains(new Point(3,5)));
+        for (Command command : commands) {
+            runCommand(command);
+        }
+        System.out.println(snake);
+    }
+
+    public static void changeDirection(char command) {
+        //사방중 하나 단지 방향이 다르다
+        // 오른쪽
+        if (command == 'D') {
+            int[][] alpha = new int[][]{{0, 1}, {1, 0}, {0, -1}, {-1, 0}};
+            int curIndex = 0;
+            for (int i = 0; i < 4; i++) {
+                if (alpha[i][0] == curDirection.x && alpha[i][0] == curDirection.y) {
+                    curIndex = i;
+                }
+            }
+            int nextIndex = (curIndex + 1) % 4;
+            curDirection.x = alpha[nextIndex][0];
+            curDirection.y = alpha[nextIndex][1];
+        } else if (command == 'L') {
+            int[][] alpha = new int[][]{{0, 1}, {-1, 0}, {0, -1}, {1, 0}};
+            int curIndex = 0;
+            for (int i = 0; i < 4; i++) {
+                if (alpha[i][0] == curDirection.x && alpha[i][0] == curDirection.y) {
+                    curIndex = i;
+                }
+            }
+            int nextIndex = (curIndex + 1) % 4;
+            curDirection.x = alpha[nextIndex][0];
+            curDirection.y = alpha[nextIndex][1];
+        }
+    }
+
+    // 명령을 실행한다 시간동안 이동하고 방향 바꾸기
+    // 1초 에 머리이동 -> 벽에 닿거나 내몸에 닿았다.->사과 판정 -> 사과없으면 꼬리 pop
+    public static void runCommand(Command command) {
+        // while 위치가 여기로 와야하나?
+        Point curHead = snake.peekLast(); // 오른쪽
+        Point curTail = snake.peekFirst(); // 왼쪽
+        Point nextHead = new Point(curHead.x + curDirection.x, curHead.y + curDirection.y);
+        // 다음 이동 가능하면 // isTouch 이상하다 추가를 하고 검사를 하니 무조건 걸린다.
+        // 내의도 다음위치가 몸이라면 걸러라 // 지금 상황 다음머리를 큐에 넣고 검사해서 무조건 닿은걸로 판정
+        // 검사를 하고 넣자
+        int time = command.time;
+        while (time-- >0){
+            if (isIn(nextHead.x, nextHead.y)) {
+                if (!isTuch(nextHead.x, nextHead.y)) {
+                    snake.addLast(nextHead);
+                    count++;
+                    // 사과를 만나지 않으면
+                    System.out.println("nextHead " + nextHead);
+                    System.out.println("appleds " + apples);
+                    if (!apples.contains(nextHead)) {
+                        System.out.println("in");
+                        snake.pollFirst();
+                        //꼬리 제거
+                    }
+                }
+            }
+        }
+        changeDirection(command.direction);
+    }
+
+    public static boolean isIn(int row, int col) {
+        return row >= 0 && row < N && col >= 0 && col < N;
+    }
+
+    // 닿음을 판단한 함수
+    public static boolean isTuch(int row, int col) {
+        for (Point body : snake) {
+            System.out.println(body + " vs " + row + " " + col);
+            if (body.x == row && body.y == col) {
+                return true;
+            }
+        }
+        return false;
+    }
+}
