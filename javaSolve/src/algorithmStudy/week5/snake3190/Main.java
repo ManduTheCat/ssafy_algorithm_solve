@@ -1,4 +1,4 @@
-package algorithmStudy.week5.snaek3190;
+package algorithmStudy.week5.snake3190;
 
 import java.awt.*;
 import java.io.BufferedReader;
