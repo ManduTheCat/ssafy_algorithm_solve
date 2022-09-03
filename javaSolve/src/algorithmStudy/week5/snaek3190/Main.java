@@ -29,8 +29,8 @@ public class Main {
     static Deque<Point> snake = new ArrayDeque<>();
 
     public static void main(String[] args) throws IOException {
-        //시작지점으로 부터 명령어를 수행
-        // 명령어 변환필요
+        //
+        // 명령어 변환필요 시간이 누적된상태로 입력되기 때문에
         // 사과담아놓을 set 필요
         // 머리가 이동하고 꼬리가 지워진다
         // 또는  사과를 먹으면 머리가 이동하고 꼬리가 남는다
