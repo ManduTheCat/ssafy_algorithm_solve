@@ -16,14 +16,6 @@ class Command {
         this.direction = direction;
     }
 
-    @Override
-    public String toString() {
-        final StringBuilder sb = new StringBuilder("Command{");
-        sb.append("time=").append(time);
-        sb.append(", direction=").append(direction);
-        sb.append('}');
-        return sb.toString();
-    }
 }
 
 public class Main {
@@ -94,6 +86,10 @@ public class Main {
         System.out.println(count);
     }
 
+    /**
+     * 머리를 왼쪽 또는 오른쪽 명령에 따라 회전하는 함수
+     * @param command 입력 받은 명령에 따라 회전한다.
+     */
     public static void changeDirection(char command) {
         //사방중 하나 단지 머리를 돌리는 방향이 다르다
         // 오른쪽 일경우 돌리는 부분
