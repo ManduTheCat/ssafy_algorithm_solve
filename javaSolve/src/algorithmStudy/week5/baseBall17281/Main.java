@@ -20,6 +20,12 @@ class Player {
 
 }
 
+/**
+ * 	26312kb	840ms
+ * 1. 등번호 1번 타자가 4번타자인 타순 순열을 구함
+ * 2. 야구룰을 구현
+ * 3. 점수 최대값을구함
+ */
 public class Main {
     static int N;
     static int[][] innings;
@@ -42,6 +48,7 @@ public class Main {
     }
 
     // 1번이 사번타자 고정인 permutation
+    // 1번을 제외한 선수들의 순열을 구하고 나중에 4번자리에 1번을 넣는 배열 완성 8!
     public static void permutation(int depth, int flag) {
         if (depth == 8) {
             Player[] including4th = new Player[9];
@@ -63,12 +70,14 @@ public class Main {
     }
 
     public static int goGame(Player[] fullBattingOrder) {
-        int outCount = 0;
+        int outCount;
         int currPlayerIdx = 0;
         int score = 0;
         for (int n = 0; n < N; n++) {
+            //이닝이 시작되면 주자, outcout 초기화된다.
             clearRunner(fullBattingOrder);
             outCount = 0;
+            // out 3번되면 경기는 종료한다.
             while (outCount != 3) {
                 int action = innings[n][fullBattingOrder[currPlayerIdx].number - 1];
                 //4가지 경우의수
@@ -127,7 +136,7 @@ public class Main {
      */
     public static void clearRunner(Player[] inputBattingOrder) {
         // 홈런치면 모든 선수 포지션 0된다, 주자 상태도 false가된다.
-        // 용도 한이닝이 끝나면, 홈런을 치면
+        // 용도 한이닝이 끝나면, 홈런을 치면 에서 사용된다.
         for (Player p : inputBattingOrder) {
             p.runState = false;
             p.position = 0;
