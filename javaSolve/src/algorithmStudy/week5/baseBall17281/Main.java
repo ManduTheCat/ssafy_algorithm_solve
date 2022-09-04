@@ -71,13 +71,13 @@ public class Main {
 
     public static int goGame(Player[] fullBattingOrder) {
         int outCount;
-        int currPlayerIdx = 0;
+        int currPlayerIdx = 0; // 현제 타순
         int score = 0;
         for (int n = 0; n < N; n++) {
-            //이닝이 시작되면 주자, outcout 초기화된다.
+            //이닝이 시작되면 주자, outcount 초기화된다.
             clearRunner(fullBattingOrder);
             outCount = 0;
-            // out 3번되면 경기는 종료한다.
+            // out 3번되면 이닝은 종료한다.
             while (outCount != 3) {
                 int action = innings[n][fullBattingOrder[currPlayerIdx].number - 1];
                 //4가지 경우의수
@@ -123,6 +123,7 @@ public class Main {
                         }
                         break;
                 }
+                // 타순을 반복해서 돌아야한다 9번쨰 타자가 치면 1번타자가 나가야하기에 이런식으로 타순 갱신
                 currPlayerIdx = (currPlayerIdx + 1) % 9;
             }
         }
