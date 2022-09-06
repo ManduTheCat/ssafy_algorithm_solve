@@ -8,8 +8,8 @@ import java.io.InputStreamReader;
 import java.util.*;
 
 class Command {
-    int time;
-    char direction;
+    int time; // 명령어의 시간
+    char direction; // 명령어 회전방향
 
     public Command(int time, char direction) {
         this.time = time;
@@ -23,19 +23,13 @@ public class Main {
     static int K;
     static int L;
     static int count;
-    static Set<Point> apples = new HashSet();
+    static Set<Point> apples = new HashSet(); // 사과를 담아놓는 set
     static ArrayList<Command> commands;
-    static Point curDirection;
+    static Point curDirection; // 뱀이 보고 있는 방향
     static Deque<Point> snake = new ArrayDeque<>();
 
     public static void main(String[] args) throws IOException {
-        //
         // 명령어 변환필요 시간이 누적된상태로 입력되기 때문에
-        // 사과담아놓을 set 필요
-        // 머리가 이동하고 꼬리가 지워진다
-        // 또는  사과를 먹으면 머리가 이동하고 꼬리가 남는다
-        // 시간은 흐른다
-        // 사과는 먹으면 없어져야한다.
         System.setIn(new FileInputStream("resources/study/week5/BJ3190/input3.txt"));
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         N = Integer.parseInt(br.readLine());
@@ -55,19 +49,22 @@ public class Main {
             char direction = st.nextToken().charAt(0);
             commands.add(new Command(time, direction));
         }
-        // 명령어 처리
+        // 명령어 시간 중첩된 상태가 아닌게 바꿉니다
         if (commands.size() > 1) {
             for (int i = commands.size() - 1; i >= 1; i--) {
                 commands.get(i).time -= commands.get(i - 1).time;
             }
         }
-
+        // 뱀 큐 초기화
         snake.add(new Point(0, 0));
+        // 초기방향은 오르쪽
         curDirection = new Point(0, 1);
+        // 명령어 순환하며 실행
         for (Command command : commands) {
             runCommand(command);
         }
-        // 마지막 명령을 수행하고 더 갈수 있으면 더가야한다.
+
+        // 모든 명령을 수행했지만 현제 방향에서 앞으로 갈수 있으면 가야한다.
         while (true){
             Point currHead = snake.peekLast();
             Point nextHead = new Point(currHead.x + curDirection.x, currHead.y+ curDirection.y);
@@ -91,9 +88,8 @@ public class Main {
      * @param command 입력 받은 명령에 따라 회전한다.
      */
     public static void changeDirection(char command) {
-        //사방중 하나 단지 머리를 돌리는 방향이 다르다
+        //머리를 돌리는 D L 각각 방향 순서 다르다
         // 오른쪽 일경우 돌리는 부분
-        //System.out.println("in "+ curDirection.x +" , "+ curDirection.y);
         if (command == 'D') {
             int[][] alpha = new int[][]{{0, 1}, {1, 0}, {0, -1}, {-1, 0}};
             int curIndex = 0;
@@ -103,9 +99,8 @@ public class Main {
                 }
             }
             int nextIndex = (curIndex + 1) % 4;
-            //할당은 제대로 됬는데
             curDirection = new Point(alpha[nextIndex][0], alpha[nextIndex][1]);
-            // 왼쪽일때 돌리는 부분
+        // 왼쪽일때 돌리는 부분
         } else if (command == 'L') {
             int[][] alpha = new int[][]{{0, 1}, {-1, 0}, {0, -1}, {1, 0}};
             int curIndex = 0;
@@ -119,16 +114,15 @@ public class Main {
         }
     }
 
-    // 명령을 실행한다 시간동안 이동하고 방향 바꾸기
-    // 1초 에 머리이동 -> 벽에 닿거나 내몸에 닿았다.->사과 판정 -> 사과없으면 꼬리 pop
+    // 명령을 실행하는 메소드
     public static void runCommand(Command command) {
-        // 다음 이동 가능하면 // isTouch 이상하다 추가를 하고 검사를 하니 무조건 걸린다.
-        // 내의도 다음위치가 몸이라면 걸러라 // 지금 상황 다음머리를 큐에 넣고 검사해서 무조건 닿은걸로 판정
-        // 검사를 하고 넣자
+        // 다음 이동 가능하면
         int time = command.time;
+        //시간동안 진행한다
         while (time-- > 0) {
             Point curHead = snake.peekLast();
             Point nextHead = new Point(curHead.x + curDirection.x, curHead.y + curDirection.y);
+            // 몸에 닿거나 밖으로 나가면 게임끝 진행
             if (isIn(nextHead.x, nextHead.y) && !isTouch(nextHead.x, nextHead.y)) {
                 // 자기몸에 닿지 않고 맵안에 있다면 계속 진행
                 snake.addLast(nextHead);
@@ -152,13 +146,13 @@ public class Main {
         // 시간이 되면 명령의 방향으로 바꾼다.
         changeDirection(command.direction);
     }
-
-
+    
+    // 안에 있는지 밖에 있는지 판단 하는 메소드
     public static boolean isIn(int row, int col) {
         return row >= 0 && row < N && col >= 0 && col < N;
     }
 
-    // 닿음을 판단한 함수
+    // 몸에 닿음을 판단한 함수
     public static boolean isTouch(int row, int col) {
         for (Point body : snake) {
             if (body.x == row && body.y == col) {
