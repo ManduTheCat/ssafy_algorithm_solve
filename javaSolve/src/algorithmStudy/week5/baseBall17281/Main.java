@@ -107,12 +107,12 @@ public class Main {
                         // 주자들을 m 만큼 진루한다
                         for (Player p : fullBattingOrder) {
                             if (p.runState) {
-                                p.position += action;
+                                p.position += action;// +=안타친 정도
                             }
                         }
                         // 안타를 친 선수 도 진루 하고 진루 상태를 true로 바꿔준다.
                         fullBattingOrder[currPlayerIdx].runState = true;
-                        fullBattingOrder[currPlayerIdx].position += action;
+                        fullBattingOrder[currPlayerIdx].position += action; //+=안타친 정도
                         // position 이 3 넘어가면 점수를 1점 올리고 position 을 초기화한다.
                         for (Player p : fullBattingOrder) {
                             if (p.runState && p.position > 3) {
