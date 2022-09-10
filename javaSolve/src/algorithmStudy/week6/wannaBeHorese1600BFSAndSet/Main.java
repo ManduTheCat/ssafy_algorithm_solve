@@ -1,14 +1,15 @@
-package algorithmStudy.week6.wannaBeHorese1600;
+package algorithmStudy.week6.wannaBeHorese1600BFSAndSet;
 
 import java.awt.*;
 import java.io.BufferedReader;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.Queue;
 import java.util.*;
 
 
-// 메모리 초과하는 코드 ㅜㅜ  처음에 큐에 배열을 넣었고 set으로 변경했지만 터짐 ㅜ
+// 메모리 초과하는 코드 ㅜㅜ  처음에 큐에 배열을 넣었고 안되서  set으로 변경했지만 터짐 ㅜ
 
  class Monkey {
     int row;
