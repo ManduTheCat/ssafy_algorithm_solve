@@ -1,6 +1,5 @@
 package algorithmStudy.week6.wannaBeHorese1600;
 
-import java.awt.*;
 import java.io.BufferedReader;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -8,44 +7,55 @@ import java.io.InputStreamReader;
 import java.util.*;
 
 
-// 메모리 초과하는 코드 ㅜㅜ  처음에 큐에 배열을 넣었고 set으로 변경했지만 터짐 ㅜ
-
- class Monkey {
+class Monkey {
     int row;
     int col;
+    int depth;
     int remainHorseMode;
-    Set<Point> routeCheck;
 
 
-    public Monkey(int row, int col, int remainHorseMode,  Set<Point> routeCheck) {
+    public Monkey(int row, int col, int depth,int remainHorseMode) {
         this.row = row;
         this.col = col;
+        this.depth =depth;
         this.remainHorseMode = remainHorseMode;
-        this.routeCheck = routeCheck;
     }
 
+    @Override
+    public String toString() {
+        final StringBuilder sb = new StringBuilder("Monkey{");
+        sb.append("row=").append(row);
+        sb.append(", col=").append(col);
+        sb.append(", remainHorseMode=").append(remainHorseMode);
+        sb.append('}');
+        return sb.toString();
+    }
 }
 
 public class Main {
     static int K;
     static int W, H;
-    static Set<Point> route;
+    static boolean[][][] visited;
     static int[][] horseModeAlpha = new int[][]{{-1, 2}, {1, 2}, {2, 1}, {2, -1}, {1, -2}, {-1, -2}, {-2, -1}, {-2, 1}};
     static int[][] monkeyAlpha = new int[][]{{0, 1}, {-1, 0}, {0, -1}, {1, 0}};
 
     public static void main(String[] args) throws IOException {
-        System.setIn(new FileInputStream("resources/study/week6/BJ1600/input3.txt"));
+        System.setIn(new FileInputStream("resources/study/week6/BJ1600/input2.txt"));
         BufferedReader bf = new BufferedReader(new InputStreamReader(System.in));
         K = Integer.parseInt(bf.readLine());
         StringTokenizer st = new StringTokenizer(bf.readLine());
         W = Integer.parseInt(st.nextToken());
         H = Integer.parseInt(st.nextToken());
-        route = new HashSet<>();
+        visited = new boolean[H][W][K + 1];
         for (int row = 0; row < H; row++) {
             st = new StringTokenizer(bf.readLine());
             for (int col = 0; col < W; col++) {
                 int val = Integer.parseInt(st.nextToken());
-                if (val == 1) route.add(new Point(row, col));
+                if (val == 1) {
+                    for (int i = 0; i <= K; i++) {
+                        visited[row][col][i] = true;
+                    }
+                }
             }
         }
         //System.out.println(route);
@@ -59,43 +69,38 @@ public class Main {
 
     public static void bfs() {
         Queue<Monkey> q = new LinkedList<>();
-        route.add(new Point(0,0));
-        q.add(new Monkey(0, 0, K,  new HashSet<>(route)));
-        int depth = 0;
-        while (!q.isEmpty()) {
-            int qSize = q.size();
-            while (qSize-- > 0){
-                Monkey currMonkey = q.poll();
-                //System.out.println(currMonkey.row + " " + currMonkey.col);
-                //print(currMonkey.routeCheck);
-                if (currMonkey.row == H - 1 && currMonkey.col == W - 1) {
-                    System.out.println(depth);
-                    System.exit(0);
-                }
-                Set<Point> currCheck = currMonkey.routeCheck;
-                // 말처럼 이동하는 부분 말처럼 이동하고 이동할수 있는 remainHorseMode 를 하나 내린다.
-                if(currMonkey.remainHorseMode > 0){
-                    for (int dh = 0; dh < 8; dh++) {
-                        int nextRow = currMonkey.row + horseModeAlpha[dh][0];
-                        int nextCol = currMonkey.col + horseModeAlpha[dh][1];
+        visited[0][0][K] = true;
+        q.add(new Monkey(0, 0,0, K));
 
-                        if (isIn(nextRow, nextCol) && !currCheck.contains( new Point (nextRow, nextCol))) {
-                            Set<Point> nextCheck = new HashSet<>(currMonkey.routeCheck);
-                            nextCheck.add(new Point(nextRow, nextCol));
-                            q.add(new Monkey(nextRow, nextCol, currMonkey.remainHorseMode - 1, nextCheck));
-                        }
+        while (!q.isEmpty()) {
+            Monkey currMonkey = q.poll();
+            //System.out.println(currMonkey );
+            //print(currMonkey.routeCheck);
+            if (currMonkey.row == H - 1 && currMonkey.col == W - 1) {
+                System.out.println(currMonkey.depth);
+                System.exit(0);
+            }
+            // 말처럼 이동하는 부분 말처럼 이동하고 이동할수 있는 remainHorseMode 를 하나 내린다.
+            if (currMonkey.remainHorseMode > 0) {
+                for (int dh = 0; dh < 8; dh++) {
+                    int nextRow = currMonkey.row + horseModeAlpha[dh][0];
+                    int nextCol = currMonkey.col + horseModeAlpha[dh][1];
+                    //System.out.println(visited[nextRow][nextCol][currMonkey.remainHorseMode+1]);
+                    //System.out.println(currMonkey.remainHorseMode);
+                    if (isIn(nextRow, nextCol) && !visited[nextRow][nextCol][currMonkey.remainHorseMode - 1]) {
+                        visited[nextRow][nextCol][currMonkey.remainHorseMode - 1] = true;
+                        q.add(new Monkey(nextRow, nextCol, currMonkey.depth +1, currMonkey.remainHorseMode - 1));
                     }
                 }
-                for (int mh = 0; mh < 4; mh++) {
-                    int nextRow = currMonkey.row + monkeyAlpha[mh][0];
-                    int nextCol = currMonkey.col + monkeyAlpha[mh][1];
-                    if (isIn(nextRow, nextCol) && !currCheck.contains(new Point(nextRow, nextCol))) {
-                        Set<Point> nextCheck = new HashSet<>(currCheck);
-                        nextCheck.add(new Point(nextRow, nextCol));
-                        q.add(new Monkey(nextRow, nextCol, currMonkey.remainHorseMode, nextCheck));
-                    }
+            }
+
+            for (int mh = 0; mh < 4; mh++) {
+                int nextRow = currMonkey.row + monkeyAlpha[mh][0];
+                int nextCol = currMonkey.col + monkeyAlpha[mh][1];
+                if (isIn(nextRow, nextCol) && !visited[nextRow][nextCol][currMonkey.remainHorseMode]) {
+                    visited[nextRow][nextCol][currMonkey.remainHorseMode] = true;
+                    q.add(new Monkey(nextRow, nextCol,currMonkey.depth+1 ,currMonkey.remainHorseMode));
                 }
-                depth ++;
             }
         }
 
@@ -105,7 +110,7 @@ public class Main {
         return row < H && row >= 0 && col < W && col >= 0;
     }
 
-//// 디버깅용 함수
+    //// 디버깅용 함수
     public static void print(int[][] input) {
         for (int[] m : input) {
             System.out.println(Arrays.toString(m));
