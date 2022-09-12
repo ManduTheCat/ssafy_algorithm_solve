@@ -14,22 +14,13 @@ class Monkey {
     int remainHorseMode;
 
 
-    public Monkey(int row, int col, int depth,int remainHorseMode) {
+    public Monkey(int row, int col, int depth, int remainHorseMode) {
         this.row = row;
         this.col = col;
-        this.depth =depth;
+        this.depth = depth;
         this.remainHorseMode = remainHorseMode;
     }
 
-    @Override
-    public String toString() {
-        final StringBuilder sb = new StringBuilder("Monkey{");
-        sb.append("row=").append(row);
-        sb.append(", col=").append(col);
-        sb.append(", remainHorseMode=").append(remainHorseMode);
-        sb.append('}');
-        return sb.toString();
-    }
 }
 
 public class Main {
@@ -58,7 +49,6 @@ public class Main {
                 }
             }
         }
-        //System.out.println(route);
         bfs();
         // bfs로 해결할거다
         // 단 두가지 (가지)경우에 대해 본다
@@ -70,12 +60,10 @@ public class Main {
     public static void bfs() {
         Queue<Monkey> q = new LinkedList<>();
         visited[0][0][K] = true;
-        q.add(new Monkey(0, 0,0, K));
+        q.add(new Monkey(0, 0, 0, K));
 
         while (!q.isEmpty()) {
             Monkey currMonkey = q.poll();
-            //System.out.println(currMonkey );
-            //print(currMonkey.routeCheck);
             if (currMonkey.row == H - 1 && currMonkey.col == W - 1) {
                 System.out.println(currMonkey.depth);
                 System.exit(0);
@@ -85,11 +73,9 @@ public class Main {
                 for (int dh = 0; dh < 8; dh++) {
                     int nextRow = currMonkey.row + horseModeAlpha[dh][0];
                     int nextCol = currMonkey.col + horseModeAlpha[dh][1];
-                    //System.out.println(visited[nextRow][nextCol][currMonkey.remainHorseMode+1]);
-                    //System.out.println(currMonkey.remainHorseMode);
                     if (isIn(nextRow, nextCol) && !visited[nextRow][nextCol][currMonkey.remainHorseMode - 1]) {
                         visited[nextRow][nextCol][currMonkey.remainHorseMode - 1] = true;
-                        q.add(new Monkey(nextRow, nextCol, currMonkey.depth +1, currMonkey.remainHorseMode - 1));
+                        q.add(new Monkey(nextRow, nextCol, currMonkey.depth + 1, currMonkey.remainHorseMode - 1));
                     }
                 }
             }
@@ -99,33 +85,14 @@ public class Main {
                 int nextCol = currMonkey.col + monkeyAlpha[mh][1];
                 if (isIn(nextRow, nextCol) && !visited[nextRow][nextCol][currMonkey.remainHorseMode]) {
                     visited[nextRow][nextCol][currMonkey.remainHorseMode] = true;
-                    q.add(new Monkey(nextRow, nextCol,currMonkey.depth+1 ,currMonkey.remainHorseMode));
+                    q.add(new Monkey(nextRow, nextCol, currMonkey.depth + 1, currMonkey.remainHorseMode));
                 }
             }
         }
-
     }
 
     public static boolean isIn(int row, int col) {
         return row < H && row >= 0 && col < W && col >= 0;
-    }
-
-    //// 디버깅용 함수
-    public static void print(int[][] input) {
-        for (int[] m : input) {
-            System.out.println(Arrays.toString(m));
-        }
-        System.out.println();
-    }
-
-    public static void print(boolean[][] input) {
-        for (boolean[] b : input) {
-            for (boolean el : b) {
-                System.out.print(el ? 1 : 0);
-            }
-            System.out.println();
-        }
-        System.out.println();
     }
 
 }
