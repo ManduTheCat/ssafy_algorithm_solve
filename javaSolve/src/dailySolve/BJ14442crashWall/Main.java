@@ -8,6 +8,8 @@ import java.util.LinkedList;
 import java.util.Queue;
 import java.util.StringTokenizer;
 
+
+// 벽부스고 목적지까지 이동하는 객체 현재 위치와 남은 카운트 이동횟수(depth) 기억하고 queue 에 담긴다.
 class Runner {
     int depth;
     int row;
@@ -21,18 +23,8 @@ class Runner {
         this.remainCrashCount = remianCrashCount;
     }
 
-    @Override
-    public String toString() {
-        final StringBuilder sb = new StringBuilder("Runner{");
-        sb.append("depth=").append(depth);
-        sb.append(", row=").append(row);
-        sb.append(", col=").append(col);
-        sb.append(", remainCrashCount=").append(remainCrashCount);
-        sb.append('}');
-        return sb.toString();
-    }
 }
-
+//	441352kb	2860ms
 public class Main {
     static int N;
     static int M;
@@ -50,7 +42,6 @@ public class Main {
         K = Integer.parseInt(st.nextToken());
         visited = new boolean[N][M][K + 1];
         map = new int[N][M][K + 1];
-        //System.out.println(N + " " + M + " " + K);
         for (int row = 0; row < N; row++) {
             String rowLine = br.readLine();
             ;
@@ -61,8 +52,8 @@ public class Main {
                 }
             }
         }
-
         bfs();
+        // 다돌아도 도착하지 못하면 -1 출력
         System.out.println(-1);
     }
 
@@ -73,60 +64,40 @@ public class Main {
         while (!q.isEmpty()) {
 
             Runner currRunner = q.poll();
-            if(currRunner.row == N -1 && currRunner.col == M-1){
+            if (currRunner.row == N - 1 && currRunner.col == M - 1) {
                 System.out.println(currRunner.depth);
                 System.exit(0);
             }
+            // 벽을 부술수있는 기회가 아직 남았다면?
             if (currRunner.remainCrashCount > 0) {
-                // 벽부스고 이동
+                // 벽부수고 이동
                 for (int d = 0; d < 4; d++) {
                     int nextRow = currRunner.row + normalAlpha[d][0];
                     int nextCol = currRunner.col + normalAlpha[d][1];
-                    int nextRemainCrashCount = currRunner.remainCrashCount -1;
-                    // 다음 갈곳은 벽이고 이동가능하면 -> 부스고 이동
-                    if (isIn(nextRow, nextCol) && map[nextRow][nextCol][nextRemainCrashCount] == 1 && !visited[nextRow][nextCol][nextRemainCrashCount]) {
+                    int nextRemainCrashCount = currRunner.remainCrashCount - 1;
+                    // 다음 갈곳은 벽이고 이동가능하면 -> 부수고 이동(맵을 0으로 바꾸고 체크) 꽝!!!
+                    if (isIn(nextRow, nextCol) && map[nextRow][nextCol][nextRemainCrashCount] == 1
+                            && !visited[nextRow][nextCol][nextRemainCrashCount]) {
                         map[nextRow][nextCol][nextRemainCrashCount] = 0;
-                        visited[nextRow][nextCol][nextRemainCrashCount]= true;
-                        q.add(new Runner(currRunner.depth+1, nextRow, nextCol, nextRemainCrashCount));
+                        visited[nextRow][nextCol][nextRemainCrashCount] = true;
+                        q.add(new Runner(currRunner.depth + 1, nextRow, nextCol, nextRemainCrashCount));
                     }
                 }
-                // 안에 있고 벽이라면, 부스고 이동해라
             }
             // 그냥이동
             for (int d = 0; d < 4; d++) {
                 int nextRow = currRunner.row + normalAlpha[d][0];
                 int nextCol = currRunner.col + normalAlpha[d][1];
-                if(isIn(nextRow, nextCol) && !visited[nextRow][nextCol][currRunner.remainCrashCount]
-                        && map[nextRow][nextCol][currRunner.remainCrashCount] == 0){
+                // 벽이아니고 현제 벽부순 횟수 visited 봤을때 방문한적이 없다면
+                if (isIn(nextRow, nextCol) && !visited[nextRow][nextCol][currRunner.remainCrashCount]
+                        && map[nextRow][nextCol][currRunner.remainCrashCount] == 0) {
                     visited[nextRow][nextCol][currRunner.remainCrashCount] = true;
-                    q.add(new Runner(currRunner.depth +1, nextRow, nextCol, currRunner.remainCrashCount));
+                    q.add(new Runner(currRunner.depth + 1, nextRow, nextCol, currRunner.remainCrashCount));
                 }
             }
 
         }
-
     }
-
-    public static void print(boolean[][][] input) {
-        for (int row = 0; row < N; row++) {
-            for (int col = 0; col < M; col++) {
-                System.out.print(input[row][col][0] ? "1" : "0");
-            }
-            System.out.println();
-        }
-        System.out.println();
-    }
-
-    public static void print(int[][][] input) {
-        for (int row = 0; row < N; row++) {
-            for (int col = 0; col < M; col++) {
-                System.out.print(input[row][col][0]);
-            }
-            System.out.println();
-        }
-        System.out.println();
-    }
-
     public static boolean isIn(int row, int col) {
         return row < N && row >= 0 && col < M && col >= 0;
     }
