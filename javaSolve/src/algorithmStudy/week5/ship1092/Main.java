@@ -7,7 +7,7 @@ import java.io.InputStreamReader;
 import java.util.*;
 
 /**
- * 17828kb	4964ms
+ * 17896kb	352ms
  * 화물과 크레인을 내림차순으로 정렬해 큰거 먼저 처리하는 형태로 접근했습니다
  * 아마 그리디? 인거 같습니다.
  * 크래인은 stack으로 O(1)의연산을 가지지만
