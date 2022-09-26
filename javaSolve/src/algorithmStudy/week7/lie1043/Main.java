@@ -1,6 +1,5 @@
 package algorithmStudy.week7.lie1043;
 
-import sun.print.resources.serviceui_zh_TW;
 
 import java.io.BufferedReader;
 import java.io.FileInputStream;
@@ -12,46 +11,88 @@ import java.util.Set;
 import java.util.StringTokenizer;
 
 public class Main {
-    static int N;
     static int M;
-    static int[] parents;
-    static ArrayList<Integer> partys = new ArrayList<>();
-    static int truePersonCount;
-    static Set<Integer> trueSet = new HashSet<>();
-
+    static int N;
+    static Set<Integer> initTrueSet = new HashSet<>();
+    static int [] parents ;
+    static ArrayList<Integer> [] party;
+    static  int initTureRoot;
     public static void main(String[] args) throws IOException {
-        System.setIn(new FileInputStream("resources/study/week7/1043/input.txt"));
+        System.setIn(new FileInputStream("resources/study/week7/1043/input6.txt"));
+        //1. initTrueSet 에 있다면 unionFind 를 실행하여  trueSet을 만든다
+        //2 tureSet 에 find 연산을 수행해 없다면 count++
+        int count = 0;
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         StringTokenizer st = new StringTokenizer(br.readLine());
         N = Integer.parseInt(st.nextToken());
         M = Integer.parseInt(st.nextToken());
         st = new StringTokenizer(br.readLine());
-        int truePeopleNumber = st.nextToken().charAt(0);
         parents = new int[N + 1];
+        party = new ArrayList[M];
+        for (int index = 0; index < M ; index++) {
+            party[index] = new ArrayList<>();
+        }
         for (int n = 1; n <= N; n++) {
-            parents[n] = n;// 어짜피 N 명 다나온다
+            // unionFInd 초기화
+            // 자기자신 부모는 자신이다.
+            // 0 은 사용하지 않는다.
+            parents[n] = n;
         }
-        st = new StringTokenizer(br.readLine());
-        truePeopleNumber = Integer.parseInt(st.nextToken());
-        for (int tpn = 0; tpn < truePeopleNumber; tpn++) {
-            trueSet.add(Integer.parseInt(st.nextToken()));
+        int initTrueSetLen = Integer.parseInt(st.nextToken());
+        if (initTrueSetLen >0){
+
+            initTureRoot = Integer.parseInt(st.nextToken());
+            for (int t = 1; t < initTrueSetLen; t++) {
+                union(initTureRoot, Integer.parseInt(st.nextToken()));
+            }
         }
+        else{
+            System.out.println(M);
+            System.exit(0);
+        }
+
+        for (int m = 0; m < M; m++) {
+            // 0번파티 부터 M  번파티 까지
+            st = new StringTokenizer(br.readLine());
+            int partyLen = Integer.parseInt(st.nextToken());
+            // m 번째 파티에서
+            for (int p = 0; p < partyLen; p++) {
+                int val = Integer.parseInt(st.nextToken());
+                party[m].add(val);
+                // 각파티는 무조건 1명 이상 온다
+                // sub union 합쳐지면서 진실친구들이랑 합쳐진다
+                int partyRoot = party[m].get(0);
+                for(Integer invitedP :party[m]){
+                    union(partyRoot, invitedP);
+                }
+                
+            }
+
+        }
+        for (int m = 0; m < M; m++) {
+            if(find(initTureRoot)!=find(party[m].get(0))){
+                count++;
+            }
+        }
+        System.out.println(count);
+
 
 
     }
-
-    static int find(int x) {
-        if (parents[x] == x) {
-            return x;
+    public static int find(int a){
+        if(parents[a] == a){
+            return a;
         }
-        return parents[x] = find(x);
+        return parents[a] = find(parents[a]);
     }
-
-    static boolean union(int x, int y) {
-        int rooX = find(x);
-        int rootY = find(y);
-        if (rootY == rooX) return false;
-        parents[rootY] = rooX;
+    public static boolean union(int x, int y){
+        int parentX = find(x);
+        int parentY = find(y);
+        if(parentX == parentY){
+            return false;
+        }
+        parents[parentY] = parentX;
         return true;
     }
+
 }
