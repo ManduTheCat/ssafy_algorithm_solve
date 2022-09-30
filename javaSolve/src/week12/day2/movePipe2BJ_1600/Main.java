@@ -1,0 +1,10 @@
+package week12.day2.movePipe2BJ_1600;
+
+public class Main {
+    static int [][] map;
+    static int [][][] dp;
+    static int
+    public static void main(String[] args) {
+
+    }
+}
