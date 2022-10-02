@@ -6,19 +6,16 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.Set;
 import java.util.StringTokenizer;
 
 public class Main {
     static int M;
     static int N;
-    static Set<Integer> initTrueSet = new HashSet<>();
     static int [] parents ;
     static ArrayList<Integer> [] party;
     static  int initTureRoot;
     public static void main(String[] args) throws IOException {
-        System.setIn(new FileInputStream("resources/study/week7/1043/input6.txt"));
+        //System.setIn(new FileInputStream("resources/study/week7/1043/input6.txt"));
         //1. initTrueSet 에 있다면 unionFind 를 실행하여  trueSet을 만든다
         //2 tureSet 에 find 연산을 수행해 없다면 count++
         int count = 0;
@@ -33,14 +30,10 @@ public class Main {
             party[index] = new ArrayList<>();
         }
         for (int n = 1; n <= N; n++) {
-            // unionFInd 초기화
-            // 자기자신 부모는 자신이다.
-            // 0 은 사용하지 않는다.
             parents[n] = n;
         }
         int initTrueSetLen = Integer.parseInt(st.nextToken());
         if (initTrueSetLen >0){
-
             initTureRoot = Integer.parseInt(st.nextToken());
             for (int t = 1; t < initTrueSetLen; t++) {
                 union(initTureRoot, Integer.parseInt(st.nextToken()));
@@ -60,14 +53,12 @@ public class Main {
                 int val = Integer.parseInt(st.nextToken());
                 party[m].add(val);
                 // 각파티는 무조건 1명 이상 온다
-                // sub union 합쳐지면서 진실친구들이랑 합쳐진다
+                // sub union 합쳐지면서 진실 을 아는 친구들이랑 합쳐진다
                 int partyRoot = party[m].get(0);
                 for(Integer invitedP :party[m]){
                     union(partyRoot, invitedP);
                 }
-                
             }
-
         }
         for (int m = 0; m < M; m++) {
             if(find(initTureRoot)!=find(party[m].get(0))){
@@ -75,9 +66,6 @@ public class Main {
             }
         }
         System.out.println(count);
-
-
-
     }
     public static int find(int a){
         if(parents[a] == a){
@@ -85,14 +73,10 @@ public class Main {
         }
         return parents[a] = find(parents[a]);
     }
-    public static boolean union(int x, int y){
+    public static void union(int x, int y){
         int parentX = find(x);
         int parentY = find(y);
-        if(parentX == parentY){
-            return false;
-        }
         parents[parentY] = parentX;
-        return true;
     }
 
 }
