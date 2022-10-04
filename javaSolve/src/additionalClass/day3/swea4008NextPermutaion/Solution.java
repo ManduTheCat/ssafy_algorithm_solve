@@ -1,10 +1,13 @@
-package additionalClass.day3.swea4008;
+package additionalClass.day3.swea4008NextPermutaion;
 
 import java.io.BufferedReader;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.*;
+import java.util.Arrays;
+import java.util.Deque;
+import java.util.LinkedList;
+import java.util.StringTokenizer;
 
 // 11!부터 순열은 거이 안된다.
 // 가지치기를 생각해봐야한다
@@ -19,6 +22,23 @@ import java.util.*;
  */
 // 1 1 2 = 121 = 211= 211= 112=121
 // 넥퍼를 쓰면 중복 순열을 떨굴수 있다
+/*
+*  2 3 4 5 1
+*   1. lastPeak = 2;
+*   2. getBeforelastPeak = 3
+*   3. 1, 2 번스왑
+*   4. 1 -> 끝까지 팰린드룸 스왑 24 5 3 1 -> 24 1 3 5
+*   넥퍼는 오름차순 정렬을 해야한다.
+*   d
+* */
+
+/*
+* 넥퍼의 효능
+* 가지치기 못하는대신
+* 어짜피 다구해야한다
+* 중복순열애서 중복되지 않는것을 구할때
+* */
+
 
 public class Solution {
     static int Tc;
@@ -29,8 +49,9 @@ public class Solution {
     static int [] numbers;
     static int max;
     static int min;
+    static int [] opers;
     public static void main(String[] args)throws IOException {
-        System.setIn(new FileInputStream("resources/additionalClass/day3/swea4008/input.txt"));
+        System.setIn(new FileInputStream("resources/additionalClass/day3/swea4008/input2.txt"));
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         Tc = Integer.parseInt(br.readLine());
         for (int tc = 0; tc < Tc; tc++) {
@@ -40,12 +61,17 @@ public class Solution {
             ableOperatorCnt = new int[4];
             operatorPermutationRes = new int[N-1];
             numbers = new int[N];
+            opers = new int[N-1];
             StringTokenizer st = new StringTokenizer(br.readLine());
 
-            for (int op = 0; op <4 ; op++) {
+            for (int op = 0, o = 0; op <4 ; op++) {
                 int value = Integer.parseInt(st.nextToken());
                 //System.out.println(value);
                 ableOperatorCnt[op] = value;
+                for (int i = 0; i <value ; i++) {
+                    opers[o++] = op;
+                }
+
             }
             // 플마곱나 순서
             st= new StringTokenizer(br.readLine());
@@ -57,6 +83,9 @@ public class Solution {
             permutation(0,0);
             //System.out.println(max+" - "+ min);
             System.out.printf("#%d %d\n",tc+1,max - min);
+            do{
+                System.out.println(Arrays.toString(opers));
+            }while (nextPermutation());
         }
 
     }
@@ -75,6 +104,34 @@ public class Solution {
             }
         }
 
+    }
+
+    public static boolean nextPermutation(){
+        //1 라스트 픽 찾기 제일 큰수
+        //== 맨꼭대기 찾기
+        // 1234-> 4321 ㅇㅣ되면 np 가 없는 케이스다 처음에 정렬하고 들어가기 때문이다.
+        int lastPeak = opers.length-1;
+        while (lastPeak > 0 && opers[lastPeak -1] >= opers[lastPeak]){
+            lastPeak--;
+        }
+        if(lastPeak == 0){// 이미 마지막인 상황 -- 다음은 없다
+            return false;
+        }
+        // 2. 라스트픽보다 (왼쪽)앞에 있는 것보다 큰놈을 찾는다.
+        int gtBeforeLastPeak =  opers.length-1;
+        while (opers[lastPeak-1]>= opers[gtBeforeLastPeak]){
+            gtBeforeLastPeak--;
+        }
+        swap(lastPeak-1, gtBeforeLastPeak);
+        for (int reverseIdx = opers.length -1; lastPeak < reverseIdx;){
+            swap(lastPeak++, reverseIdx--);
+        }
+        return true;
+    }
+    public static void swap(int a, int b){
+        int temp = opers[a];
+        opers[a] = opers[b];
+        opers[b] = temp;
     }
 
     private static void calculate(int[] operatorPermutationRes) {
