@@ -5,7 +5,6 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayDeque;
-import java.util.Arrays;
 import java.util.Queue;
 import java.util.StringTokenizer;
 
@@ -81,7 +80,7 @@ public class Main {
             }
 
         }
-        countVirus(newMap);
+        countSafeZone(newMap);
 
     }
 
@@ -103,11 +102,10 @@ public class Main {
                 }
             }
         }
-
-
     }
 
-    private static void countVirus(int[][] map) {
+    private static void countSafeZone(int[][] map) {
+        // 사실 count safeZone
         int count = 0;
         for (int row = 0; row < N; row++) {
             for (int col = 0; col < M; col++) {
@@ -116,12 +114,6 @@ public class Main {
             }
         }
 
-//        if(count >30){
-//            for(int [] row : map){
-//                System.out.println(Arrays.toString(row));
-//            }
-//            System.out.println(count);
-//        }
         maxCount = Math.max(count,maxCount );
     }
 
