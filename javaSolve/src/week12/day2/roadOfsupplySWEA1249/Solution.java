@@ -40,7 +40,7 @@ public class Solution {
     static int[][] map;
 
     public static void main(String[] args) throws IOException {
-        System.setIn(new FileInputStream("resources/week12/day2/swea1249/input.txt"));
+        System.setIn(new FileInputStream("resources/week12/day2/swea1249/input2.txt"));
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         Tc = Integer.parseInt(br.readLine());
         for (int tc = 0; tc < Tc; tc++) {
@@ -55,6 +55,7 @@ public class Solution {
                 }
             }
             dijkstra();
+            printD();
             System.out.printf("#%d %d\n",tc+1,D[N-1][N-1]);
 
         }
@@ -70,7 +71,7 @@ public class Solution {
         D[0][0] = 0;
         while (!pq.isEmpty()) {
             Vertex currVertex = pq.poll();
-            // 가장 먼저 닿으면 최단경로이다
+            // 가중치 최소 우선 pq 를 사용했기에 가장 먼저 도착지에 닿으면 최단경로이다
             if(currVertex.r== N-1 && currVertex.c == N-1){
                 return;
             }
