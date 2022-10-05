@@ -17,8 +17,6 @@ public class Main {
                 arr[i][j] = in.nextInt();
             }
         }
-
-
         sudoku(0, 0);
 
     }
