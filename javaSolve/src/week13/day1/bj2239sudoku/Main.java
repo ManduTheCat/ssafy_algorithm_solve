@@ -18,6 +18,7 @@ public class Main {
             }
         }
 
+
         sudoku(0, 0);
 
     }
