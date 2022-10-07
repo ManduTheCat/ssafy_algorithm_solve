@@ -112,35 +112,87 @@ public class Main {
                 //  if check[p.y][x] 가 f가 아니면 => 다른 섬에 다은 경우
                 //      다은 경우가 여러개일 수 있으므로 Math.min();
                 // count++
-
-                // 오른쪽
-
-                // 위
-
-                // 아래
-                //왼쪽
                 int count = 0;
                 for (int c = p.c-1; c >=0; c--) {
                     int r = p.r;
                     if(check[r][c] == check[p.r][p.c]) break;
                     if(check[r][c] != -1){
                         //System.out.println("in");
-                        System.out.println(check[p.r][p.c] + " " + check[p.r][c]);
-                        System.out.println("count " + count );
-                        if(adjArr[p.r][c] == 0){
-                            adjArr[p.r][c] = count;
+                        if(count > 2){
+                            System.out.println("왼쪽" + check[p.r][p.c] + " " + check[p.r][c]);
+                            System.out.println("count " + count );
+                            if(adjArr[p.r][c] == 0){
+                                adjArr[p.r][c] = count;
+                            }
+                            else {
+                                adjArr[check[p.r][p.c]][check[p.r][c]] = Math.min(adjArr[check[p.r][p.c]][check[p.r][c]], count);
+                            }
+                            break;
                         }
-                        else {
-                            adjArr[p.r][c] = Math.min(adjArr[p.r][c], count);
-                        }
-                        break;
                     }
                     count++;
                 }
-
+                //위
+                count = 0;
+                for (int r = p.r-1; r >= 0; r--) {
+                    if(check[r][p.c] == check[p.r][p.c]) break;
+                    if(check[r][p.c] != -1){
+                        //System.out.println("in");
+                        if(count > 2){
+                            System.out.println("위로" + check[p.r][p.c] + " " + check[r][p.c]);
+                            System.out.println("count " + count );
+                            if(adjArr[p.r][p.c] == 0){
+                                adjArr[p.r][p.c] = count;
+                            }
+                            else {
+                                adjArr[r][p.c] = Math.min(adjArr[r][p.c], count);
+                            }
+                            break;
+                        }
+                    }
+                    count++;
+                }
+                //오
+                count = 0;
+                for (int c = p.c+1; c < M; c++) {
+                    if(check[p.r][p.c] == check[p.r][c]) break;
+                    if(check[p.r][c] != -1){
+                        //System.out.println("in");
+                        if(count > 2){
+                            System.out.println("오른 " + check[p.r][p.c] + " " + check[p.r][c]);
+                            System.out.println("count " + count );
+                            if(adjArr[p.r][c] == 0){
+                                adjArr[p.r][c] = count;
+                            }
+                            else {
+                                adjArr[p.r][c] = Math.min(adjArr[p.r][c], count);
+                            }
+                            break;
+                        }
+                    }
+                    count++;
+                }
+                //아래
+                count = 0;
+                for (int r = p.r+1; r < N; r++) {
+                    if(check[p.r][p.c] == check[r][p.c]) break;
+                    if(check[p.r][p.c] != -1){
+                        //System.out.println("in");
+                        if(count > 2){
+                            System.out.println("오른 " + check[p.r][p.c] + " " + check[r][p.c]);
+                            System.out.println("count " + count );
+                            if(adjArr[r][p.c] == 0){
+                                adjArr[r][p.c] = count;
+                            }
+                            else {
+                                adjArr[r][p.c] = Math.min(adjArr[r][p.c], count);
+                            }
+                            break;
+                        }
+                    }
+                    count++;
+                }
             }
-
-
         }
 
     }
