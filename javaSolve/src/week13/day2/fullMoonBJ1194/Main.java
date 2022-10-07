@@ -48,7 +48,7 @@ public class Main {
         N = Integer.parseInt(st.nextToken());
         M = Integer.parseInt(st.nextToken());
         map = new char[N][M];
-        check = new boolean [N][M][64];
+        check = new boolean[N][M][64];
         for (int row = 0; row < N; row++) {
             String rowLine = br.readLine();
             for (int col = 0; col < M; col++) {
@@ -60,7 +60,7 @@ public class Main {
                         //System.out.println(check[row][col][i]);
                     }
                 } else if (val == '0') {
-                    q.offer(new Point(row, col, 0,0));
+                    q.offer(new Point(row, col, 0, 0));
                 }
                 map[row][col] = val;
             }
@@ -76,16 +76,18 @@ public class Main {
         int[][] delta = {{0, -1}, {-1, 0}, {0, 1}, {1, 0}};
 
         while (!q.isEmpty()) {
+            System.out.println("in while" + q);
             Point curPoint = q.poll();
             System.out.println(curPoint);
-            if(map[curPoint.r][curPoint.c] == '1'){
+            if (map[curPoint.r][curPoint.c] == '1') {
                 System.out.println(curPoint);
-                //System.exit(0);
             }
             for (int d = 0; d < 4; d++) {
                 int nr = curPoint.r + delta[d][0];
                 int nc = curPoint.c + delta[d][1];
-                if (isIn(nr, nc) ) {
+                System.out.println(nr + " " + nc);
+                if (isIn(nr, nc)) {
+                    System.out.println("in"+nr + " " + nc);
                     char val = map[nr][nc];
                     switch (val) {
                         case 'a':
@@ -94,14 +96,13 @@ public class Main {
                         case 'd':
                         case 'e':
                         case 'f':
+                            System.out.println("abcdef");
                             int nkey = 1 << (val - 'a');
                             nkey = curPoint.key | nkey;
-                            if(!check[nr][nc][nkey]){
-
+                            if (!check[nr][nc][nkey]) {
                                 check[nr][nc][nkey] = true;
-                                System.out.println("put "+ val +", "+ nkey);
-                                q.offer(new Point(nr, nc, nkey, curPoint.depth+1));
-                                System.out.println("after put " + q);
+                                System.out.println(nkey);
+                                q.offer(new Point(nr, nc, nkey, curPoint.depth + 1));
                             }
                             break;
                         case 'A':
@@ -110,20 +111,21 @@ public class Main {
                         case 'D':
                         case 'E':
                         case 'F':
+                            System.out.println("ABCDEF");
                             int Bkey = 1 << val - 'A';
-                            System.out.println(curPoint+" "+val +", "+ +curPoint.key + "vs" + Bkey);
-                            if(!check[nr][nc][Bkey]){
-                                if((curPoint.key & Bkey) > 0){
+                            System.out.println(curPoint + " " + val + ", " + +curPoint.key + "vs" + Bkey);
+                            if (!check[nr][nc][Bkey]) {
+                                if ((curPoint.key & Bkey) > 0) {
                                     System.out.println("door OPen");
-                                    q.offer(new Point(nr, nc, curPoint.key, curPoint.depth+1));
+                                    q.offer(new Point(nr, nc, curPoint.key, curPoint.depth + 1));
                                 }
                             }
                             break;
 
                         case '.':
                             System.out.println("dot in");
-                            if(!check[nr][nc][curPoint.key]){
-                                q.offer(new Point(nr, nc, curPoint.key, curPoint.depth+1));
+                            if (!check[nr][nc][curPoint.key]) {
+                                q.offer(new Point(nr, nc, curPoint.key, curPoint.depth + 1));
                                 check[nr][nc][curPoint.key] = true;
                             }
                             break;
