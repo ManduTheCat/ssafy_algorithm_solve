@@ -6,7 +6,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.*;
 
-class Edge {
+class Edge implements Comparable<Edge> {
     int from;
     int to;
     int weight;
@@ -26,6 +26,11 @@ class Edge {
                 '}';
     }
     // sorting 을 위한 컴페어
+
+    @Override
+    public int compareTo(Edge o) {
+        return this.weight - o.weight;
+    }
 }
 
 class Point {
@@ -54,168 +59,147 @@ class Point {
     }
 }
 
-/**
- * 0. 그룹을 찾는다 완탐, 그룹별로 groupList 에 넣는다
- * 1. 간선그래프를 만든다
- * 그룹에서 선을쏴서 맞은 "다른" 그룹 선 count 만큼 edge 로 만든다
- * 그룹간 최소 edge 를 찾을 필요가 있나? 없다 왜 ? 어짜피 정렬할거라
- * 찾는순간 기록된거 랑 min 연산해서 최소만 기록한다.
- * 2. 크루스칼
- * profit!!
- */
 public class Main {
     static int N, M;
     static int[][] map;
     static int[][] check;
     static int[] parent;
+    static ArrayList<Edge> edgeList;
     static int[][] adjArr;
     static ArrayList<Point>[] groupList;
     static int groupSize;
-    static int[][] del = {{0, -1}, {-1, -0}, {0, 1}, {1, 0}};
+    static int[][] del = {{0, -1}, {-1, 0}, {0, 1}, {1, 0}};
 
     public static void main(String[] args) throws IOException {
-        System.setIn(new FileInputStream("resources/week13/day4/BJ17472/input3.txt"));
+        System.setIn(new FileInputStream("resources/week13/day4/BJ17472/input6.txt"));
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         StringTokenizer st = new StringTokenizer(br.readLine());
         N = Integer.parseInt(st.nextToken());
         M = Integer.parseInt(st.nextToken());
         map = new int[N][M];
         check = new int[N][M];
-        adjArr = new int[N][M];
+        //adjArr = new int[N][M]; // 5
         for (int n = 0; n < N; n++) {
             st = new StringTokenizer(br.readLine());
             for (int m = 0; m < M; m++) {
                 int value = Integer.parseInt(st.nextToken());
                 map[n][m] = value;
-                check[n][m] = value == 1 ? 0 : -1;
+                check[n][m] = value == 1 ? 0 : -1; // 체크 하는데 -1 == false
             }
         }
-        printArray(map);
-        printArray(check);
-        makeGroup(map);
-        printArray(check);
+        makeGroup();
         shootBridge();
-        printArray(check);
+        edgeList = new ArrayList<>();
+        makeEdgeList();
+        Collections.sort(edgeList);
+        parent = new int[groupSize];
+        for (int node = 1; node < groupSize; node++) {
+            parent[node] = node;
+        }
+//        printArray(check);
+        int res = 0;
+        // 크루스칼
+        int cnt = 0;
+        for (Edge edge : edgeList) {
+            if (union(edge.to, edge.from)) {
+                //System.out.println(edge);
+                res += edge.weight;
+                cnt++;
+            }
+        }
+        // 최소스패닝 트리는 어짜피 정점 -1개이다.
+        if (cnt == groupSize - 2) System.out.println(res);
+        else System.out.println(-1);
+    }
 
+    private static boolean union(int to, int from) {
+        int rootTo = find(to);
+        int rootFrom = find(from);
+        if (rootTo == rootFrom) return false;
+        parent[rootFrom] = rootTo;
+        return true;
+
+    }
+
+    private static int find(int to) {
+        if (parent[to] == to) return to;
+        return parent[to] = find(parent[to]);
+    }
+
+
+    private static void makeEdgeList() {
+        for (int row = 0; row < groupSize; row++) {
+            for (int col = 0; col < groupSize; col++) {
+                // 오 간선 리스트 ㅇㅇㅇ 정렬함
+                if (adjArr[row][col] > 1) edgeList.add(new Edge(row, col, adjArr[row][col]));
+            }
+
+        }
     }
 
     private static void shootBridge() {
-        printArray(groupList);
         // 4방검색해서  테두리가 check = -1 이면 쏴라
-        for (ArrayList<Point> points : groupList) {
+        adjArr = new int[groupSize][groupSize];
+        for (int i = 1; i < groupList.length; i++) {
+            ArrayList<Point> points = groupList[i]; // 아 그룹만큼 ㅇㅋ
             for (Point p : points) {
+                // f 면 카운트 증가
+                // 다른섬이면 만나는 순간 정지
+                for (int d = 0; d < 4; d++) {
+                    int nr = p.r;
+                    int nc = p.c;
+                    int count = 0;
+                    while (true) {
+                        nr += del[d][0];
+                        nc += del[d][1];
+                        if (!isin(nr, nc)) break;
+                        if (check[p.r][p.c] == check[nr][nc]) break; // 출발섬이랑 같으면 정지
+                        if (check[nr][nc] == -1) {
+                            count++; // 바다면 count++
+                        }
+                        if (check[nr][nc] != -1) { // -1 이 아니면 다른섬이니까 adjArr 에 기록
+                            int from = check[p.r][p.c];
+                            int to = check[nr][nc];
+                            //System.out.printf("%d [%d, %d]-> %d [%d, %d] : %d\n", from, p.r, p.c, to, nr, nc, count);
+                            if (count >= 2) { // 그중 크기가 2 이상인것만
+                                if (adjArr[from][to] == 0) {
+                                    adjArr[from][to] = count;
+                                    // inteager max 를 넣고 min으로 하는것도 좋은 방법
+                                } else {
+                                    adjArr[from][to] = Math.min(adjArr[from][to], count);
+                                }
+                            }
+                            break;
+                        }
+                    }
 
-                // 왼쪽
-                // count = 0
-                // for(p.x - 1 ~ 0) 감소하면서 (x)
-                //  if check[p.y][x] != check[p.y][p.x] break;
-                //  if check[p.y][x] 가 f가 아니면 => 다른 섬에 다은 경우
-                //      다은 경우가 여러개일 수 있으므로 Math.min();
-                // count++
-                int count = 0;
-                for (int c = p.c-1; c >=0; c--) {
-                    int r = p.r;
-                    if(check[r][c] == check[p.r][p.c]) break;
-                    if(check[r][c] != -1){
-                        //System.out.println("in");
-                        if(count > 2){
-                            System.out.println("왼쪽" + check[p.r][p.c] + " " + check[p.r][c]);
-                            System.out.println("count " + count );
-                            if(adjArr[p.r][c] == 0){
-                                adjArr[p.r][c] = count;
-                            }
-                            else {
-                                adjArr[check[p.r][p.c]][check[p.r][c]] = Math.min(adjArr[check[p.r][p.c]][check[p.r][c]], count);
-                            }
-                            break;
-                        }
-                    }
-                    count++;
-                }
-                //위
-                count = 0;
-                for (int r = p.r-1; r >= 0; r--) {
-                    if(check[r][p.c] == check[p.r][p.c]) break;
-                    if(check[r][p.c] != -1){
-                        //System.out.println("in");
-                        if(count > 2){
-                            System.out.println("위로" + check[p.r][p.c] + " " + check[r][p.c]);
-                            System.out.println("count " + count );
-                            if(adjArr[p.r][p.c] == 0){
-                                adjArr[p.r][p.c] = count;
-                            }
-                            else {
-                                adjArr[r][p.c] = Math.min(adjArr[r][p.c], count);
-                            }
-                            break;
-                        }
-                    }
-                    count++;
-                }
-                //오
-                count = 0;
-                for (int c = p.c+1; c < M; c++) {
-                    if(check[p.r][p.c] == check[p.r][c]) break;
-                    if(check[p.r][c] != -1){
-                        //System.out.println("in");
-                        if(count > 2){
-                            System.out.println("오른 " + check[p.r][p.c] + " " + check[p.r][c]);
-                            System.out.println("count " + count );
-                            if(adjArr[p.r][c] == 0){
-                                adjArr[p.r][c] = count;
-                            }
-                            else {
-                                adjArr[p.r][c] = Math.min(adjArr[p.r][c], count);
-                            }
-                            break;
-                        }
-                    }
-                    count++;
-                }
-                //아래
-                count = 0;
-                for (int r = p.r+1; r < N; r++) {
-                    if(check[p.r][p.c] == check[r][p.c]) break;
-                    if(check[p.r][p.c] != -1){
-                        //System.out.println("in");
-                        if(count > 2){
-                            System.out.println("오른 " + check[p.r][p.c] + " " + check[r][p.c]);
-                            System.out.println("count " + count );
-                            if(adjArr[r][p.c] == 0){
-                                adjArr[r][p.c] = count;
-                            }
-                            else {
-                                adjArr[r][p.c] = Math.min(adjArr[r][p.c], count);
-                            }
-                            break;
-                        }
-                    }
-                    count++;
                 }
             }
         }
 
+
     }
 
-    private static void makeGroup(int[][] map) {
+    private static void makeGroup() {
         groupSize = 1;
         for (int row = 0; row < N; row++) {
             for (int col = 0; col < M; col++) {
                 if (check[row][col] == 0) {
                     bfs(row, col);
-                    groupSize++;
+                    groupSize++; //1부터 증가함
                 }
             }
 
         }
-        groupList = new ArrayList[groupSize - 1];
-        for (int g = 0; g < groupSize - 1; g++) {
+        // 싸이즈가 3이면 3개 만들고 1 2 까지만 돌지 않음? 경우수가 한 16퍼에 서 꺠짐
+        groupList = new ArrayList[groupSize];
+        for (int g = 1; g < groupSize; g++) {
             groupList[g] = new ArrayList<>();
         }
         for (int row = 0; row < N; row++) {
             for (int col = 0; col < M; col++) {
                 if (check[row][col] >= 1) {
-                    groupList[check[row][col] - 1].add(new Point(row, col, check[row][col] - 1));
+                    groupList[check[row][col]].add(new Point(row, col, check[row][col]));
                 }
 
             }
@@ -249,18 +233,19 @@ public class Main {
         return nr >= 0 && nr < N && nc >= 0 && nc < M;
     }
 
+    // 디버깅용
     public static void printArray(int[][] inputMap) {
 
         for (int[] row : inputMap) {
             for (int i = 0; i < M; i++) {
                 System.out.print(row[i] == -1 ? "f " : row[i] + " ");
             }
-            ;
             System.out.println();
         }
         System.out.println();
     }
 
+    // 디버깅용
     public static void printArray(ArrayList<Point>[] inputMap) {
         for (ArrayList<Point> row : inputMap) {
             System.out.println(row);
