@@ -74,7 +74,6 @@ public class Solution {
                     if (value > 0) {
                         map[row + Time][col + Time] = new Cell(row + Time, col + Time, value, 0, value, value);
                         pq.add(new Cell(row + Time, col + Time, value, 0, value, value));
-
                     }
                 }
             }
@@ -100,10 +99,7 @@ public class Solution {
                 }
             }
             System.out.printf("#%d %d\n",tc+1,resCount);
-
-
         }
-
     }
 
     private static void pushPq() {
@@ -118,17 +114,6 @@ public class Solution {
     }
 
     private static void growth() {
-        // 비활성 상태면 비활성 수를 내리고
-        // 내린수가 영이면 활성화로 바꾼다
-        // 0 이 아니여도 pq 에 다시 넣는다
-
-        // 활성상태면 활성카운트 내리고
-        // 퍼트리고
-        // map 에 넣는다 // 이러면pq 가지고도 할수 있찌 않음>
-        // 내릴 수가 영이면
-        // 죽은상태로 만들고
-        // 0이아니면 pq 에 넣는다.
-        // pq 에 넣지 않고 맵에 넣는다..
         PriorityQueue<Cell> q = new PriorityQueue<>();
         int[][] del = {{0, -1}, {-1, 0}, {0, 1}, {1, 0}};
         while (!pq.isEmpty()) {
@@ -137,7 +122,6 @@ public class Solution {
             int currState = currCell.state;
             switch (currState) {
                 case -1:
-
                     break;
                 case 0:
                     // 비활성화
