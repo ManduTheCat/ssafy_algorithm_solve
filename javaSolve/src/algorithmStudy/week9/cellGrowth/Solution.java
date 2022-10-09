@@ -80,6 +80,7 @@ public class Solution {
             growth();
             // 큐에 다시 넣어줘야한다
             pushPq();
+            printMap(map);
 
 
             // 2시간
@@ -87,11 +88,31 @@ public class Solution {
             // 큐에 다시 넣어줘야한다
             pushPq();
             printMap(map);
+
+
             //3시간
             growth();
             // 큐에 다시 넣어줘야한다
             pushPq();
-            System.out.println(pq);
+            printMap(map);
+
+            // 4시간
+            growth();
+            // 큐에 다시 넣어줘야한다
+            pushPq();
+            printMap(map);
+
+
+            // 5시간
+            growth();
+            // 큐에 다시 넣어줘야한다
+            pushPq();
+            printMap(map);
+
+            // 6시간
+            growth();
+            // 큐에 다시 넣어줘야한다
+            pushPq();
             printMap(map);
         }
 
@@ -158,10 +179,14 @@ public class Solution {
                                 // 새로주기를 시작하는 세포들
                                 map[nr][nc] = new Cell(nr, nc, currCell.liveInfo, 0,
                                         currCell.liveInfo, currCell.liveInfo);
-                                //System.out.println("add" + map[nr][nc]);
+                                if(nr > 11){
+                                    System.out.println(currCell +" => "+ map[nr][nc]);
+                                }
                             }
                         }
-                    }if(currCell.aliveCount== 0  ){
+                    }
+                    // 만약 수명이 이번 시간에 끝난다면 죽음 처리
+                    if (currCell.state != -1 && currCell.aliveCount == 0) {
                         map[currCell.r][currCell.c] = new Cell(currCell.r, currCell.c, currCell.liveInfo, -1,
                                 currCell.aliveCount, currCell.disableCount);
                     }
@@ -173,13 +198,13 @@ public class Solution {
     }
 
     // 빈칸이면 가능하고 죽은 세포면 불가능한다
-    private static boolean checkDeadCell(int nr, int nc , Cell currCell) {
+    private static boolean checkDeadCell(int nr, int nc, Cell currCell) {
         if (map[nr][nc] != null && map[nr][nc].state == -1) {
             return false;
-        }else if(map[nr][nc] != null && map[nr][nc].liveInfo >= currCell.liveInfo){
-            System.out.println(nr+" "+nc + "vs" + currCell);
+        } else if (map[nr][nc] != null&& !(map[nr][nc].liveInfo >= currCell.liveInfo)) {
             return false;
         }
+        //System.out.println(map[nr][nc]+" " + "vs " + currCell);
         return true;
     }
 
@@ -192,12 +217,14 @@ public class Solution {
         for (int row = 0; row < ROW; row++) {
             for (int col = 0; col < COL; col++) {
                 Cell curr = map[row][col];
-                if (curr != null) {
-                    if (curr.state == -1)System.out.print("D ");
+                if (row == 0 && col != 0) System.out.print(col >=10 ? col+" ": col+"  ");
+                else if (col == 0 && row != 0) System.out.print(row >=10?  row: row+" ");
+                else if (curr != null) {
+                    if (curr.state == -1) System.out.print("D ");
 
                     else System.out.print(curr.liveInfo + " ");
                 } else {
-                    System.out.print("  ");
+                    System.out.print(". ");
                 }
             }
             System.out.println();
