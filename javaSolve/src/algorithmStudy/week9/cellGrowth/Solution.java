@@ -5,7 +5,9 @@ import java.io.BufferedReader;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.ArrayDeque;
 import java.util.PriorityQueue;
+import java.util.Queue;
 import java.util.StringTokenizer;
 
 class Cell implements Comparable<Cell> {
@@ -14,6 +16,7 @@ class Cell implements Comparable<Cell> {
     int state;
     int aliveCount;
     int disableCount;
+
 
     public Cell(int r, int c, int liveInfo, int state, int aliveCount, int disableCount) {
         this.r = r;
@@ -49,6 +52,7 @@ public class Solution {
     static int ROW, COL;
     static Cell[][] map;
     static PriorityQueue<Cell> pq;
+    static Cell[][] newMap ;
 
     public static void main(String[] args) throws IOException {
         System.setIn(new FileInputStream("resources/study/week9/swea5653/input1.txt"));
@@ -59,8 +63,8 @@ public class Solution {
             N = Integer.parseInt(st.nextToken());
             M = Integer.parseInt(st.nextToken());
             Time = Integer.parseInt(st.nextToken());
-            ROW = N + 2 * Time;
-            COL = M + 2 * Time;
+            ROW = 500;
+            COL = 500;
             map = new Cell[ROW][COL];
             pq = new PriorityQueue<>();
             for (int row = 0; row < N; row++) {
@@ -74,46 +78,30 @@ public class Solution {
                     }
                 }
             }
-            //1 시간
+
+            for (int i = 1; i <= Time; i++) {
+                //System.out.println(i);
+                // n^2 *
+                growth();
+                // 큐에 다시 넣어줘야한다
+                pushPq();
+                //printMap(map);
 
 
-            growth();
-            // 큐에 다시 넣어줘야한다
-            pushPq();
-            printMap(map);
+            }
+            int resCount = 0;
+            for (int row = 0; row < ROW; row++) {
+                for (int col = 0; col < COL; col++) {
+                    if(map[row][col] != null){
+
+                        Cell currCell = map[row][col];
+                        if(currCell.state!= -1 )resCount++;
+                    }
+                }
+            }
+            System.out.printf("#%d %d\n",tc+1,resCount);
 
 
-            // 2시간
-            growth();
-            // 큐에 다시 넣어줘야한다
-            pushPq();
-            printMap(map);
-
-
-            //3시간
-            growth();
-            // 큐에 다시 넣어줘야한다
-            pushPq();
-            printMap(map);
-
-            // 4시간
-            growth();
-            // 큐에 다시 넣어줘야한다
-            pushPq();
-            printMap(map);
-
-
-            // 5시간
-            growth();
-            // 큐에 다시 넣어줘야한다
-            pushPq();
-            printMap(map);
-
-            // 6시간
-            growth();
-            // 큐에 다시 넣어줘야한다
-            pushPq();
-            printMap(map);
         }
 
     }
@@ -141,7 +129,7 @@ public class Solution {
         // 죽은상태로 만들고
         // 0이아니면 pq 에 넣는다.
         // pq 에 넣지 않고 맵에 넣는다..
-
+        PriorityQueue<Cell> q = new PriorityQueue<>();
         int[][] del = {{0, -1}, {-1, 0}, {0, 1}, {1, 0}};
         while (!pq.isEmpty()) {
             Cell currCell = pq.poll();
@@ -152,7 +140,6 @@ public class Solution {
 
                     break;
                 case 0:
-
                     // 비활성화
                     currCell.disableCount -= 1;
                     if (currCell.disableCount == 0) {
@@ -163,9 +150,11 @@ public class Solution {
                     break;
                 case 1:
                     currCell.aliveCount -= 1;
+
                     // 만약 깍았는데 수명이 0 이면 죽능걸로 처리
 
                     // 이전에 막 활성화가 된거라면 지금 확장되야한다
+
                     if (currCell.liveInfo - 1 == currCell.aliveCount) {
                         // 확장
                         for (int d = 0; d < 4; d++) {
@@ -174,14 +163,8 @@ public class Solution {
                             // 범위 안에 있고 만약 죽은 세포가 아니라면 넣어라
                             // pq 이기 떄문에 큰 주기를 가진 친구 나중에 나와서 덮어씌운다
                             if (isIn(nr, nc) && checkDeadCell(nr, nc, currCell)) {
-                                //System.out.print(currCell + " -> ");
-                                //System.out.printf("nr %d : nc %d\n", nr, nc);
-                                // 새로주기를 시작하는 세포들
-                                map[nr][nc] = new Cell(nr, nc, currCell.liveInfo, 0,
-                                        currCell.liveInfo, currCell.liveInfo);
-                                if(nr > 11){
-                                    System.out.println(currCell +" => "+ map[nr][nc]);
-                                }
+                                q.add(new Cell(nr, nc, currCell.liveInfo, 0,
+                                        currCell.liveInfo, currCell.liveInfo));
                             }
                         }
                     }
@@ -190,18 +173,45 @@ public class Solution {
                         map[currCell.r][currCell.c] = new Cell(currCell.r, currCell.c, currCell.liveInfo, -1,
                                 currCell.aliveCount, currCell.disableCount);
                     }
-
                     break;
             }
-
         }
+        // 다돌고 처리
+        processGrowth(q);
+    }
+
+    private static void processGrowth(Queue<Cell> q) {
+         newMap= new Cell[ROW][COL];
+        // 큐를 돌면서 새맵에 먼저기록
+        while (!q.isEmpty()){
+            Cell currCell = q.poll();
+            int nr = currCell.r;
+            int nc = currCell.c;
+            newMap[nr][nc] = currCell;
+        }
+
+        for (int row = 0; row < ROW; row++) {
+            for (int col = 0; col < COL; col++) {
+                Cell originMapValue = map[row][col];
+                if(originMapValue != null){
+                    newMap[row][col] = map[row][col];
+                }
+            }
+        }
+        for (int row = 0; row < ROW; row++) {
+            for (int col = 0; col < COL; col++) {
+                map[row][col] = newMap[row][col];
+            }
+        }
+        // 기존 맵에서 값가져와서 덮어씌우기
     }
 
     // 빈칸이면 가능하고 죽은 세포면 불가능한다
     private static boolean checkDeadCell(int nr, int nc, Cell currCell) {
         if (map[nr][nc] != null && map[nr][nc].state == -1) {
             return false;
-        } else if (map[nr][nc] != null&& !(map[nr][nc].liveInfo >= currCell.liveInfo)) {
+        }
+        else if (map[nr][nc] != null&& !(map[nr][nc].liveInfo >= currCell.liveInfo)) {
             return false;
         }
         //System.out.println(map[nr][nc]+" " + "vs " + currCell);
@@ -228,7 +238,6 @@ public class Solution {
                 }
             }
             System.out.println();
-
         }
     }
 
