@@ -21,7 +21,7 @@ public class Solution {
 
     static int powerSum;
     static boolean[] powerSetCheck;
-    static ArrayList<Integer> resultHoneyHouse;
+    static int [] resultHoneyHouse;
 
     public static void main(String[] args) throws IOException {
         System.setIn(new FileInputStream("resources/daily/swea2115/input3.txt"));
@@ -107,7 +107,6 @@ public class Solution {
             }
         }
         int sum = 0;
-        System.out.println(Arrays.toString(honeyMan1));
         ArrayList<Integer> honey1 = mesermentHoney(honeyMan1);
         ArrayList<Integer> honey2 = mesermentHoney(honeyMan2);
         System.out.println(honey1);
@@ -136,10 +135,8 @@ public class Solution {
             sum += el;
         }
         if(sum > C){
-            resultHoneyHouse = new ArrayList<>();
             powerSet(honeyMan, 0);
             System.out.println("res :" + resultHoneyHouse);
-            return resultHoneyHouse;
         }
         for(int el : honeyMan){
             temp.add(el);
@@ -151,7 +148,6 @@ public class Solution {
     private static void powerSet(int[] honeyMan, int depth) {
 
         if(depth == M){
-
             int sum = 0;
             int choseCount = 0;
             for (int i = 0; i < M; i++) {
@@ -159,21 +155,17 @@ public class Solution {
                     choseCount++;
                     sum+=honeyMan[i];
                 }
-            }
-            if(choseCount < M){
-
-                //System.out.println("count : " +choseCount);
-                sum = sum > C ? 0 : sum;
-                if(powerSum < sum){
-                    powerSum = sum;
-                    for (int i = 0; i < M; i++) {
-                        //System.out.print(honeyMan[i]);
-                        if(powerSetCheck[i]){
-                            resultHoneyHouse.add(honeyMan[i]);
-                        }
+                // 여기서 결과 보네야함
+            }if(sum < C){
+                resultHoneyHouse = new int[choseCount];
+                int idx = 0;
+                for(int i = 0; i < M; i++){
+                    if(powerSetCheck[i]){
+                        resultHoneyHouse[idx++]=i;
                     }
                 }
             }
+
             return ;
         }
         powerSetCheck[depth] = true;
