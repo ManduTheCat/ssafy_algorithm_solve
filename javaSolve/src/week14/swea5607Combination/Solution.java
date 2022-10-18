@@ -9,7 +9,7 @@ public class Solution {
     static int N;
     static int P;
     static final int Mod = 1234567891;
-
+    // 페르마 마지막 정리를 활용한 풀이
     public static void main(String[] args) throws IOException {
         System.setIn(new FileInputStream("resources/week14/swea5607/input.txt"));
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
