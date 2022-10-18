@@ -80,7 +80,7 @@ public class Main {
             PriorityQueue<IndexAndDouble> pq = new PriorityQueue<>();
             boolean[] resMin = new boolean[N];
             for (int idx = 0; idx < N; idx++) {
-                pq.add(new IndexAndDouble(idx, props[idx]));
+                pq.offer(new IndexAndDouble(idx, props[idx]));
             }
             while (!pq.isEmpty()){
                 IndexAndDouble curr= pq.poll();
