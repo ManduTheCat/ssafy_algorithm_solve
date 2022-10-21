@@ -70,8 +70,14 @@ public class Main {
             st = new StringTokenizer(br.readLine());
             int point = Integer.parseInt(st.nextToken());
             int student = Integer.parseInt(st.nextToken());
-
-
+            int dist = Math.abs(S - point);
+            if (point < S){
+                // 왼쪽에 있따
+                left.add(new AptPoint(student,dist, point));
+            }else{
+                // 오른쪽에 있다
+                right.add(new AptPoint(student, dist, point));
+            }
         }
 
 
