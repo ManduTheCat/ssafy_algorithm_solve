@@ -29,30 +29,28 @@ public class Solution {
             }
         }
 
-        //System.out.println(Arrays.toString(adjList));
-        //System.out.println(dungeonList);
-
         for (int i = 0; i <dungeons.length ; i++) {
             check[i] = true;
             dfs(i, K,1);
             check[i] = false;
         }
-        //System.out.println(maxDepth);
+
         return maxDepth;
     }
 
     private void dfs(int startNode, int k, int depth) {
         maxDepth = Math.max(maxDepth, depth);
+        //dfs 가 재대로 돌지 않는거 같은데 .. 리턴이 없어서 그런건가?
         //check[startNode] = true;
-        ArrayList<Integer> nextNodeList = adjList[startNode];
+        ArrayList nextNodeList = adjList[startNode];
         for (int nextNodeIndex = 0; nextNodeIndex < nextNodeList.size() ;nextNodeIndex++) {
             Dungeon nextNode = dungeonList.get(nextNodeIndex);
             if(!check[nextNodeIndex] && k >= nextNode.requiredTired ){
-                //System.out.println(k + " vs " + nextNode);
-
+                check[nextNodeIndex] = true;
                 dfs(nextNodeIndex, k- nextNode.spendTired, depth + 1);
-                //check[startNode] = false;
+                check[nextNodeIndex]= false;
             }
+
         }
 
     }
