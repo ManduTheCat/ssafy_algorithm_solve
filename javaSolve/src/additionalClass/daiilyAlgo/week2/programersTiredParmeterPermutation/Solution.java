@@ -1,5 +1,7 @@
 package additionalClass.daiilyAlgo.week2.programersTiredParmeterPermutation;
 
+import java.util.Arrays;
+
 // Permutation 풀이
 public class Solution {
     int[][] permutationRes;
@@ -15,10 +17,11 @@ public class Solution {
         permutation(0, dungeons);
         return maxSearchCount;
     }
-
+    
+    // 가능한 방문순서 구하는순열 최대 8! 4만정도
     private void permutation(int depth, int[][] dungeons) {
         if(depth == dungeonLen){
-            //System.out.println(Arrays.deepToString(permutationRes));
+            System.out.println(Arrays.deepToString(permutationRes));
             maxSearchCount = Math.max(maxSearchCount, countingSearch());
             return;
         }
@@ -30,25 +33,23 @@ public class Solution {
                 check[i] = false;
             }
         }
-
     }
 
+    // 현재 경우의 수에서 가능한 방문 깊이를 구하는 (searchCount) 함수
     private int countingSearch() {
         int currK = K;
         int searchCount = 0;
         for(int [] dungeon : permutationRes){
             searchCount+=1;
-            int requiredTired = dungeon[0];
-            int payTired = dungeon[1];
-            //System.out.println(currK + "vs" + requiredTired);
-            if(currK < requiredTired) {
-                //System.out.println("isBreaked");
-                searchCount-=1;
-                return searchCount;
+            int requiredTired = dungeon[0]; // 요구하는 피로도
+            int payTired = dungeon[1]; // 소모하는 피로도
+            if(currK < requiredTired) {// 방문이 불가능하면
+                searchCount-=1; // 카운트 까고 
+                return searchCount; // 리턴한다
             }
-            currK-=payTired;
+            currK-=payTired; // 피로도 소모
         }
-        return searchCount;
+        return searchCount; // 다도는경우 리턴
 
     }
 }
