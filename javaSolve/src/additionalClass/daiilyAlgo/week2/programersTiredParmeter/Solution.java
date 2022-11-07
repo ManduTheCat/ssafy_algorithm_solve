@@ -30,9 +30,14 @@ public class Solution {
         }
 
         for (int i = 0; i < dungeons.length; i++) {
-            check[i] = true;
-            dfs(i, K, 1);
-            check[i] = false;
+            //피로도가 충분한지 검사
+            if(K >= dungeonList.get(i).requiredTired){
+                check[i] = true; //80
+                // 들어갈때 빼줘야했다.
+
+                dfs(i, K-dungeonList.get(i).spendTired, 1);
+                check[i] = false;
+            }
         }
 
         return maxDepth;
@@ -42,14 +47,16 @@ public class Solution {
         maxDepth = Math.max(maxDepth, depth);
         //dfs 가 재대로 돌지 않는거 같은데 .. 리턴이 없어서 그런건가?
         //check[startNode] = true;
-        ArrayList nextNodeList = adjList[startNode];// 다음방문가능한adj 리스트 가져오기
+
+        // type check
+        ArrayList<Integer> nextNodeList = adjList[startNode];// 다음방문 가능한adj 리스트 가져오기
         for (int nextNodeIndex = 0; nextNodeIndex < nextNodeList.size(); nextNodeIndex++) {
-            Dungeon nextNode = dungeonList.get(nextNodeIndex);
-            if (!check[nextNodeIndex] && k >= nextNode.requiredTired) {
+            Dungeon nextNode = dungeonList.get(nextNodeList.get(nextNodeIndex));
+            if (!check[nextNodeList.get(nextNodeIndex)] && k >= nextNode.requiredTired) {
                 // 다음 노드는 방문한적이 없어야하고 요구한 피로도보다 현재피로도보다 많아야한다
-                check[nextNodeIndex] = true;
-                dfs(nextNodeIndex, k - nextNode.spendTired, depth + 1);
-                check[nextNodeIndex] = false; // 경로를 구해야하기 때문에 재방문이 가능해야한다.
+                check[nextNodeList.get(nextNodeIndex)] = true;
+                dfs(nextNodeList.get(nextNodeIndex), k - nextNode.spendTired, depth + 1);
+                check[nextNodeList.get(nextNodeIndex)] = false; // 경로를 구해야하기 때문에 재방문이 가능해야한다.
             }
 
         }
