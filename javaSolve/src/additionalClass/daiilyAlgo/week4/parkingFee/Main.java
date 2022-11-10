@@ -1,5 +1,7 @@
 package additionalClass.daiilyAlgo.week4.parkingFee;
 
+import java.util.Arrays;
+
 public class Main {
     public static void main(String[] args) {
         int[] fee = {180, 5000, 10, 600};
@@ -10,6 +12,8 @@ public class Main {
         int [] fee3 ={1, 461, 1, 10};
         String [] records3= {"00:00 1234 IN"};
         Solution solution = new Solution();
-        solution.solution(fee3, records3);
+        System.out.println("res" + Arrays.toString(solution.solution(fee, records)));
+        System.out.println("res" + Arrays.toString(solution.solution(fee2, records2)));
+        //System.out.println(Arrays.toString(solution.solution(fee3, records3)));
     }
 }
