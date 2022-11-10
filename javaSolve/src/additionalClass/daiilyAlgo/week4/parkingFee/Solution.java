@@ -1,5 +1,6 @@
 package additionalClass.daiilyAlgo.week4.parkingFee;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Set;
 
@@ -13,15 +14,36 @@ public class Solution {
             processRest(restParKingList);
         }
         System.out.println(timeAcc);
+
+
+        calculateFee(fees, timeAcc);
+
+
+        return new int[]{};
+    }
+
+    private void calculateFee(int[] fees, HashMap<String, Float> timeAcc) {
+        int defaultTime = fees[0];
+        int defaultFee = fees [1];
+        int standardTime = fees[2];
+        int standardFee = fees[3];
         // 기본 단위보다 작다
         // 기본 요금만 낸다
+        for(String key :timeAcc.keySet()){
+            float cullTime = timeAcc.get(key);
+            int fee = 0;
+            if(cullTime <= defaultTime){
+                fee = defaultFee;
+            }
+            else {
+                // 기본 단위 보다 크다
+                // 기본단위 만큼 뺀다
+                // 뺀거에서 단위 시간 으로 나눈다 나눈 몪은 올림한다
+                // 몪만큼 요금을 곱한다
+                // 그리고 기본요금을 더한다.
+            }
+        }
 
-        // 기본 단위 보다 크다
-        // 기본단위 만큼 뺀다
-        // 뺀거에서 단위 시간 으로 나눈다 나눈 몪은 올림한다
-        // 몪만큼 요금을 곱한다
-        // 그리고 기본요금을 더한다.
-        return new int[]{};
     }
 
     private void processRest(HashMap<String, ParkingInfo> restParKingList) {
