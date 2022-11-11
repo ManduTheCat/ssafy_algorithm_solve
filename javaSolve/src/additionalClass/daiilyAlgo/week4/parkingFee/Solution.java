@@ -4,13 +4,14 @@ import java.util.*;
 
 public class Solution {
     static HashMap<String, Float> timeAcc;
+    // 시간 복잡도 O(N* N) == 자세히는  O(N*N + N + N)
     public int[] solution(int[] fees, String[] records) {
         timeAcc = new HashMap<>();
-        HashMap<String, ParkingInfo> restParKingList = parseRecode(records);
+        HashMap<String, ParkingInfo> restParKingList = parseRecode(records); // O(N * N)
         if (restParKingList.size() != 0) {
-            processRest(restParKingList);
+            processRest(restParKingList); // O(N)
         }
-        return calculateFee(fees, timeAcc);
+        return calculateFee(fees, timeAcc);  // O(N)
     }
 
     private int[]  calculateFee(int[] fees, HashMap<String, Float> timeAcc) {
@@ -23,7 +24,7 @@ public class Solution {
         // 기본 단위보다 작다
         // 기본 요금만 낸다
         int idx = 0;
-        for(String key :timeAcc.keySet()){
+        for(String key :timeAcc.keySet()){ // 시간 복잡도 최악 N
             sortedKeySet[idx ++] = key;
             float curTime = timeAcc.get(key);
             int fee = 0;
@@ -44,12 +45,12 @@ public class Solution {
                 res.put(key, fee);
             }
         }
-        Arrays.sort(sortedKeySet);
+        Arrays.sort(sortedKeySet); // 퀵소트 NlogN
         Arrays.toString(sortedKeySet);
         int [] returnArray = new int[sortedKeySet.length];
         int i = 0;
         // 정렬된 키값으로 값을 가져온다
-        for(String key : sortedKeySet){
+        for(String key : sortedKeySet){ // 시간 복잡도 N
             returnArray[i++] = res.get(key);
         }
         return  returnArray;
@@ -57,8 +58,9 @@ public class Solution {
     }
 
     private void processRest(HashMap<String, ParkingInfo> restParKingList) {
-        //있는데 안나간거 처리
-        // 23:59 - 남아 있는 시간
+        // 들어왔지만 나가지 않은 차량을 계산 하기 위한 함수
+        // 들어가지만 나가지 않는 함수는 parseRecode 에 의해 restParKingList에 담겨 있다.
+    	// 시간 복잡도 최악 N  이유 : 키가 N 존재 가능
         float maxMin = 23 * 60 + 59;
         for (String key : restParKingList.keySet()) {
             // 만약에 timeAcc 에 있다면 이전에 온게 있으니 누산해야하고
@@ -73,8 +75,10 @@ public class Solution {
     }
 
     private HashMap<String, ParkingInfo> parseRecode(String[] records) {
+        // 문자열을 파싱해서 점수계산으로 보네는 함수
+    	//시간복잡도 N * calculateTimeDiff O(N) = O(N^2)
         HashMap<String, ParkingInfo> res = new HashMap<>();
-        for (String infoString : records) {
+        for (String infoString : records) { //
             String[] splitInfo = infoString.split(" ");
             String Time = splitInfo[0];
             String[] splitTime = Time.split(":");
@@ -94,8 +98,9 @@ public class Solution {
         return res;
     }
 
-    // 자동차별 총 누적시간당 요금을 구해야한다.
+    // 자동차별 총 누적시간당 요금을 구하는 함수
     private void calculateTimeDiff(ParkingInfo parkingInfo, ParkingInfo parkingInfoTarget) {
+    	// 시간 복잡도 최악 N
         float diff = parkingInfoTarget.min - parkingInfo.min;
         if (!timeAcc.containsKey(parkingInfo.number)) {
             timeAcc.put(parkingInfo.number, diff);
