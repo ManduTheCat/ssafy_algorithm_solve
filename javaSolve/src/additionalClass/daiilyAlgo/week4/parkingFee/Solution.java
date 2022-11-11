@@ -1,8 +1,6 @@
 package additionalClass.daiilyAlgo.week4.parkingFee;
 
-import java.beans.Introspector;
 import java.util.*;
-
 
 public class Solution {
     static HashMap<String, Float> timeAcc;
@@ -12,8 +10,6 @@ public class Solution {
         if (restParKingList.size() != 0) {
             processRest(restParKingList);
         }
-        //System.out.println(timeAcc);
-
         return calculateFee(fees, timeAcc);
     }
 
@@ -50,13 +46,12 @@ public class Solution {
         }
         Arrays.sort(sortedKeySet);
         Arrays.toString(sortedKeySet);
-        //System.out.println(Arrays.toString(sortedKeySet));
         int [] returnArray = new int[sortedKeySet.length];
         int i = 0;
+        // 정렬된 키값으로 값을 가져온다
         for(String key : sortedKeySet){
             returnArray[i++] = res.get(key);
         }
-        //System.out.println(Arrays.toString(returnArray));
         return  returnArray;
 
     }
@@ -74,9 +69,7 @@ public class Solution {
             } else {
                 timeAcc.put(key, timeAcc.get(key) + maxMin - curInfo.min);
             }
-
         }
-
     }
 
     private HashMap<String, ParkingInfo> parseRecode(String[] records) {
@@ -93,23 +86,18 @@ public class Solution {
                 // 없으면 넣고
                 res.put(number, new ParkingInfo(min, number));
             } else {
-                //System.out.println(number);
                 // 있다면 빼버려라// 이렇게 하면 out 만 빼넬수 있다.
                 calculateTimeDiff(res.get(number), new ParkingInfo(min, number));
-
                 res.remove(number);
             }
         }
-
         return res;
     }
 
     // 자동차별 총 누적시간당 요금을 구해야한다.
     private void calculateTimeDiff(ParkingInfo parkingInfo, ParkingInfo parkingInfoTarget) {
-        //System.out.println(parkingInfo + "vs" + parkingInfoTarget + " = " + (parkingInfoTarget.min - parkingInfo.min));
         float diff = parkingInfoTarget.min - parkingInfo.min;
         if (!timeAcc.containsKey(parkingInfo.number)) {
-
             timeAcc.put(parkingInfo.number, diff);
         } else {
             timeAcc.put(parkingInfo.number, timeAcc.get(parkingInfo.number) + diff);
