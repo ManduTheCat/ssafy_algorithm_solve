@@ -71,7 +71,9 @@ public class Solution {
             } else {
                 timeAcc.put(key, timeAcc.get(key) + maxMin - curInfo.min);
             }
+
         }
+
     }
 
     private HashMap<String, ParkingInfo> parseRecode(String[] records) {
@@ -90,11 +92,14 @@ public class Solution {
                 // 없으면 넣고
                 res.put(number, new ParkingInfo(min, number));
             } else {
+                System.out.println(number);
                 // 있다면 빼버려라// 이렇게 하면 out 만 빼넬수 있다.
                 calculateTimeDiff(res.get(number), new ParkingInfo(min, number));
+
                 res.remove(number);
             }
         }
+
         return res;
     }
 
