@@ -6,6 +6,8 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.*;
 
+// 시간 복잡도 계산해보기
+// pow 불필요한 부분제거 = 전부다 돌지 않게 만든다.
 public class Solution {
     // 부분집합으로 경우의 수를구하는데 이때 검사하면서 최소 경우의수를 기억한다
     // 만약 다음 부분집합이 최소 경우수보다 크다면 들어가지 않는다.
