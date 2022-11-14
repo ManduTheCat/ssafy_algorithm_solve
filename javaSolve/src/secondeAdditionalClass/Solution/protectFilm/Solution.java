@@ -18,7 +18,7 @@ public class Solution {
     static int minCount;
 
     public static void main(String[] args) throws IOException {
-        System.setIn(new FileInputStream("resources/secondClass/sweaFilm/input.txt"));
+        System.setIn(new FileInputStream("resources/secondClass/sweaFilm/input2.txt"));
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         Tc = Integer.parseInt(br.readLine());
         for (int tc = 0; tc < Tc; tc++) {
@@ -26,7 +26,7 @@ public class Solution {
             D = Integer.parseInt(st.nextToken());
             W = Integer.parseInt(st.nextToken());
             K = Integer.parseInt(st.nextToken());
-            minCount = W;
+            minCount = K;
             powerSelect = new boolean[D];
             film = new int[D][W];
             for (int d = 0; d < D; d++) {
@@ -39,10 +39,9 @@ public class Solution {
             //System.out.println(Arrays.deepToString(film));
             //System.out.println(checkVaild(film));
             //System.out.println(checkLine(new int []{1,1,1,1,1,0}));
-            if (checkVaild(film) || K == 1) {
+            if (checkVaild(film) || K== 1) {
                 System.out.printf("#%d %d\n", tc + 1, 0);
-            }
-            else {
+            } else {
                 power(0);
                 System.out.printf("#%d %d\n", tc + 1, minCount);
             }
@@ -54,7 +53,10 @@ public class Solution {
         if (depth == D) {
             int selectCount = 0;
             for (boolean idSelect : powerSelect) {
-                if (idSelect) selectCount++;
+                if (idSelect){
+                    selectCount++;
+                    if(selectCount >= minCount)return;
+                }
             }
             if (selectCount < minCount) {
                 changeFilm(0, deepCopy(film));
