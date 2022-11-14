@@ -112,13 +112,13 @@ public class Solution {
             for (int d = 0; d < D; d++) {
                 line[d] = film[d][w];
             }
-            if (checkLine(line)) {
+            if (!checkLine(line)) {
                 //System.out.println(Arrays.toString(line));
-                validCount++;
+                return false;
             }
         }
         //System.out.println(validCount);
-        return validCount == W;
+        return true;
 
     }
 
