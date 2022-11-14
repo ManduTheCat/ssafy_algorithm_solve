@@ -1,4 +1,4 @@
-package secondeAdditionalClass.Solution;
+package secondeAdditionalClass.Solution.shelf;
 
 
 import java.io.BufferedReader;
@@ -8,6 +8,11 @@ import java.io.InputStreamReader;
 import java.util.Arrays;
 import java.util.StringTokenizer;
 
+
+// 부분집합풀이가능
+// 조합으로 풀이가능
+// target 을 몇개 뽑을거냐 를 나눠서 계산한다
+// dfs 가능
 public class Solution {
     static int Tc;
     static int N;
