@@ -6,7 +6,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.*;
 
-// 시간 복잡도 계산해보기
+// 시간 복잡도 계산해보기 2^(2^D) =  2^2^13
 // pow 불필요한 부분제거 = 전부다 돌지 않게 만든다.
 public class Solution {
     // 부분집합으로 경우의 수를구하는데 이때 검사하면서 최소 경우의수를 기억한다
@@ -52,6 +52,9 @@ public class Solution {
 
     // 약품 처리 할부분 선
     private static void power(int depth) {
+        // 여기를 선택한곳을 1로 채우냐 0으로 채우냐 로나눌수 있다
+        // 채우고 다시 되돌리기를 진행해야한다.
+        // 인자에 맵을 받아서 이전상태로 되돌려야한다.
         if (depth == D) {
             int selectCount = 0;
             for (boolean idSelect : powerSelect) {
