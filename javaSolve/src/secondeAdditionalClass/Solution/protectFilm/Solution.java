@@ -18,7 +18,7 @@ public class Solution {
     static int minCount;
 
     public static void main(String[] args) throws IOException {
-        System.setIn(new FileInputStream("resources/secondClass/sweaFilm/input2.txt"));
+        System.setIn(new FileInputStream("resources/secondClass/sweaFilm/input.txt"));
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         Tc = Integer.parseInt(br.readLine());
         for (int tc = 0; tc < Tc; tc++) {
@@ -26,7 +26,7 @@ public class Solution {
             D = Integer.parseInt(st.nextToken());
             W = Integer.parseInt(st.nextToken());
             K = Integer.parseInt(st.nextToken());
-            minCount = K;
+            minCount = K; // 왜?
             powerSelect = new boolean[D];
             film = new int[D][W];
             for (int d = 0; d < D; d++) {
@@ -48,7 +48,7 @@ public class Solution {
         }
     }
 
-    // 깊이중 선택해
+    // 약품 처리 할부분 선
     private static void power(int depth) {
         if (depth == D) {
             int selectCount = 0;
@@ -86,10 +86,11 @@ public class Solution {
                 for (boolean el : powerSelect) {
                     if (el) {
                         tCount++;
+                        if(tCount > minCount)return;
                     }
                 }
                 //System.out.println(tCount);
-                minCount = Math.min(minCount, tCount);
+                minCount = minCount > tCount ? tCount:minCount;
             }
             return;
         }
