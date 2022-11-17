@@ -1,4 +1,4 @@
-package secondeAdditionalClass.Solution.shelf;
+package secondeAdditionalClass.shelf;
 
 
 import java.io.BufferedReader;

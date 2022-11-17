@@ -1,4 +1,4 @@
-package secondeAdditionalClass.Solution.protectFilm;
+package secondeAdditionalClass.protectFilm;
 
 import java.io.BufferedReader;
 import java.io.FileInputStream;
