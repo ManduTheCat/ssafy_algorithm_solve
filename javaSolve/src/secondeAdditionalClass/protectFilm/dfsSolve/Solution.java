@@ -44,7 +44,7 @@ public class Solution {
     }
 
     private static void dfs(int [][] map, int depth, int changeCount) {
-
+    	// 
         if(depth == D){
             if(checkVaild(map)){
                 minCount = Math.min(minCount, changeCount);
