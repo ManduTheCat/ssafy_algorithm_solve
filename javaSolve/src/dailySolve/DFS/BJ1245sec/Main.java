@@ -53,9 +53,7 @@ public class Main {
             for (int col = 0; col < M; col++) {
                 if (!check[row][col] && map[row][col] != 0) {
                     // 이전에 방문 했던 봉우리면 다시 가지 않는다. 0 은 봉우리가 아니다
-                    //System.out.println("search "+ row +", "+ col);
                     boolean result = bfs(new Cordi(row, col));
-                    //System.out.println(result);
                     if (result) {
                         count++;
                     }
@@ -69,7 +67,7 @@ public class Main {
     private static boolean bfs(Cordi startCordi) {
         Queue<Cordi> q = new ArrayDeque<>();
         q.offer(startCordi);
-        if(!isTop(startCordi.r, startCordi.c)){
+        if(!isTop(startCordi.r, startCordi.c)){// 처음 부분 확인
             return false;
         }
         boolean[][] bfsCheck = new boolean[N][M];
@@ -91,8 +89,6 @@ public class Main {
                 }
             }
         }
-        //printArr(bfsCheck);
-        // curr 의 주변은 체크를 안합니다?
         return true;
     }
 
@@ -101,9 +97,7 @@ public class Main {
         for (int d = 0; d < 8; d++) {
             int checkR = curR + dArr[d][0];
             int checkC = curC + dArr[d][1];
-//            System.out.println("im check this " +map[checkR][checkC]);
             if (isIn(checkR, checkC) && map[checkR][checkC] > map[curR][curC]) {
-                //System.out.println("touch around hight");
                 return false;
             }
         }
@@ -112,15 +106,5 @@ public class Main {
 
     private static boolean isIn(int nextR, int nextC) {
         return nextR < N && nextR >= 0 && nextC < M && nextC >= 0;
-    }
-
-    private static void printArr(boolean[][] arr) {
-        for (boolean[] row : arr) {
-            for (boolean el : row) {
-                System.out.print(el ? 1 + " " : 0 + " ");
-            }
-            System.out.println();
-        }
-        System.out.println();
     }
 }
