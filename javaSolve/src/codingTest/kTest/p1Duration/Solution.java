@@ -1,4 +1,4 @@
-package codeingTest.kTest.p1Duration;
+package codingTest.kTest.p1Duration;
 import java.util.*;
 
 class Day_Terms {

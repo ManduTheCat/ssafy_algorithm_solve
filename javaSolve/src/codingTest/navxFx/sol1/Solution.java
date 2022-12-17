@@ -1,4 +1,4 @@
-package coadingTest.navxFx.sol1;
+package codingTest.navxFx.sol1;
 
 
 import java.util.*;
