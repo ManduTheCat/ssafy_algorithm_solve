@@ -5,7 +5,9 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayDeque;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Queue;
 public class Main {
 	// 터트리고 내려야한다.
@@ -26,7 +28,6 @@ public class Main {
 			String readRow = br.readLine();
 			for (int col = 0; col < COL; col++) {
 				String data = String.valueOf(readRow.charAt(col));
-				System.out.println(data);
 				board[row][col] = data;
 				if(data.equals(".")) check[row][col] = true;
 			}
@@ -36,7 +37,6 @@ public class Main {
 				if(!check[row][col]){
 					String startColor = board[row][col];
 					breakThings(new Cordi(row, col), startColor);
-					printMap(board);
 				}
 			}
 		}
@@ -62,14 +62,23 @@ public class Main {
 			this.row = row;
 			this.col = col;
 		}
+
+		@Override
+		public String toString() {
+			return "Cordi{" +
+				"row=" + row +
+				", col=" + col +
+				'}';
+		}
 	}
 	public static void breakThings(Cordi startPoint, String startColor){
 		Queue<Cordi> q = new ArrayDeque<>();
 		// 4방 탐색
 		int [][] dir  = {{0, -1},{-1, 0},{0,1},{1,0}};
+		List<Cordi> boomCandidate = new ArrayList<>();
 		// 위에서 부터 아래로 간단 // 제거된건 V 로 처리
 		q.add(new Cordi(startPoint.row,startPoint.col));
-		int SameCount = 0;
+		int sameCount = 0;
 		while (!q.isEmpty()){
 			// 같은 친구면 제거
 
@@ -80,14 +89,20 @@ public class Main {
 				if(isIn(nextRow, nextCol) && !check[nextRow][nextCol]
 					&& board[nextRow][nextCol].equals(startColor)){
 					check[nextRow][nextCol] = true;
-					q.add(new Cordi(nextRow, nextCol));
-					SameCount ++;
+					Cordi nextCordi = new Cordi(nextRow, nextCol);
+					q.add(nextCordi);
+					boomCandidate.add(nextCordi);
+					sameCount ++;
 				}
 			}
 		}
 		// 카운트를 기반으로 4개 이상이면 처리한다.
-
-		System.out.println(SameCount);
+		if(sameCount >= 4){
+			for(Cordi boomTarget : boomCandidate){
+				board[boomTarget.row][boomTarget.col] = "V";
+			}
+			printMap(board);
+		}
 	}
 
 	private static boolean isIn(int nextRow, int nextCol) {
