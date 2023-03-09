@@ -32,6 +32,7 @@ public class Main {
 				if(data.equals(".")) check[row][col] = true;
 			}
 		}
+		// 돌면서 부슨다. 리턴을 불리언으로 ?
 		for (int row = 0; row < ROW; row++) {
 			for (int col = 0; col < COL; col++) {
 				if(!check[row][col]){
@@ -40,6 +41,8 @@ public class Main {
 				}
 			}
 		}
+		// 땡긴다
+		// 검사하기 false 면 계속 부슨다.
 
 	}
 	public static  void printMap(String[][] map){
