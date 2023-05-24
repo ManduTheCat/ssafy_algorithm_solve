@@ -37,6 +37,7 @@ public class Main {
 		if(find(a).equals(find(b))){
 			return false;
 		}
+		parents.put(find(b), parents.get(a));
 		return true;
 	}
 }
