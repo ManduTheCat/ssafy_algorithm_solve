@@ -12,15 +12,15 @@ public class Solution {
         }
         for (String calling : callings) {
             Integer curRank = rankMap.get(calling);
-            String beforeName = null;
-            for (String s : rankMap.keySet()) {
-                if(rankMap.get(s) == curRank - 1){
-                    beforeName = s;
-                }
-            }
+            String beforeName = players[curRank-1];
 
-            rankMap.put(calling, rankMap.get(calling) - 1);
+            // swap
+            players[curRank-1] = calling;
+            players[curRank] = beforeName;
+            rankMap.put(calling, curRank-1); // 랭크를 앞으로 땡기고
             rankMap.put(beforeName, rankMap.get(beforeName) +1);
+            // System.out.println(rankMap);
+            // System.out.println(Arrays.toString(players));
         }
         for (String s : rankMap.keySet()) {
             answer[rankMap.get(s)] = s;
