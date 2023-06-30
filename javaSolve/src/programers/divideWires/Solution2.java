@@ -1,11 +1,15 @@
 package programers.divideWires;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Queue;
 
 /**
- * 통과 (11.85ms, 92.5MB)
  */
-class Solution {
+class Solution2 {
 	HashSet<Integer>[] adjList;
 	boolean[] check;
 	static int N;
@@ -25,26 +29,23 @@ class Solution {
 			HashSet<Integer> reversSet = adjList[dest];
 			reversSet.add(start);
 		}
-		System.out.println(Arrays.toString(adjList));
 
 		// System.out.println(bfs(4, adjList));
 		int answer = Integer.MAX_VALUE;
 
-		for (int[] deleteTarget : wires) { //N^2
+		for (int[] deleteTarget : wires) { //N^2 ??
 			check = new boolean[N + 1];
 			List<Integer> groupList = new ArrayList<>();
 			HashSet<Integer>[] cutAjdList = cut(deleteTarget);
-			for (int node = 1; node <= N; node++){ // 지금 전체다 돌고 있는데 자른 지점으로만 돌면 어떻게 될까
+			for (Integer node:deleteTarget){
 				if(!check[node]){
 					int groupCount = bfs(node, cutAjdList);
 					groupList.add(groupCount);
 				}
 			}
-			System.out.println(groupList);
 			answer = Math.min(answer,Math.abs((groupList.get(0) - groupList.get(1))));
-			// 쪼개고 다돌려본다.. N(N + (N -1))
+			// 쪼개고 다돌려본다.. N(N + (N -1)) ???
 		}
-		System.out.println(answer);
 		return answer;
 	}
 
