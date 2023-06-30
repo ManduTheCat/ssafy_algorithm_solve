@@ -49,6 +49,7 @@ public class Main {
 				}
 			}
 		}
+		Integer s = 1;
 		// 시작지점은 1인 토마토들의 좌표
 		List<Cordi> startList = findStart();
 		bfs(startList);
