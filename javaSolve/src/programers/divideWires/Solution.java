@@ -31,7 +31,7 @@ class Solution {
 			check = new boolean[N + 1];
 			List<Integer> groupList = new ArrayList<>();
 			HashSet<Integer>[] cutAjdList = cut(deleteTarget);
-			for (int node = 1; node <= N; node++){
+			for (int node = 1; node <= N; node++){ // 지금 전체다 돌고 있는데 자른 지점으로만 돌면 어떻게 될까
 				if(!check[node]){
 					int groupCount = bfs(node, cutAjdList);
 					groupList.add(groupCount);
