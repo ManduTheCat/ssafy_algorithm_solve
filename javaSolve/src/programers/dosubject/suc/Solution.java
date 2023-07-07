@@ -43,35 +43,30 @@ public class Solution {
 			subMap.put(startTime, new Subject(name, startTime, endTime, remain));
 		}
 		Stack<Subject> waitStack = new Stack<>();
-		List<Subject> complete = new ArrayList<>();
+		List<String> complete = new ArrayList<>();
 		while (!timePq.isEmpty()) {
 			int currTime = timePq.poll();
 			if (timePq.peek() == null) {
-				complete.add(subMap.get(currTime));
+				complete.add(subMap.get(currTime).name);
 				break;
 			}
 			int nextTime = timePq.peek();
-			if(currTime == nextTime){
+			if(currTime == nextTime){// 로직상 중복된 시간이 들어갈수 있다
 				continue;
 			}
+			//지금 시간에 진행가능한 과제가 있는지 판단한다.
 			if (subMap.containsKey(currTime)) {
-
-				//현제 진행가능한 과제가 존재한다면.
+				// 1.현제 진행가능한 과제가 존재한다면.
 				Subject currSubject = subMap.get(currTime);
-				// System.out.println(currSubject + " -> " + nextTime + " :" + timePq);
 				if (subMap.containsKey(nextTime)) {
-					// 다음걸 확인 해야하늗데
-					// 다음시간에 가능한 과제가 존재 할수도 없을수도 있다.
 					// 있다면 비교한다.
-					// 다음시간을 보는게 문제가 있는듯?
 					Subject nextSubject = subMap.get(nextTime);
 					// 현제 과제가 다음시간 전에 가능한지 불가능한지 확인한다.
 					if (currTime + currSubject.remain <= nextSubject.startTime) {
 						// 같거나 작으면 현제 과제 완료 가능하다
-						// System.out.println("넣습니다 " + (currTime  + currSubject.remain) +" vs "+ nextSubject.endTime);
-						complete.add(currSubject);
+						complete.add(currSubject.name);
 						subMap.remove(currSubject.startTime);
-						timePq.add(currTime + currSubject.remain); // 종료시간을 타임라인에 넣는다.
+						timePq.add(currTime + currSubject.remain); // 진행한 만큼 시간이 지났다
 					} else {
 						// 불가능하다면 자르고 stack 에 넣는다.
 						currSubject.remain = currSubject.remain - (nextSubject.startTime - currTime);
@@ -79,12 +74,12 @@ public class Solution {
 					}
 				}
 			} else {
-				// 현제 시간에 진행 가능한 과제가 없다면.
+				// 현제 시간에 진행 가능한 과제가 없다면. 스텍에 꺼내 가능한지 불가능한지 확인하다.
 				if (!waitStack.isEmpty()) {
 					Subject currSubject = waitStack.pop();
 					Subject nextSubject = subMap.get(nextTime);
 					if (currTime + currSubject.remain <= nextSubject.startTime) {
-						complete.add(currSubject);
+						complete.add(currSubject.name);
 						subMap.remove(currSubject.startTime);
 						timePq.add(currTime + currSubject.remain);
 					} else {
@@ -93,19 +88,14 @@ public class Solution {
 					}
 
 				}
-				// 스택이 비어 있으면 그냥 진행해라
+				// 스택이 비어 있는경우  대기중인 과제가 없다는거다 다음시간을 확인
 			}
 		}
-		// System.out.println(complete);
-		// System.out.println(waitStack);
 		while (!waitStack.isEmpty()){
-			complete.add(waitStack.pop());
+			complete.add(waitStack.pop().name);
 		}
-		String[] answer = new String[complete.size()];
-		int idx = 0;
-		for(Subject subject : complete){
-			answer[idx++] = subject.name;
-		}
+		String[] answer = complete.toArray(new String[0]);
+
 		return answer;
 	}
 }
