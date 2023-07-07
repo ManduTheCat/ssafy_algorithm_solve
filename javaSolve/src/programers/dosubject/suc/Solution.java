@@ -2,82 +2,110 @@ package programers.dosubject.suc;
 
 import java.util.*;
 
-class Subject{
-	String name;
-	int startTime;
-	int endTime;
-	int remain;
+class Subject implements Comparable<Subject> {
+	public int startTime, endTime, remain;
+	public String name;
 
 	public Subject(String name, int startTime, int endTime, int remain) {
-		this.name = name;
 		this.startTime = startTime;
 		this.endTime = endTime;
 		this.remain = remain;
+		this.name = name;
 	}
 
 	@Override
 	public String toString() {
-		return "Subject{" +
-			"name='" + name + '\'' +
-			", startTime=" + startTime/60 +":"  + startTime%60 +
-			", endTime=" + endTime /60 + ":" + endTime %60 +
-			", remain=" + remain +
-			'}';
+		return name + "[ " + startTime + " ] " +
+			+startTime / 60 + ":" + startTime % 60 +
+			"~" + endTime / 60 + ":" + endTime % 60 +
+			", remain=" + remain + '\'';
+	}
+
+	@Override
+	public int compareTo(Subject o) {
+		return o.startTime - this.startTime;
 	}
 }
+
 public class Solution {
-	static Map<Integer, Subject> subjectMap = new HashMap<>();
-	static Set<Integer> orderListSet = new HashSet<>();
+	static Map<Integer, Subject> subMap;
+
 	public String[] solution(String[][] plans) {
-		for(String[] sub : plans){
-			System.out.println(Arrays.toString(sub));
-			String[] subSplit = sub[1].split(":");
-			int startTime = Integer.parseInt(subSplit[0]) * 60 + Integer.parseInt(subSplit[1]);
-			int endTime = startTime + Integer.parseInt(subSplit[1]);
-			int remain = Integer.parseInt(subSplit[1]);
-			subjectMap.put(startTime, new Subject(sub[0],startTime, endTime, remain ));
-			orderListSet.add(startTime);
-			orderListSet.add(endTime);
+		PriorityQueue<Integer> timePq = new PriorityQueue<>();
+		subMap = new HashMap<>();
+		for (String[] subjectArr : plans) {
+			String name = subjectArr[0];
+			String[] startSplit = subjectArr[1].split(":");
+			int remain = Integer.parseInt(subjectArr[2]);
+			int startTime = Integer.parseInt(startSplit[0]) * 60 + Integer.parseInt(startSplit[1]);
+			int endTime = startTime + remain;
+			timePq.add(startTime);
+			subMap.put(startTime, new Subject(name, startTime, endTime, remain));
 		}
-		List<Integer> orderList = new ArrayList<>(orderListSet);
-		List<Subject> res = new ArrayList<>();
 		Stack<Subject> waitStack = new Stack<>();
-		Collections.sort(orderList);
-		Queue<Integer> orderQ = new ArrayDeque<>(orderList);
-		System.out.println(subjectMap);
-		// System.out.println(orderList);
-		while (!orderQ.isEmpty()){// 순서를 큐로 바꾼다면
-			int currTime = orderQ.poll();
-			if(orderQ.peek() == null){
-				if(subjectMap.containsKey(currTime)) res.add(subjectMap.get(currTime));
-				break; // 이게 마지막이면 멈춰야한다.
+		List<Subject> complete = new ArrayList<>();
+		while (!timePq.isEmpty()) {
+			int currTime = timePq.poll();
+			if (timePq.peek() == null) {
+				complete.add(subMap.get(currTime));
+				break;
 			}
-			int nextTime = orderQ.peek();
-			if(subjectMap.containsKey(currTime)){
-				// 이시간대에 할수 있는 과제가 있다.
-				// 비교 해야한다
-				Subject currSubject = subjectMap.get(currTime);
+			int nextTime = timePq.peek();
+			if(currTime == nextTime){
+				continue;
+			}
+			if (subMap.containsKey(currTime)) {
 
-				if(currTime + currSubject.remain <= nextTime){
-					// 다음시간이 더크다 = 다음시간보다빨리 끝나거나 일치하면
-					res.add(currSubject);
-					System.out.println(res);
-				}else {
-					// 넣기 전에 짤라야한다.
-					System.out.println("스텍에 들어갑니다 " + (currTime +currSubject.remain) /60 +":" + (currTime +currSubject.remain) %60
-						+" vs "+ nextTime/60 + ": " + nextTime%60);
-					currSubject.remain = currSubject.remain - (nextTime - currTime);
-					waitStack.add(subjectMap.get(currTime));
+				//현제 진행가능한 과제가 존재한다면.
+				Subject currSubject = subMap.get(currTime);
+				// System.out.println(currSubject + " -> " + nextTime + " :" + timePq);
+				if (subMap.containsKey(nextTime)) {
+					// 다음걸 확인 해야하늗데
+					// 다음시간에 가능한 과제가 존재 할수도 없을수도 있다.
+					// 있다면 비교한다.
+					// 다음시간을 보는게 문제가 있는듯?
+					Subject nextSubject = subMap.get(nextTime);
+					// 현제 과제가 다음시간 전에 가능한지 불가능한지 확인한다.
+					if (currTime + currSubject.remain <= nextSubject.startTime) {
+						// 같거나 작으면 현제 과제 완료 가능하다
+						// System.out.println("넣습니다 " + (currTime  + currSubject.remain) +" vs "+ nextSubject.endTime);
+						complete.add(currSubject);
+						subMap.remove(currSubject.startTime);
+						timePq.add(currTime + currSubject.remain); // 종료시간을 타임라인에 넣는다.
+					} else {
+						// 불가능하다면 자르고 stack 에 넣는다.
+						currSubject.remain = currSubject.remain - (nextSubject.startTime - currTime);
+						waitStack.add(currSubject);
+					}
 				}
+			} else {
+				// 현제 시간에 진행 가능한 과제가 없다면.
+				if (!waitStack.isEmpty()) {
+					Subject currSubject = waitStack.pop();
+					Subject nextSubject = subMap.get(nextTime);
+					if (currTime + currSubject.remain <= nextSubject.startTime) {
+						complete.add(currSubject);
+						subMap.remove(currSubject.startTime);
+						timePq.add(currTime + currSubject.remain);
+					} else {
+						currSubject.remain = currSubject.remain - (nextSubject.startTime - currTime);
+						waitStack.add(currSubject);
+					}
 
-			}else {
-				// 이시간대에 할수 있는 과제가 없다
-				// 스텍에서 가져온다.
-				waitStack.pop();
-
+				}
+				// 스택이 비어 있으면 그냥 진행해라
 			}
 		}
-		return null;
+		// System.out.println(complete);
+		// System.out.println(waitStack);
+		while (!waitStack.isEmpty()){
+			complete.add(waitStack.pop());
+		}
+		String[] answer = new String[complete.size()];
+		int idx = 0;
+		for(Subject subject : complete){
+			answer[idx++] = subject.name;
+		}
+		return answer;
 	}
-
 }
