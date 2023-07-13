@@ -22,12 +22,12 @@ import java.util.*;
 public class Solution {
 	public int solution(String s) {
 		int minLen = Integer.MAX_VALUE;
-		// 1.쪼개는 부분
 		// 문자열 쪼개는 크기 for 로 변경
 		for(int groupLen = 1; groupLen < s.length(); groupLen++ ){
 			List<String> subRes = new ArrayList<>();
 			int startIdx = 0;
 			int endIdx = startIdx + groupLen;
+			// 1.쪼개는 부분
 			while(endIdx <= s.length() -1){
 				subRes.add(s.substring(startIdx, endIdx));
 				endIdx = endIdx+groupLen;
