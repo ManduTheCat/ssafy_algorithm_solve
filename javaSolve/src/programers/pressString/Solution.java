@@ -22,6 +22,7 @@ import java.util.*;
 public class Solution {
 	public int solution(String s) {
 		int minLen = Integer.MAX_VALUE;
+		// 1.쪼개는 부분
 		// 문자열 쪼개는 크기 for 로 변경
 		for(int groupLen = 1; groupLen < s.length(); groupLen++ ){
 			List<String> subRes = new ArrayList<>();
@@ -36,6 +37,8 @@ public class Solution {
 			subRes.add(s.substring(startIdx, s.length()));
 			String res = ""; // 압축 결과 기록하는 변수
 			int count = 1; // 시작 압축카운터는 1로
+
+			//2. 압축 갯수를 새는 부분
 			for(int curIdx = 0; curIdx < subRes.size(); curIdx++){
 				String currStr = subRes.get(curIdx);// 지금것과 다음것 비교할거다
 				int nextIdx = curIdx + 1; // 다음것 인덱스
