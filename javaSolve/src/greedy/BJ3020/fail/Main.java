@@ -1,4 +1,4 @@
-package greedy.BJ3020;
+package greedy.BJ3020.fail;
 
 import java.io.*;
 import java.util.Arrays;
