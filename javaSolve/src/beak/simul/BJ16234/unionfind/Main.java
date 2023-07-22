@@ -58,7 +58,7 @@ public class Main {
 	static Map<Integer, ArrayList<Integer>> groupMap; // 누가 어디에 속해있는지 만든 map
 
 	public static void main(String[] args) throws IOException {
-		System.setIn(new FileInputStream("resources/daily/bfs/movepeople/inputAdd.txt"));
+		System.setIn(new FileInputStream("resources/daily/bfs/movepeople/input5.txt"));
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		StringTokenizer st = new StringTokenizer(br.readLine());
 		N = Integer.parseInt(st.nextToken());
