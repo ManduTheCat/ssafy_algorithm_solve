@@ -37,11 +37,11 @@ public class Main {
 		}
 		boolean[][] check = new boolean[N][M];
 		check[0][0] = true;
-		dfs(0, 0, check);
+		dfs(0, 0);
 		System.out.println(count);
 	}
 
-	private static void dfs(int row, int col, boolean[][] check) {
+	private static void dfs(int row, int col) {
 		testCount++;
 		if (row == N - 1 && col == M - 1) {
 			count++;
@@ -50,16 +50,12 @@ public class Main {
 		for (int d = 0; d < 4; d++) {
 			int nextRow = row + dir[d][0];
 			int nextCol = col + dir[d][1];
-			if (isIn(nextRow, nextCol) && !check[nextRow][nextCol] && input[nextRow][nextCol] < input[row][col]) {
-				check[nextRow][nextCol] = true;
-				boolean[][] nextCheck = new boolean[N][M];
+			if (isIn(nextRow, nextCol) && input[nextRow][nextCol] < input[row][col]) {
 				for (int brow = 0; brow < N; brow++) {
 					for (int bcol = 0; bcol < M; bcol++) {
-						nextCheck[brow][bcol] = check[brow][bcol];
 					}
 				}
-				dfs(nextRow, nextCol, nextCheck);
-				check[nextRow][nextCol] = false;
+				dfs(nextRow, nextCol);
 			}
 		}
 
