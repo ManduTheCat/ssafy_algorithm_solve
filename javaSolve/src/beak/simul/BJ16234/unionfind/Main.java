@@ -1,17 +1,7 @@
 package beak.simul.BJ16234.unionfind;
 
-import java.io.BufferedReader;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
-import java.util.StringTokenizer;
+import java.io.*;
+import java.util.*;
 
 class Cordi {
 	int row, col;
@@ -58,7 +48,7 @@ public class Main {
 	static Map<Integer, ArrayList<Integer>> groupMap; // 누가 어디에 속해있는지 만든 map
 
 	public static void main(String[] args) throws IOException {
-		System.setIn(new FileInputStream("resources/daily/bfs/movepeople/input5.txt"));
+		// System.setIn(new FileInputStream("resources/daily/bfs/movepeople/input5.txt"));
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		StringTokenizer st = new StringTokenizer(br.readLine());
 		N = Integer.parseInt(st.nextToken());
@@ -90,7 +80,7 @@ public class Main {
 			// 초기화
 			groupMap = new HashMap<>();
 			parents = originParents.clone();
-			printArr(input);
+			// printArr(input);
 		}
 		System.out.println(day);
 
