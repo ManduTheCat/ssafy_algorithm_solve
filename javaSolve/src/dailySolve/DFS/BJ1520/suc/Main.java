@@ -8,7 +8,7 @@ import java.util.*;
  * dp[][] = 1 해당칸에서 목적지 도착하는 경우는 1이다
  * 1. 기록된게 없다면 재귀타고 찾아온다 끝 닿을때까지
  * 2.  처음 방문하면 0으로 바꿔줘라
- * 방문처리를 배열로 하면 메모리 초과 (계속 넘겨줘야한다.)구할때 -1 이면 찾으러 가라 하자 like 피보나치
+ * 방문처리를 배열로 하면 메모리 초과 (계속 넘겨줘야한다.)구할때 -1 이면 찾으러 가라 하자 like 피보나치 + 메모이제이션
  * 내려막이기때문에 역주행 막을수 있다
  */
 public class Main {
@@ -49,14 +49,14 @@ public class Main {
 		if (dp[row][col] != -1) {
 			return dp[row][col]; // 값이 있다면 돌려줘라
 		}
-		dp[row][col] = 0; //일단 초기
+		dp[row][col] = 0; //일단 초기화
 		for (int[] d : dir) {
 			int nextRow = row + d[0];
 			int nextCol = col + d[1];
 
 			if (isIn(nextRow, nextCol) && input[row][col] > input[nextRow][nextCol]) {
 
-				dp[row][col] += dfs(nextRow, nextCol);
+				dp[row][col] += dfs(nextRow, nextCol); // 값더해주기
 
 			}
 		}
