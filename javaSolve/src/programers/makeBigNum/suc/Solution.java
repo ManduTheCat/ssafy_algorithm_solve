@@ -11,7 +11,7 @@ public class Solution {
 		for (String st : splited) {
 			int value = Integer.parseInt(st);
 			while (!stack.isEmpty() && stack.peek() < value && count-- > 0) {
-				stack.pop();
+				stack.pop();//값이 크다면 최근 값을빼고 값을 넣는다.
 			}
 			stack.push(value);
 		}

@@ -1,4 +1,4 @@
-package dp;
+package dp.downHill2096;
 
 import java.io.BufferedReader;
 import java.io.FileInputStream;
