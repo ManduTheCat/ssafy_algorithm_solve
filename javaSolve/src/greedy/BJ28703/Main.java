@@ -28,6 +28,8 @@ public class Main {
 		int max = initMax;
 		int res = max - pq.peek();
 		while (pq.peek() < initMax ){
+			// 모든 수를 두배하는 순간  처음 (max - min ) 에서 2(init max - min) 가 된다
+			// 즉 전부다 두배하면 최소가 될수가 없다. 그래서 초기 initMax 보다 작아야한다.
 			int minCandidate = pq.poll();
 			res = Math.min(max - minCandidate, res);
 			int next = minCandidate * 2;
