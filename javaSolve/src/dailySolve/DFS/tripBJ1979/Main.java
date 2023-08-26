@@ -44,7 +44,7 @@ public class Main {
 				int start = plan[startIdx];
 				int end = plan[startIdx +1];
 				// System.out.println(start + " " + end );
-				check[start] = true; // 의문 왜 시작점을 체크하고 진입하면 인덱스 에러가 날까
+				check[start] = true;
 				dfs(start, end, check);
 				if(!isAble){
 					break;
