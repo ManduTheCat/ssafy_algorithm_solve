@@ -1,4 +1,4 @@
-package dailySolve.BJ1197_MST;
+package dailySolve.MST.BJ1197_MST;
 
 import java.io.BufferedReader;
 import java.io.FileInputStream;
