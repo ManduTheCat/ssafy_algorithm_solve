@@ -3,7 +3,7 @@ package dailySolve.dijkstra.pary1238;
 import java.io.*;
 import java.util.*;
 
-
+//61292KB	664ms
 class Cordi implements Comparable<Cordi>{
 	int cur;
 	int cost;
