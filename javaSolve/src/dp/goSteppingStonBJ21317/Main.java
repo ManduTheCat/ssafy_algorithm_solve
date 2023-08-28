@@ -30,16 +30,19 @@ public class Main {
 			input[n][1] = Integer.parseInt(st.nextToken());
 		}
 		powerStep = Integer.parseInt(br.readLine());
+		// 다익스트라랑 비슷 dp[i][1] 은 큰점프 하고 도착하는 최소의 값
+		// 다익스트라랑 비슷 dp[i][0] 은 큰점프 안하고 도착하는 최소의 값
 		for(int idx = 0; idx < N-1; idx ++){
-			// 다음것 은 현제 애서 한칸 가거나 , 슈퍼 점프후 한칸 가는거다
+			// 다음 값으로 가는건 작은 입력 더해줘야한다.
 			dp[idx + 1][0] = Math.min(dp[idx + 1][0], dp[idx][0] + input[idx][0]);
 			dp[idx + 1][1] = Math.min(dp[idx + 1][1], dp[idx][1] + input[idx][0]);
-			// 다다음 칸은
 			if(idx < N-2){
+				// 다다음 값은 입력 2번 더해야한다.
 				dp[idx + 2][0] = Math.min(dp[idx + 2][0], dp[idx][0] + input[idx][1]);
 				dp[idx + 2][1] = Math.min(dp[idx + 2][1], dp[idx][1] + input[idx][1]);
 			}
 			if(idx < N -3){
+				// 다음 + 3 경우의 수중 작은것  지금여기서 점프하냐 이전에 도착한 친구들중 더 작은게 있냐
 				dp[idx + 3][1] = Math.min(dp[idx+3][1], dp[idx][0] + powerStep);
 
 			}
