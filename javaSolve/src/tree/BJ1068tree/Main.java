@@ -1,4 +1,4 @@
-package tree;
+package tree.BJ1068tree;
 
 import java.util.*;
 import java.io.*;
