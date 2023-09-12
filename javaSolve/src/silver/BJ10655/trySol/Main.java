@@ -44,9 +44,7 @@ public class Main {
 			Cordi next = inputs.get(n+1);
 			int val = Math.abs(curr.x - next.x) + Math.abs(curr.y - next.y);
 			sum += val;
-			// System.out.println(val);
 		}
-		// System.out.println(sum);
 
 		for(int delIdx  = 1; delIdx < N - 1; delIdx++){
 			int val = deleteLength(delIdx, sum);
@@ -56,17 +54,14 @@ public class Main {
 
 		System.out.println(min);
 	}
+	// 점을 지우면 이전 점과 거리 이후 과의 거리를 전체 길이에서 빼고, 지우고 나서 이어진 길이를 더해보면된다.
 	public static int deleteLength(int delIdx, int totalLen){
-		// System.out.println("total :" + totalLen + " idx :" + delIdx );
 		Cordi curr = inputs.get(delIdx);
 		Cordi next = inputs.get(delIdx + 1);
 		Cordi before = inputs.get(delIdx - 1);
 		int currBefore = Math.abs(curr.x - before.x) + Math.abs(curr.y - before.y);
 		int currNext = Math.abs(curr.x - next.x) + Math.abs(curr.y - next.y);
 		int beforeNext = Math.abs(before.x - next.x) + Math.abs(before.y - next.y);
-		// System.out.println("before to curr:" + currBefore);
-		// System.out.println("curr to next:" + currNext);
-		// System.out.println("before to next: " + beforeNext);
 		return (totalLen - currBefore - currNext) + beforeNext;
 
 	}
