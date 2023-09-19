@@ -98,16 +98,19 @@ public class Main {
 						fight(p, enemy);
 						// printMap();
 					} else {// 부딪친 사람이 없다면
-						// 총을 줍는다.
+						// 총을 줍는다.// 이미 이동했다.
 						getGun(p);
 					}
 				}
-				printPLayer();
 
 			}
+			System.out.println("====싸움 이후 결과 들 start====");
+			printMap();
+			printPLayer();
 			for (Player p : players) {
 				System.out.println(p);
 			}
+			System.out.println("====싸움 이후 결과 들 end ====");
 		}
 
 		System.out.println("=====res=======");
@@ -117,6 +120,7 @@ public class Main {
 	}
 
 	public static void fight(Player p, Player enemy) {
+		// 총이 있는곳에서 싸우는처리 확인 필요
 		int pPower = p.getS() + p.w;
 		int ePower = enemy.getS() + enemy.w;
 		if (pPower > ePower) {
@@ -211,7 +215,7 @@ public class Main {
 				boolean flag = false;
 				for (Player p : players) {
 					if (p.row == row && p.col == col) {
-						System.out.print((p.idx) + " ");
+						System.out.print((p.idx)  +" ");
 						flag = true;
 						break;
 					}
@@ -229,8 +233,9 @@ public class Main {
 		// 작은 값을 줍고, 지도의 값을 바꾼다.
 		int mapGun = map[p.row][p.col];
 		if (p.w < mapGun) {
-			p.w = mapGun;
+			System.out.println(p.idx +" : " + p.w+ " 가 " + mapGun + " 을 주웠습니다");
 			map[p.row][p.col] = p.w;
+			p.w = mapGun;
 		}
 	}
 
