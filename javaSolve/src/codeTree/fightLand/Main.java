@@ -76,12 +76,13 @@ public class Main {
 		}
 		// K+=1;
 		while (K-- > 0) {
-			// round2 에서 2, 3 번 싸울때 이사하다 총 을 줍고 가는데?
+			// round2 에서 2, 3 번 싸울때 이사하다 총 을 줍고 가는데? 왜 줍고 싸우지?
 			System.out.println("round " + K);
 			for (Player p : players) {
-				System.out.println(p + " 가 이동합니다.");
+				System.out.println(p + " 가 이동을 시도합니다.");
 				// 앞으로 가기
 				if (!forward(p)) {// 가능하면 이동한다.
+					System.out.println("이동 성공!!");
 					// 벽에 부딪친다면 반대 방향으로 돌고 앞으로 한칸 == 두번 dir 돌리고 앞으로 한칸.
 					int nextDirIdx = (p.d + 2) % 4;
 					int nextRow = p.row + dir[nextDirIdx][0];
@@ -92,20 +93,24 @@ public class Main {
 				}
 				for (Player enemy : players) {// 자기자신을 제외해야한다.........
 					if (p.row == enemy.row && p.col == enemy.col && p.idx != enemy.idx) {
+						System.out.println("적발견");
 						//싸운다. 총은 줍지 않는다.
 						System.out.println(p + " 차례에 " + enemy + " 와 싸웁니다.");
 						// printMap();
 						fight(p, enemy);
 						// printMap();
-					} else {// 부딪친 사람이 없다면
-						// 총을 줍는다.// 이미 이동했다.
-						getGun(p);
 					}
+					// else {// 부딪친 사람이 없다면 // 이렇게 하면 아닐떄마다 줍기를 시도한다.
+					//
+					// 	// 총을 줍는다.// 이미 이동했다.
+					// 	System.out.println("적은 없다 줍기 시도");
+					// 	getGun(p);
+					// }
 				}
+				getGun(p);
 
 			}
 			System.out.println("====싸움 이후 결과 들 start====");
-			printMap();
 			printPLayer();
 			for (Player p : players) {
 				System.out.println(p);
@@ -114,8 +119,10 @@ public class Main {
 		}
 
 		System.out.println("=====res=======");
-		printMap();
 		printPLayer();
+		for (Player p : players) {
+			System.out.println(p);
+		}
 		System.out.println(Arrays.toString(point));
 	}
 
@@ -233,7 +240,7 @@ public class Main {
 		// 작은 값을 줍고, 지도의 값을 바꾼다.
 		int mapGun = map[p.row][p.col];
 		if (p.w < mapGun) {
-			System.out.println(p.idx +" : " + p.w+ " 가 " + mapGun + " 을 주웠습니다");
+			System.out.println(p.idx +" : " +p.getS() +" + w:"+ p.w+ " 가 " + mapGun + " 을 주웠습니다");
 			map[p.row][p.col] = p.w;
 			p.w = mapGun;
 		}
