@@ -76,7 +76,7 @@ public class Main {
 		}
 		// K+=1;
 		while (K-- > 0) {
-			// round1
+			// round2 에서 2, 3 번 싸울때 이사하다 총 을 줍고 가는데?
 			System.out.println("round " + K);
 			for (Player p : players) {
 				System.out.println(p + " 가 이동합니다.");
