@@ -98,7 +98,7 @@ public class Main {
 				}// 이동은 한상태
 
 				/**
-				 * 싸움 연속 가능하다
+				 * 싸움 연속 가능하다 싸움이 안날떄까지 돌려야한다.
 				 */
 				for (Player enemy : players) {// 자기자신을 제외해야한다.........
 					if (p.row == enemy.row && p.col == enemy.col && p.idx != enemy.idx) {
