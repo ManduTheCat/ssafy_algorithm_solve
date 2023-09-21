@@ -4,6 +4,8 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.Arrays;
+import java.util.Comparator;
+import java.util.PriorityQueue;
 import java.util.StringTokenizer;
 
 class Player {
@@ -45,7 +47,7 @@ public class Main {
 	static int N;
 	static int K;
 	static int M;
-	static int[][] map;
+	static PriorityQueue<Integer> [][] map;
 	static Player[] players;
 	static int[] point;
 	static int[][] dir = {{-1, 0}, {0, 1}, {1, 0}, {0, -1}};
@@ -56,14 +58,17 @@ public class Main {
 		N = Integer.parseInt(st.nextToken());
 		M = Integer.parseInt(st.nextToken());
 		K = Integer.parseInt(st.nextToken()); // round 횟수
-		map = new int[N][N];
 		point = new int[M];
+		map = new PriorityQueue[N][N];
 		players = new Player[M];
 		for (int n = 0; n < N; n++) {
 			st = new StringTokenizer(br.readLine());
 			for (int m = 0; m < N; m++) {
 				int val = Integer.parseInt(st.nextToken());
-				map[n][m] = val;
+				map[n][m] = new PriorityQueue(Comparator.reverseOrder());
+				if(val != 0){
+					map[n][m].offer(val);
+				}
 			}
 		}
 		for (int m = 0; m < M; m++) {
@@ -76,13 +81,13 @@ public class Main {
 		}
 		// K+=1;
 		while (K-- > 0) {
-			// round2 에서 2, 3 번 싸울때 이사하다 총 을 줍고 가는데? 왜 줍고 싸우지?
 			System.out.println("round " + K);
+			printMap();
 			for (Player p : players) {
-				System.out.println(p + " 가 이동을 시도합니다.");
+				// System.out.println(p + " 가 이동을 시도합니다.");
 				// 앞으로 가기
 				if (!forward(p)) {// 가능하면 이동한다.
-					System.out.println("이동 성공!!");
+					// System.out.println("이동 성공!!");
 					// 벽에 부딪친다면 반대 방향으로 돌고 앞으로 한칸 == 두번 dir 돌리고 앞으로 한칸.
 					int nextDirIdx = (p.d + 2) % 4;
 					int nextRow = p.row + dir[nextDirIdx][0];
@@ -90,24 +95,20 @@ public class Main {
 					p.row = nextRow;
 					p.col = nextCol;
 					p.d = nextDirIdx;
-				}
+				}// 이동은 한상태
+
+				/**
+				 * 싸움 연속 가능하다
+				 */
 				for (Player enemy : players) {// 자기자신을 제외해야한다.........
 					if (p.row == enemy.row && p.col == enemy.col && p.idx != enemy.idx) {
-						System.out.println("적발견");
-						//싸운다. 총은 줍지 않는다.
-						System.out.println(p + " 차례에 " + enemy + " 와 싸웁니다.");
-						// printMap();
-						fight(p, enemy);
-						// printMap();
+						System.out.println( p + " 는 적 " + enemy +  " 를 발견했다");
+						fight(p, enemy); // 승자는 그자리에서 총을 줍는다.패자는 이동하고 총줍는다.
+						// 그냥 가서 줍는거랑, 승자가 총을 줍는건 다르다.
 					}
-					// else {// 부딪친 사람이 없다면 // 이렇게 하면 아닐떄마다 줍기를 시도한다.
-					//
-					// 	// 총을 줍는다.// 이미 이동했다.
-					// 	System.out.println("적은 없다 줍기 시도");
-					// 	getGun(p);
-					// }
 				}
 				getGun(p);
+
 
 			}
 			System.out.println("====싸움 이후 결과 들 start====");
@@ -118,75 +119,90 @@ public class Main {
 			System.out.println("====싸움 이후 결과 들 end ====");
 		}
 
-		System.out.println("=====res=======");
-		printPLayer();
-		for (Player p : players) {
-			System.out.println(p);
+		// System.out.println("=====res=======");
+		// printPLayer();
+		// for (Player p : players) {
+		// 	System.out.println(p);
+		// }
+		for (int p : point) {
+			System.out.print(p + " ");
 		}
-		System.out.println(Arrays.toString(point));
 	}
 
-	public static void fight(Player p, Player enemy) {
-		// 총이 있는곳에서 싸우는처리 확인 필요
-		int pPower = p.getS() + p.w;
-		int ePower = enemy.getS() + enemy.w;
-		if (pPower > ePower) {
-			// 왼쪽이 이긴경우
-			point[p.idx] += Math.abs(pPower - ePower);
-			int dropWp = enemy.w; // 진사람 총을 땅에 떨군다
-			enemy.w = 0; // 진사람은 무기가 없다.
-			if (p.w < dropWp) { // 가지고 있는 총보다 떨군총이 더 크다면
-				map[p.row][p.col] = p.w; // 낮은 걸땅에 놓고
-				p.w = dropWp; // 떨군걸 가져간다.
-			}// 진사람 이동해야한다.
-			loseMove(enemy);
-			getGun(enemy);
-		} else if (pPower < ePower) {
-			// 오른쪽이 이긴경우
-			point[enemy.idx] += Math.abs(ePower - pPower);
-			int dropWp = p.w;
+	public static void fight(Player p, Player e) {// 슬자는 총을 줍고 패자는 총을 버린다.
+		// 싸운다.
+		int pPower = p.w + p.getS();
+		int ePower = e.w + e.getS();
+		int mapW = 0;
+		if(!map[p.row][p.col].isEmpty()){
+			mapW = map[p.row][p.col].poll();
+		}
+		if(pPower > ePower){
+			// 만약 p 가이기면 p 무기와 바닥에 있는 무기, 적의 무기중 가장 강한 무기를 골라서 교체한다.
+			// 원래 무기는 바닥에 놓는다.
+			point[p.idx] = Math.abs(pPower-ePower);
+			if(e.w != 0){
+				map[p.row][p.col].offer(e.w);
+			}
+			e.w = 0;// 졌으니 무기를 떨군다.
+			int big = maxW(mapW, p.w);
+			// System.out.println("승자 " + p  +  " " + big + "겟또");
+			p.w = big;// 승자는 가장쏀걸 고른다.
+			loseMove(e);
+			getGun(e);// 이동하고 총줍는다.
+
+		}else if(pPower < ePower){
+			point[e.idx] = Math.abs(pPower - ePower);
+			if(p.w != 0){
+				map[p.row][p.col].offer(p.w);
+			}
 			p.w = 0;
-			if (enemy.w < dropWp) {
-				map[enemy.row][enemy.col] = enemy.w;
-				enemy.w = dropWp;
-			}// 진사람 이동해야한다
+			int big = maxW(mapW, e.w);
+			e.w = big;
+			// System.out.println("승자 " + e  +  " " + big + "겟또");
 			loseMove(p);
 			getGun(p);
-		} else {
-			// 비긴경우 초기 능력치를 비교한다.
-			// 각 플레이어의 초기 능력치와 가지고 있는 총의 공격력의 합의 차이만큼을 포인트로 획득하게 됩니다. = 0
-			if (p.getS() > enemy.getS()) {
-				// 포인트 증가는 없다
-				int dropW = enemy.w;
-				enemy.w = 0;
-				if (p.w < dropW) {
-					map[p.row][p.col] = p.w;
-					p.w = dropW;
-				}
-				loseMove(enemy);
-				getGun(enemy);
 
-			} else {
-				//초기 능력치는 모두 다릅니다 -> enemy 승
-				// 포인트 증가는 없다.
-				System.out.println("비겼다");
-				int dropW = p.w;
-				p.w = 0;
-				if (enemy.w < dropW) {
-					map[enemy.row][enemy.col] = enemy.w;
-					enemy.w = dropW;
+		}else {
+			//같은 값을 가지고 있다면 아무도 포인트를 얻지 못한다.
+			// 하지만 s 값을 가지고 승패는 결정된다.
+			// 하지만 진사람은 총을 버린다. 그리고 이긴사람은 총을 골라간다.
+			// 진사람은 이동도하고 맵에 총을 줍느다.
+			if(p.getS() > e.getS()){
+				//p 가 승리했다.
+				if(e.w != 0){
+					map[p.row][p.col].offer(e.w);// 패패자의 총기 버리기
 				}
+				e.w = 0;
+				int big = maxW(mapW, p.w);
+				p.w = big;
+				loseMove(e);
+				getGun(e);
+			}else {// s 값은 고유 값이기에 항상 승아니면 패 이다. 그래서 else처리
+				// e 가 승리한다.
+				if(p.w != 0){
+					map[e.row][e.col].offer(p.w);
+				}
+				p.w = 0;
+				int big = maxW(mapW, e.w); // 승자의 무기와 맵에 가장 강렬한 무기중 큰거 선정
+				e.w = big;
 				loseMove(p);
 				getGun(p);
-
 			}
-		}
 
-		System.out.println(Arrays.toString(point));
+		}
+	}
+
+	public static int maxW(int a, int b){
+		int[] temp = new int[2];
+		temp[0] = a;
+		temp[1] = b;
+		Arrays.sort(temp);
+		return temp[1];
 	}
 
 	public static void loseMove(Player lose) {
-		System.out.println("진사람 " + lose + " 이동합니다.");
+		// System.out.println("진사람 " + lose + " 이동합니다.");
 		// 90 도씩 돌려보며 가능하면 이동한다. 그리고 총줍느다.
 		if (!forward(lose)) {
 			for (int add = 1; add < 4; add++) { // 1~3 나다음 3방향 까지만 보면된다
@@ -238,11 +254,18 @@ public class Main {
 
 	public static void getGun(Player p) {
 		// 작은 값을 줍고, 지도의 값을 바꾼다.
-		int mapGun = map[p.row][p.col];
+
+		int mapGun = 0;
+		if(!map[p.row][p.col].isEmpty()){
+			mapGun = map[p.row][p.col].peek(); // 가장 큰값을꺼낸다.
+		}
 		if (p.w < mapGun) {
-			System.out.println(p.idx +" : " +p.getS() +" + w:"+ p.w+ " 가 " + mapGun + " 을 주웠습니다");
-			map[p.row][p.col] = p.w;
+			map[p.row][p.col].poll();
+			if(p.w != 0){
+				map[p.row][p.col].offer( p.w);
+			}
 			p.w = mapGun;
+			System.out.println(p.idx +" : " +p.getS() +" + w:"+ p.w+ " 가 " + mapGun + " 을 주웠습니다");
 		}
 	}
 
