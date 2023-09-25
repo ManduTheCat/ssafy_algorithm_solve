@@ -81,8 +81,8 @@ public class Main {
 		}
 		// K+=1;
 		while (K-- > 0) {
-			System.out.println("round " + K);
-			printMap();
+			// System.out.println("round " + K);
+			// printMap();
 
 			for (Player p : players) {
 				// System.out.println(p + " 가 이동을 시도합니다.");
@@ -103,7 +103,7 @@ public class Main {
 				 */
 				for (Player enemy : players) {// 자기자신을 제외해야한다.........
 					if (p.row == enemy.row && p.col == enemy.col && p.idx != enemy.idx) {
-						System.out.println( p + " 는 적 " + enemy +  " 를 발견했다");
+						// System.out.println( p + " 는 적 " + enemy +  " 를 발견했다");
 						fight(p, enemy); // 승자는 그자리에서 총을 줍는다.패자는 이동하고 총줍는다.
 						// 그냥 가서 줍는거랑, 승자가 총을 줍는건 다르다.
 						// 여기서 싸움 확인
@@ -117,12 +117,12 @@ public class Main {
 			}
 			// 싸움 한번 끝나면
 
-			System.out.println("====싸움 이후 결과 들 start====");
-			printPLayer();
-			for (Player p : players) {
-				System.out.println(p);
-			}
-			System.out.println("====싸움 이후 결과 들 end ====");
+			// System.out.println("====싸움 이후 결과 들 start====");
+			// printPLayer();
+			// for (Player p : players) {
+			// 	System.out.println(p);
+			// }
+			// System.out.println("====싸움 이후 결과 들 end ====");
 		}
 
 		// System.out.println("=====res=======");
@@ -277,7 +277,7 @@ public class Main {
 				map[p.row][p.col].offer( p.w);
 			}
 			p.w = mapGun;
-			System.out.println(p.idx +" : " +p.getS() +" + w:"+ p.w+ " 가 " + mapGun + " 을 주웠습니다");
+			// System.out.println(p.idx +" : " +p.getS() +" + w:"+ p.w+ " 가 " + mapGun + " 을 주웠습니다");
 		}
 	}
 
