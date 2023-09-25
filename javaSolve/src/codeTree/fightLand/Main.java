@@ -83,6 +83,7 @@ public class Main {
 		while (K-- > 0) {
 			System.out.println("round " + K);
 			printMap();
+
 			for (Player p : players) {
 				// System.out.println(p + " 가 이동을 시도합니다.");
 				// 앞으로 가기
@@ -105,12 +106,17 @@ public class Main {
 						System.out.println( p + " 는 적 " + enemy +  " 를 발견했다");
 						fight(p, enemy); // 승자는 그자리에서 총을 줍는다.패자는 이동하고 총줍는다.
 						// 그냥 가서 줍는거랑, 승자가 총을 줍는건 다르다.
+						// 여기서 싸움 확인
+						// 맵전체를 확인하고 싸움난 친구들끼리 싸움 붙여야한다.
+
+
 					}
 				}
 				getGun(p);
 
-
 			}
+			// 싸움 한번 끝나면
+
 			System.out.println("====싸움 이후 결과 들 start====");
 			printPLayer();
 			for (Player p : players) {
@@ -204,7 +210,7 @@ public class Main {
 	public static void loseMove(Player lose) {
 		// System.out.println("진사람 " + lose + " 이동합니다.");
 		// 90 도씩 돌려보며 가능하면 이동한다. 그리고 총줍느다.
-		if (!forward(lose)) {
+		if (!forward(lose)) { // 이동이 불가능하면 돌린다. // 아니면 이동한다.
 			for (int add = 1; add < 4; add++) { // 1~3 나다음 3방향 까지만 보면된다
 				int nextDir = (lose.d + add) % 4;
 				int nextRow = lose.row + dir[nextDir][0];
@@ -215,6 +221,12 @@ public class Main {
 					lose.d = nextDir;
 					break;
 				}
+			}
+		}
+		for(Player p: players){
+			if(p.row == lose.row && p.col == lose.col && p.idx != lose.idx){
+				// 이동한 친구가 또 싸움나며
+				fight(p, lose);
 			}
 		}
 	}
