@@ -223,12 +223,12 @@ public class Main {
 				}
 			}
 		}
-		for(Player p: players){
-			if(p.row == lose.row && p.col == lose.col && p.idx != lose.idx){
-				// 이동한 친구가 또 싸움나면 싸움을 진행
-				fight(p, lose);
-			}
-		}
+		// for(Player p: players){
+		// 	if(p.row == lose.row && p.col == lose.col && p.idx != lose.idx){
+		// 		// 이동한 친구가 또 싸움나면 싸움을 진행
+		// 		fight(p, lose);
+		// 	}
+		// }
 	}
 
 	public static void printMap() {
