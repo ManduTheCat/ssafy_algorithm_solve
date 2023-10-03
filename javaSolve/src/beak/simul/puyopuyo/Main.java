@@ -27,7 +27,7 @@ class Cordi {
 			'}';
 	}
 }
-
+// 1시간 반
 public class Main {
 	static int R = 12;
 	static int C = 6;
