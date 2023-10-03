@@ -34,9 +34,8 @@ public class Main {
 	static boolean[][] check;
 	static String[][] map;
 
-	// 1 같은거 4개 처리
+	// 1 같은거 4개 처리 && 터질게 있나 검사 while
 	// 2 중력 작용
-	// 3 터질게 있나 검사
 	public static void main(String[] args) throws IOException {
 
 		System.setIn(new FileInputStream("resources/daily/sim/puyoPyuo/input.txt"));
