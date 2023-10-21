@@ -29,7 +29,7 @@ public class Main {
     static int count = 0;
 
     public static void main(String[] args) throws IOException {
-        System.setIn(new FileInputStream("resources/study/week4/BJ17070/input3.txt"));
+        System.setIn(new FileInputStream("resources/study/SSAFY.week4/BJ17070/input3.txt"));
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         N = Integer.parseInt(br.readLine());
         check = new boolean[N][N];

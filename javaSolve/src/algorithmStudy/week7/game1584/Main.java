@@ -20,7 +20,7 @@ public class Main {
     static int [][] map = new int[500][500];
 
     public static void main(String[] args) throws IOException {
-        System.setIn(new FileInputStream("resources/study/week7/BJ1584/input3.txt"));
+        System.setIn(new FileInputStream("resources/study/SSAFY.week7/BJ1584/input3.txt"));
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         N = Integer.parseInt(br.readLine());
         for (int n = 0; n < N; n++) {

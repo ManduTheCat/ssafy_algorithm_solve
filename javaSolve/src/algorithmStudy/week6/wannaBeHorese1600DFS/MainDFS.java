@@ -18,7 +18,7 @@ public class MainDFS {
     static int[][] monkeyAlpha = new int[][]{{0, 1}, {-1, 0}, {0, -1}, {1, 0}};
     static ArrayList<Integer> res  = new ArrayList<>();
     public static void main(String[] args) throws IOException {
-        System.setIn(new FileInputStream("resources/study/week6/BJ1600/input.txt"));
+        System.setIn(new FileInputStream("resources/study/SSAFY.week6/BJ1600/input.txt"));
         BufferedReader bf = new BufferedReader(new InputStreamReader(System.in));
         K = Integer.parseInt(bf.readLine());
         StringTokenizer st = new StringTokenizer(bf.readLine());

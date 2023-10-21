@@ -30,7 +30,7 @@ public class Main {
 
     public static void main(String[] args) throws IOException {
         // 명령어 변환필요 시간이 누적된상태로 입력되기 때문에
-        System.setIn(new FileInputStream("resources/study/week5/BJ3190/input3.txt"));
+        System.setIn(new FileInputStream("resources/study/SSAFY.week5/BJ3190/input3.txt"));
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         N = Integer.parseInt(br.readLine());
         K = Integer.parseInt(br.readLine());

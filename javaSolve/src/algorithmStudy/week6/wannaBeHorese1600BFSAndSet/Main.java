@@ -35,7 +35,7 @@ public class Main {
     static int[][] monkeyAlpha = new int[][]{{0, 1}, {-1, 0}, {0, -1}, {1, 0}};
 
     public static void main(String[] args) throws IOException {
-        System.setIn(new FileInputStream("resources/study/week6/BJ1600/input3.txt"));
+        System.setIn(new FileInputStream("resources/study/SSAFY.week6/BJ1600/input3.txt"));
         BufferedReader bf = new BufferedReader(new InputStreamReader(System.in));
         K = Integer.parseInt(bf.readLine());
         StringTokenizer st = new StringTokenizer(bf.readLine());

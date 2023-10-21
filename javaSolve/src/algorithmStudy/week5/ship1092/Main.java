@@ -27,7 +27,7 @@ public class Main {
     static int time = 0;
 
     public static void main(String[] args) throws IOException {
-        System.setIn(new FileInputStream("resources/study/week5/BJ1092/input5.txt"));
+        System.setIn(new FileInputStream("resources/study/SSAFY.week5/BJ1092/input5.txt"));
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         N = Integer.parseInt(br.readLine());
         originCraneStack = new Stack<>();

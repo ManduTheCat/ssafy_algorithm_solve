@@ -21,7 +21,7 @@ public class Main {
     // 연사자들은 모두 스택이 비어있으면 작동하면 안된다.
     // - 연산자는 첫번째 스택을 팝하여 처리한다.
     public static void main(String[] args) throws IOException {
-        System.setIn(Files.newInputStream(Paths.get("resources/study/week1/5397/input.txt")));
+        System.setIn(Files.newInputStream(Paths.get("resources/study/SSAFY.week1/5397/input.txt")));
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         int TC = Integer.parseInt(br.readLine());
         for (int tc = 0; tc < TC; tc++) {

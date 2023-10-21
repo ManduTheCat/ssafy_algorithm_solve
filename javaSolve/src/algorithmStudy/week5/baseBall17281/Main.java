@@ -33,7 +33,7 @@ public class Main {
     static int maxScore = 0;
 
     public static void main(String[] args) throws IOException {
-        System.setIn(new FileInputStream("resources/study/week5/BJ17281/input6.txt"));
+        System.setIn(new FileInputStream("resources/study/SSAFY.week5/BJ17281/input6.txt"));
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         N = Integer.parseInt(br.readLine());
         innings = new int[N][9];

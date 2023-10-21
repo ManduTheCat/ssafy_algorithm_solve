@@ -70,7 +70,7 @@ public class Main2 {
 
 
     public static void main(String[] args) throws IOException {
-        //System.setIn(Files.newInputStream(Paths.get("resources/study/week1/5397/input.txt")));
+        //System.setIn(Files.newInputStream(Paths.get("resources/study/SSAFY.week1/5397/input.txt")));
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         int TC = Integer.parseInt(br.readLine());
         for(int tc = 0; tc <TC; tc++){

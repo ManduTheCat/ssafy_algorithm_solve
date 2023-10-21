@@ -15,7 +15,7 @@ public class Main {
     static ArrayList<Integer> [] party;
     static  int initTureRoot;
     public static void main(String[] args) throws IOException {
-        //System.setIn(new FileInputStream("resources/study/week7/1043/input6.txt"));
+        //System.setIn(new FileInputStream("resources/study/SSAFY.week7/1043/input6.txt"));
         //1. initTrueSet 에 있다면 unionFind 를 실행하여  trueSet을 만든다
         //2 tureSet 에 find 연산을 수행해 없다면 count++
         int count = 0;

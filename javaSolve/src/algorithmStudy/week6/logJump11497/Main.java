@@ -11,7 +11,7 @@ public class Main {
     static int N;
     static int [] res;
     public static void main(String[] args) throws IOException {
-        System.setIn(new FileInputStream("resources/study/week6/BJ11497/input.txt"));
+        System.setIn(new FileInputStream("resources/study/SSAFY.week6/BJ11497/input.txt"));
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         Tc = Integer.parseInt(br.readLine());
         for (int tc = 0; tc < Tc; tc++) {
