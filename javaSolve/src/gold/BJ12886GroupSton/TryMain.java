@@ -7,8 +7,6 @@ import java.util.ArrayDeque;
 import java.util.Queue;
 import java.util.StringTokenizer;
 
-
-
 public class TryMain {
 	static class State {
 		int a;
@@ -25,6 +23,7 @@ public class TryMain {
 			return a == b && b == c;
 		}
 	}
+
 	static boolean[][][] check; // X < Y 일때  X + X  < Y성립? yes
 
 	public static void main(String[] args) throws IOException {
@@ -33,7 +32,8 @@ public class TryMain {
 		int A = Integer.parseInt(st.nextToken());
 		int B = Integer.parseInt(st.nextToken());
 		int C = Integer.parseInt(st.nextToken());
-		check = new boolean[A + B + C + 1][A + B + C + 1][A + B + C + 1]; // 조합의 중복을 체크 해야한다. 총합은 같으니 마지막하나는 몰라도 된다 2차원으로 가능
+		// 조합의 중복을 체크 해야한다. 총합은 같으니 마지막하나는 몰라도 된다 2차원으로 가능
+		check = new boolean[A + B + C + 1][A + B + C + 1][A + B + C + 1];
 		if ((A + B + C) % 3 != 0) {
 			System.out.println(0);
 			return;
