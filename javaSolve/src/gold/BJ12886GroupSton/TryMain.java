@@ -33,13 +33,13 @@ public class TryMain {
 		int B = Integer.parseInt(st.nextToken());
 		int C = Integer.parseInt(st.nextToken());
 		// 조합의 중복을 체크 해야한다. 총합은 같으니 마지막하나는 몰라도 된다 2차원으로 가능
+		// 최악의 경우 500, 500, 500 이면 3218MB
 		check = new boolean[A + B + C + 1][A + B + C + 1][A + B + C + 1];
 		if ((A + B + C) % 3 != 0) {
 			System.out.println(0);
 			return;
 		}
 		System.out.println(bfs(A, B, C));
-		// 무함 루프를 도네 112 ? 간곳을 다시가는게 문제일거 같다. 500 이하니까 // 0이하로 발산하는 문제
 
 	}
 
