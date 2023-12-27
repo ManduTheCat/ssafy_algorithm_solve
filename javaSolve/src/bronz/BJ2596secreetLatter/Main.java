@@ -41,7 +41,7 @@ public class Main {
                 res.append(dict.get(chunk.toString()));
             } else {
                 //System.out.println(chunk);
-                String minErr = findMinErr(dict, chunk.toString());
+                String minErr = findMinErrKey(dict, chunk.toString());
                 if (minErr.equals("-1")) {
                     System.out.println(n+1);
                     return;
@@ -53,7 +53,7 @@ public class Main {
         System.out.println(res);
     }
 
-    private static String findMinErr(Map<String, String> dict, String chunk) {
+    private static String findMinErrKey(Map<String, String> dict, String chunk) {
         Map<String, Integer> countMap = new HashMap<>();
         for (String key : dict.keySet()) {
             int count = 0;
