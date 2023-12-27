@@ -32,16 +32,16 @@ public class Main {
 
         int idx = 0;
         for (int n = 0; n < stringCount; n++) {
-            String chunk = "";
+            StringBuilder chunk = new StringBuilder();
             for (int m = 0; m < 6; m++) {
-                chunk += input.charAt(idx);
+                chunk.append(input.charAt(idx));
                 idx++;
             }
-            if (dict.containsKey(chunk)) {
-                res.append(dict.get(chunk));
+            if (dict.containsKey(chunk.toString())) {
+                res.append(dict.get(chunk.toString()));
             } else {
                 //System.out.println(chunk);
-                String minErr = findMinErr(dict, chunk);
+                String minErr = findMinErr(dict, chunk.toString());
                 if (minErr.equals("-1")) {
                     System.out.println(n+1);
                     return;
