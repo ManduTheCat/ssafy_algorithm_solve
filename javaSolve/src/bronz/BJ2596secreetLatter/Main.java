@@ -41,11 +41,12 @@ public class Main {
                 res.append(dict.get(chunk.toString()));
             } else { // 같은게 없다면
                 String minErr = findMinErrKey(dict, chunk.toString()); // 에러가 2개이상만 있는지 판단해야한다.
-                if (minErr.equals("-1")) {// 가능한게 없다면 틀린 문자열 출력
+                if (minErr.equals("-1")) {// 가능한게 없다면 틀린 문자열 위치 출력
                     System.out.println(n+1);
                     return;
-                }else {
-                    res.append(dict.get(minErr));
+                }
+                else {
+                    res.append(dict.get(minErr)); //만약 에러가 1개인게 있다면 넣어라
                 }
             }
         }
