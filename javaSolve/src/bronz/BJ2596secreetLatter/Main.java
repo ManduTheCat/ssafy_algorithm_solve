@@ -53,7 +53,7 @@ public class Main {
     }
 
     private static String findMinErrKey(Map<String, String> dict, String chunk) {
-        // 최소의 오류를 가지는 key를 구하는 함수 만약 2개 이상의 에러면  -1 을 리턴해 가능한것이 없다 판다.
+        // 최소의 오류를 가지는 key를 구하는 함수 만약 2개 이상의 에러면  -1 을 리턴해 가능한것이 없다 판단.
         Map<String, Integer> countMap = new HashMap<>();
         for (String key : dict.keySet()) {
             int count = 0;
