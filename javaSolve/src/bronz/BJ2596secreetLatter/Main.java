@@ -37,12 +37,11 @@ public class Main {
                 chunk.append(input.charAt(idx));
                 idx++;
             }
-            if (dict.containsKey(chunk.toString())) {
+            if (dict.containsKey(chunk.toString())) { // n(1) 으로 찾는다
                 res.append(dict.get(chunk.toString()));
-            } else {
-                //System.out.println(chunk);
-                String minErr = findMinErrKey(dict, chunk.toString());
-                if (minErr.equals("-1")) {
+            } else { // 같은게 없다면
+                String minErr = findMinErrKey(dict, chunk.toString()); // 에러가 2개이상만 있는지 판단해야한다.
+                if (minErr.equals("-1")) {// 가능한게 없다면 틀린 문자열 출력
                     System.out.println(n+1);
                     return;
                 }else {
@@ -54,6 +53,7 @@ public class Main {
     }
 
     private static String findMinErrKey(Map<String, String> dict, String chunk) {
+        // 최소의 오류를 가지는 key를 구하는 함수 만약 2개 이상의 에러면  -1 을 리턴해 가능한것이 없다 판다.
         Map<String, Integer> countMap = new HashMap<>();
         for (String key : dict.keySet()) {
             int count = 0;
