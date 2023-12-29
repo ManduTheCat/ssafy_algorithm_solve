@@ -13,6 +13,7 @@ public class Main {
 	static int[][] synergy;
 	static int[] teamPool1;
 	static int[] teamPool2;
+	static int min = 9999999;
 	public static void main(String[] args) throws IOException {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		N = Integer.parseInt(br.readLine());
@@ -27,6 +28,7 @@ public class Main {
 		}
 		// 팀 나누고 그중에서 경우수를 구한다.
 		divideTeam(0,0);
+		System.out.println(min);
 
 
 	}
@@ -34,8 +36,8 @@ public class Main {
 		if(depth == N/2){
 
 			teamPool2 = makePool2(teamPool1);
-			System.out.println(Arrays.toString(teamPool1) + " vs " + Arrays.toString(teamPool2));
-			System.out.println(cal());
+//			System.out.println(Arrays.toString(teamPool1) + " vs " + Arrays.toString(teamPool2));
+			min = Math.min(cal(), min);
 			return;
 		}
 		for(int i = start;  i < N; i++){
@@ -66,16 +68,18 @@ public class Main {
 		for(int i = 0; i < teamPool1.length; i++){
 			for(int j = i + 1; j <teamPool1.length; j++){
 				team1sum +=synergy[teamPool1[i]][teamPool1[j]];
+				team1sum +=synergy[teamPool1[j]][teamPool1[i]];
 			}
 		}
 		int team2sum = 0;
 		for(int i = 0; i < teamPool2.length; i++){
 			for(int j = i + 1; j <teamPool2.length; j++){
 				team2sum +=synergy[teamPool2[i]][teamPool2[j]];
+				team2sum +=synergy[teamPool2[j]][teamPool2[i]];
 			}
 		}
 
-		System.out.println(team1sum  + " vs " + team2sum);
+//		System.out.println(team1sum  + " vs " + team2sum);
 		return Math.abs(team1sum - team2sum);
 	}
 }
