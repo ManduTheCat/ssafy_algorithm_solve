@@ -126,8 +126,10 @@ public class Main {
 				System.out.println("false in");
 				int[] peek = roboot.peekBackward();
 				System.out.println("back :" + Arrays.toString(peek));
-				if ((peek[0] == -1 && peek[1] == -1) && map[peek[0]][peek[1]]) {
+				if ((peek[0] != -1 ) && map[peek[0]][peek[1]]) {
 					// 뒤 이동 가능하고, 벽이 없다면 불가능하면 -1 을 보넨다
+					roboot.goBackward();
+				}else {
 					break;
 				}
 
