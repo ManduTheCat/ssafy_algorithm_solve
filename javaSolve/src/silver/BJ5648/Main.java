@@ -15,28 +15,28 @@ public class Main {
         N = Integer.parseInt(st.nextToken());
         List<String> input = new ArrayList<>();
         int count = 0;
-        while (st.hasMoreTokens()){
+        while (st.hasMoreTokens()) {
             input.add(st.nextToken());
             count++;
 
         }
-        while (count < N){
+        while (count < N) {
             st = new StringTokenizer(br.readLine());
-            while (st.hasMoreTokens()){
+            while (st.hasMoreTokens()) {
                 String val = st.nextToken();
-                if(!val.equals(" ")){
-                    input.add(val);
-                    count++;
 
-                }
+                input.add(val);
+                count++;
+
+
             }
         }
-        PriorityQueue<Long> sort  = new PriorityQueue<>();
-        for(String val : input){
+        PriorityQueue<Long> sort = new PriorityQueue<>();
+        for (String val : input) {
             StringBuilder sb = new StringBuilder(val);
             sort.offer(Long.parseLong(sb.reverse().toString()));
         }
-        while (!sort.isEmpty()){
+        while (!sort.isEmpty()) {
             System.out.println(sort.poll());
         }
     }
