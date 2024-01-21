@@ -35,6 +35,9 @@ class Robot {
 	static int M;
 	static int[][] dirMap = {{-1, 0}, {0, 1}, {1, 0}, {0, -1}}; // 디폴트는 시계방향
 
+	// 로봇 객체
+	// 외부 환경과 연동되는건 로봇에 넣지 않음
+	// 추후에 외부 환경 객체를 추가할예정
 	public Robot(Cordi curr, int dir, int N, int M) {
 		this.cordi = new Cordi();
 		this.cordi.row = curr.row;
