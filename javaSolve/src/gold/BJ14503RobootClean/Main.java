@@ -80,8 +80,8 @@ class Robot {
 	}
 
 	public void goForward() { // 이동만한다 외부에서 체크가 필요
-		this.cordi.row = dirMap[dir][0] + this.cordi.row;
-		this.cordi.col = dirMap[dir][1] + this.cordi.col;
+		this.cordi.row += dirMap[dir][0];
+		this.cordi.col += dirMap[dir][1];
 	}
 
 	public void goBackward() {
@@ -133,9 +133,8 @@ public class Main {
 		}
 		int res = 0;
 		while (true) {
-			//print(robot);
 			if (!map[robot.cordi.row][robot.cordi.col] && !cleanCheck[robot.cordi.row][robot.cordi.col]) {
-				//System.out.println("in");
+				// 만약 청소 가능하면
 				cleanCheck[robot.cordi.row][robot.cordi.col] = true;
 				res++;
 			}
@@ -146,6 +145,7 @@ public class Main {
 					break;
 
 				} else if(Robot.isIn(backCordi.row, backCordi.col)&&! map[backCordi.row][backCordi.col]){
+					// 뒤가 이동가능하면
 					robot.goBackward();
 				}
 
@@ -155,9 +155,9 @@ public class Main {
 				Cordi forwardCordi = robot.getForward();
 				if (Robot.isIn(forwardCordi.row, forwardCordi.col) && !map[forwardCordi.row][forwardCordi.col]
 					&& !cleanCheck[forwardCordi.row][forwardCordi.col]) {
-					// map 안에 있고, 이동 가능하고, 청소가 되있지 않다면
+					// 이동가능하면 이동하라
 					robot.goForward();
-				}//바라보는 방향을 기준으로 앞쪽 칸이 청소되지 않은 빈 칸인 경우 한 칸 전진한다.
+				}
 			}
 
 		}
