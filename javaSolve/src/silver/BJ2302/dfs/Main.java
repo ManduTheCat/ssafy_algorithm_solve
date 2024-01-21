@@ -1,4 +1,4 @@
-package silver.BJ2302;
+package silver.BJ2302.dfs;
 
 import java.io.BufferedReader;
 import java.io.IOException;
