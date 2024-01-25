@@ -6,18 +6,18 @@ import java.io.InputStreamReader;
 import java.util.*;
 
 public class Main {
-    static int N;
-    static int M;
+    private static int N;
+    private static int M;
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         N = Integer.parseInt(br.readLine());
-        Set<Integer> pool = new LinkedHashSet<>();
+        Set<Integer> pool = new HashSet<>();
         StringTokenizer st= new StringTokenizer(br.readLine());
         for(int n = 0; n < N; n++){
             pool.add(Integer.parseInt(st.nextToken()));
         }
         M = Integer.parseInt(br.readLine());
-        Set<Integer> search = new LinkedHashSet<>();
+        List<Integer> search = new ArrayList<>();
         st= new StringTokenizer(br.readLine());
         for(int m = 0; m < M; m++){
             search.add(Integer.parseInt(st.nextToken()));
