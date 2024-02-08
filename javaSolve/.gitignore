@@ -1,4 +1,5 @@
 javaSolve\
 out
 .idea
-*.iml
+*.iml.classpath
+.project
