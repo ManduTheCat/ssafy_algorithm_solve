@@ -60,7 +60,7 @@ public class TEST {
 			score[n] = max;
 			res = Math.min(res, score[n]);
 		}
-
+		System.out.println(Arrays.toString(score));
 		List<Integer> list = new ArrayList<>();
 		for (int n = 1; n <= N; n++) {
 			if (score[n] == res)

@@ -1,4 +1,7 @@
 javaSolve\
 out
 .idea
-*.iml
+*.iml.classpath
+.project
+/.classpath
+/javaSolve.iml
