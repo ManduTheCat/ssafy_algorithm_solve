@@ -69,14 +69,10 @@ public class Main {
         }
         for(int col = 0; col < N; col++){
             if(!nextState[row][col]){ // 빈칸이라면 체크하고 사다리 배치
-                if(col + 1 < N &&  !nextState[row][col + 1] && col + 2 < N &&  !nextState[row][col + 2]){
-                    if(col == 0 ||  col == N-1){
-                        nextState[row][col] = true;
-                        nextState[row][col + 1] = true;
-                    }else {
-                        // 아니라면 왼쪽 체크
-                    }
-                }
+                // 사다리 배치 로직을 어케 하지
+                // 선택 하는 경우 안하는 경우가 있다.
+                // 연속해서 두개 이상을 배치하는 경우가 있다.
+                // 설계를 바꿔야하나.. 사다리 다리만 존제하는 배열로 cur 이 이동한다.
             }
         }
     }
