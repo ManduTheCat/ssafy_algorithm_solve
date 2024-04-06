@@ -68,8 +68,15 @@ public class Main {
             }
         }
         for(int col = 0; col < N; col++){
-            if(!nextState[row][col]){
-
+            if(!nextState[row][col]){ // 빈칸이라면 체크하고 사다리 배치
+                if(col + 1 < N &&  !nextState[row][col + 1] && col + 2 < N &&  !nextState[row][col + 2]){
+                    if(col == 0 ||  col == N-1){
+                        nextState[row][col] = true;
+                        nextState[row][col + 1] = true;
+                    }else {
+                        // 아니라면 왼쪽 체크
+                    }
+                }
             }
         }
     }
