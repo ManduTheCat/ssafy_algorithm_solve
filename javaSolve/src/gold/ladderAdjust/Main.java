@@ -62,9 +62,15 @@ public class Main {
         // 두가로선이 연속하거나 접하면 안된다.. 한줄이 되선 안된다. // 놓는게 H 를 넘어선 안된다
         // 놓고 넘긴다 .
         boolean [][] nextState = new boolean[M][N];
-
+        for(int r = 0; r < M; r ++){ // deep copy
+            for(int c = 0; c < N; c++){
+                nextState[r][c] = state[r][c];
+            }
+        }
         for(int col = 0; col < N; col++){
+            if(!nextState[row][col]){
 
+            }
         }
     }
 
